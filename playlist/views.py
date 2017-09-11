@@ -62,6 +62,7 @@ class PlaylistSongs(TemplateView):
     View songs from a Playlist
     """
     template_name = "playlist/playlist_songs.html"
+
     def get(self,*args,**kwargs):
         # show songs in the playlist
         playlist = Playlist.objects.get(id= kwargs['playlist_id'])
@@ -91,14 +92,24 @@ class SongDetail(TemplateView):
     """
     View Song Detail from a specific Playlist
     """
+    template_name = "playlist/song_detail.html"
+
     def get(self,*args,**kwargs):
         #display song detail
-
-        return redirect('playlists')
+        playlist = Playlist.objects.get(id= kwargs['playlist_id'])
+        song = Song.objects.get(id = kwargs['song_id'])
+        form = SongListForm()
+        context = {'form':form, 'song':song, 'playlist':playlist,
+                   'playlist_id':kwargs['playlist_id']}
+        return render(self.request, self.template_name, context)
 
     def post(self,*args,**kwargs):
         # edit song detail
-        return redirect('playlists')
+        song = Song.objects.get(id = kwargs['song_id'])
+        form = SongListForm(self.request.POST,instance = song)
+        form.save()
+        return redirect('playlist_songs',playlist_id=kwargs['playlist_id'])
+
 
 class SongDelete(View):
     """

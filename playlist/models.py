@@ -14,9 +14,8 @@ class Song(models.Model):
         return self.title
 
     @property
-    def get_crimped_url(self):
-        #return cropped url
-        pass
+    def get_url_end(self):
+        return self.link
 
 class Playlist(models.Model):
     """
