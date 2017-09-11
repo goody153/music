@@ -1,0 +1,13 @@
+{% extends 'playlist/base.html' %} 
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <label>Playlist Title:</label><input type = "text" name = "title" value = "{{playlist.title}}"><br>
+    <label>Description:</label><textarea name = "description">{{playlist.description}}</textarea><br>
+    <button type = "submit">Update Playlist</button>
+</form>
+
+
+{% endblock %}

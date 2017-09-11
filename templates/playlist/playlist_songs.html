@@ -1,0 +1,40 @@
+{% extends 'playlist/base.html' %} 
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+  <div class="col-md-3">
+
+      <form method = "post">
+        {% csrf_token %}
+            <label>Title:</label><input type = "text" name ="title"><br>
+            <label>Link:</label>{{form.link}}<br>
+        <button type = "submit">Add Song</button>
+    </form>
+
+    {{playlist.title}}<br>
+    {{playlist.description}}<br>
+    {{playlist.date_created}}<br>
+    {{playlist.date_updated}}<br>
+  </div>
+
+<div class= "col-md-9">
+    <div class="card">
+      <div class="card-header">
+        SONGS
+      </div>
+        <br>
+        {% for song in songlist %}
+        <div class="card-block">
+                <a href="{% url 'playlist_songdetail' playlist.id song.id %}" class="card-link">{{song.title}}  </a><br>
+                <label>Link:</label><textarea readonly="">{{song.link}}</textarea>
+                <div>Added:<small>{{song.date_created}}</small></small>
+              </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

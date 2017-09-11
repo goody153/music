@@ -1,0 +1,42 @@
+{% extends 'playlist/base.html' %} 
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class = "col-md-3">
+
+        <form method="post">
+            {% csrf_token %}
+                <label>Playlist Title:</label><input type = "text" name = "title"><br>
+                <label>Description:</label><textarea name = "description"></textarea><br>
+            <button type = "submit">Create New Playlist</button>
+        </form>
+        <ul class="nav nav-pills nav-stacked">
+            {% for playlist in pl %}
+            <li>
+                <span><span><a href = "{% url 'playlist_songs' playlist.id %}">{{playlist.title}}</a> 
+                    <small style = "float:right;">
+                        <form method = "post" action = "{% url 'playlist_delete' playlist.id %}">
+                            {% csrf_token %}
+                            <button type = "submit">x</button>
+                        </form>
+                    </small>
+                </span>
+                </span><br>
+                <small><small><a href = "{% url 'playlist_detail' playlist.id %}">Edit</a></small></small></span><br>
+                {{playlist.description}}<br>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class = "col-md-6">
+    </div>
+
+    <div class = "col-md-3">
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}
