@@ -19,7 +19,7 @@
     {{playlist.date_updated}}<br>
   </div>
 
-<div class= "col-md-9">
+<div class= "col-md-3">
     <div class="card">
       <div class="card-header">
         SONGS
@@ -27,7 +27,17 @@
         <br>
         {% for song in songlist %}
         <div class="card-block">
+
+                <span>
                 <a href="{% url 'playlist_songdetail' playlist.id song.id %}" class="card-link">{{song.title}}  </a><br>
+                    <small style = "float:right;">
+                        <form method = "post" action = "{% url 'playlist_songdelete' playlist.id song.id %}">
+                            {% csrf_token %}
+                            <button type = "Submit">x</button>
+                        </form>
+                    </small>
+                </span>
+
                 <label>Link:</label><textarea readonly="">{{song.link}}</textarea>
                 <div>Added:<small>{{song.date_created}}</small></small>
               </div>

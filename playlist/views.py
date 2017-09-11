@@ -93,9 +93,18 @@ class SongDetail(TemplateView):
     """
     def get(self,*args,**kwargs):
         #display song detail
+
         return redirect('playlists')
 
     def post(self,*args,**kwargs):
         # edit song detail
         return redirect('playlists')
 
+class SongDelete(View):
+    """
+    Delete Song From List
+    """
+    def post(self,request, *args, **kwargs):
+        #import pdb;pdb.set_trace()
+        Song.objects.get(id = kwargs['song_id']).delete()
+        return redirect('playlist_songs',playlist_id=kwargs['playlist_id'])
