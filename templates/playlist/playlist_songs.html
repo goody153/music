@@ -46,10 +46,10 @@
     <div class="card" id = "songlist">
         <br>
         {% for song in songlist %}
-            <div class="card-block">
+            <div class="card-block" class = "songsorround">
                 <span>
                 <a href="{% url 'playlist_songdetail' playlist.id song.id %}" class="card-link">{{song.title}}  </a><br>
-                    <small style = "float:right;">
+                    <small class = 'cornerdelete'>
                         <form method = "post" action = "{% url 'playlist_songdelete' playlist.id song.id %}">
                             {% csrf_token %}
                             <button type = "Submit">x</button>
@@ -67,7 +67,7 @@
 
 {% block js %}
 
-    <script>
+<script>
 Song_Detail_URL = " {% url 'playlist_songdelete' 34578 2378486 %}"; // url for editing song detail
 Song_Delete_URL = " {% url 'playlist_songdetail' 56989 9999999 %}"; // url for deleting song
 crsf_token = "{% csrf_token %}";
@@ -88,7 +88,7 @@ crsf_token = "{% csrf_token %}";
                 song_detail_url = Song_Delete_URL.replace(9999999, response.id); //
                 var content_to_prepend ="<div class='card-block'>"
                         + "<span><a href='"+Song_Detail_URL.replace(2378486, response.id)+"' class = 'card-link'>"+response.title+"</a><br>"
-                        + "<small style = 'float:right;'>"
+                        + "<small class = 'cornerdelete'>"
                         + "<form method = 'post' action = '"+Song_Delete_URL.replace(9999999, response.id)+"' >" + crsf_token
                         + "<button type = 'Submit'>x</button>"
                         + "</form></small></span>"
@@ -98,8 +98,9 @@ crsf_token = "{% csrf_token %}";
                  $( "#songlist" ).prepend(content_to_prepend);
               });   
         });
+
         /*             AJAX Add For Songs                 */
-        </script>
+</script>
 
 {% endblock %}
 

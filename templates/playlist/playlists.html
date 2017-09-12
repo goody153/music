@@ -16,12 +16,12 @@
             {% for playlist in pl %}
             <li>
                 <span><span><a href = "{% url 'playlist_songs' playlist.id %}">{{playlist.title}}</a> 
-                    <small style = "float:right;">
+                    <span  class = "cornerdelete"><small>
                         <form method = "post" action = "{% url 'playlist_delete' playlist.id %}">
                             {% csrf_token %}
                             <button type = "submit">x</button>
                         </form>
-                    </small>
+                    </small></span>
                 </span>
                 </span><br>
                 <small><small><a href = "{% url 'playlist_detail' playlist.id %}">Edit</a></small></small></span><br>
@@ -61,10 +61,10 @@ $( "#Create_List" ).submit(function( e ){
           var content_to_prepend = "<li><span><span>"
                               +"<a href = '"+Playlist_Detail_Songs.replace('11111111', response.id)
                               +"'>"+response.title+"</a>"
-                              +"<small style = 'float:right;'>"
+                              +"<span class = 'cornerdelete'><small>"
                               +" <form method = 'post' action ='" + Playlist_Delete.replace('9090909', response.id)
                               +"'><br>"+ crsf_token + "<button type = 'submit'>x</button>"
-                              +"</form></small>"
+                              +"</form></small></span>"
                               +"</span></span>"
                               +" <small><small>"
                               +"<a href = '"+Playlist_Detail_URL.replace('345345', response.id)+"'>Edit</a></small></small></span><br>";
