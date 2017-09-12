@@ -73,18 +73,8 @@ class PlaylistSongs(TemplateView):
 
     def post(self,*args,**kwargs):
         #add song to playlist
-        playlist = Playlist.objects.get(id= kwargs['playlist_id'])
-
-        #save song
         form = SongListForm(self.request.POST)
-        form.save()
-
-        #save song to playlist
-        title = form.__getitem__('title').value() # get title from form that was used
-        link = form.__getitem__('link').value() # get link from form that was used
-        song = Song.objects.get(title= title,link= link)
-        playlist.songs.add(song)
-
+        form.save(playlist_id = kwargs['playlist_id'])
         return redirect('playlist_songs',playlist_id=kwargs['playlist_id'])
 
 
