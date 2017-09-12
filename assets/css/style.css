@@ -1,0 +1,32 @@
+img.thumbnail {
+    padding: 5px;
+    height: 171px; 
+    width: 180px;
+}
+
+.posts-delete{
+
+}
+
+.posts-edit{
+
+}
+
+.events-delete{
+float:right;
+}
+
+.events-edit{
+float:left;
+}
+
+.actionright{
+    float:right;
+}
+
+.notification_number{
+  border-radius: 50%;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+}

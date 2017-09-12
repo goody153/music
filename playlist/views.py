@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render,redirect
 from django.views.generic import TemplateView,View
 
@@ -14,7 +15,7 @@ class PlaylistView(TemplateView):
     def get(self,*args,**kwargs):
         #Display the Playlists
         form= PlaylistForm()
-        pl = Playlist.objects.all()
+        pl = Playlist.objects.all().order_by('-date_created')
         context = {'form':form,
                     'pl':pl}
         return render(self.request,self.template_name,context)
@@ -23,7 +24,7 @@ class PlaylistView(TemplateView):
         #create new playlist
         form = PlaylistForm(self.request.POST)
         form.save()
-        return redirect('playlists')
+        return JsonResponse({'id':form.instance.id, 'title': form.instance.title , 'description':form.instance.description},safe = False)
 
 
 class PlaylistDetail(TemplateView):

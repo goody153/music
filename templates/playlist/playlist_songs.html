@@ -10,9 +10,8 @@
         {% csrf_token %}
             <label>Title:</label><input type = "text" name ="title"><br>
             <label>Link:</label>{{form.link}}<br>
-        <button type = "submit">Add Song</button>
-    </form>
-
+            <button type = "submit" >Add Song To Playlist</button>
+        </form>
     {{playlist.title}}<br>
     {{playlist.description}}<br>
     {{playlist.date_created}}<br>

@@ -5,13 +5,14 @@
   <div class="row">
     <div class = "col-md-3">
 
-        <form method="post">
+        <form method="post" id = "Create_List">
             {% csrf_token %}
                 <label>Playlist Title:</label><input type = "text" name = "title"><br>
                 <label>Description:</label><textarea name = "description"></textarea><br>
-            <button type = "submit">Create New Playlist</button>
+            <button type = "submit" >Create New Playlist</button>
         </form>
-        <ul class="nav nav-pills nav-stacked">
+
+        <ul class="nav nav-pills nav-stacked" id = "playlists">
             {% for playlist in pl %}
             <li>
                 <span><span><a href = "{% url 'playlist_songs' playlist.id %}">{{playlist.title}}</a> 
@@ -24,7 +25,7 @@
                 </span>
                 </span><br>
                 <small><small><a href = "{% url 'playlist_detail' playlist.id %}">Edit</a></small></small></span><br>
-                {{playlist.description}}<br>
+                <p>{{playlist.description}}</p>
             </li>
             {% endfor %}
         </ul>
@@ -34,9 +35,11 @@
     </div>
 
     <div class = "col-md-3">
-
     </div>
 
   </div>
 </div>
+
+
+
 {% endblock %}

@@ -1,7 +1,6 @@
 
 {% load static %}
 
-
 <html>
     <head>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.min.css' %}" />
@@ -26,3 +25,39 @@
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/jquery-ui.js' %}"></script>
 <script src="{% static 'js/bootstrap.js' %}"></script>
+
+<script>
+
+Playlist_Add_URL = "{% url 'playlists' %}";
+Playlist_Detail_URL = "{% url 'playlist_detail' 345345 %}";
+Playlist_Detail_Songs = "{% url 'playlist_songs' 11111111 %}";
+Playlist_Delete = "{ url 'playlist_delete' pl_id %}";
+crsf_token = "{% csrf_token %}";
+
+
+$( "#Create_List" ).submit(function( e ) {
+    e.preventDefault();
+    $.ajax({
+            method: 'POST',
+            url: '{% url "playlists" %}',
+            data: $(this).serialize() 
+          }).done(function(response){
+            console.log(response.id);
+
+          var content_to_append = "<li><span><span>"
+                              +"<a href = '"+Playlist_Detail_Songs.replace('11111111', response.id)
+                              +"'>"+response.title+"</a>"
+                              +"<small style = 'float:right;'>"
+                              +" <form method = 'post' action ='" + Playlist_Delete.replace('pl_id', response.id)
+                              +"'><br>"+ crsf_token + "<button type = 'submit'>x</button>"
+                              +"</form></small>"
+                              +"</span></span>"
+                              +" <small><small>"
+                              +"<a href = '"+Playlist_Detail_URL.replace('345345', response.id)+"'>Edit</a></small></small></span><br>";
+                              +"<p value= '"+response.description+"'></p>";
+                              +"</li>";
+            $( "#playlists" ).prepend(content_to_append);
+        });
+});
+
+</script>
