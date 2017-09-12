@@ -76,7 +76,7 @@ class PlaylistSongs(TemplateView):
         #add song to playlist
         form = SongListForm(self.request.POST)
         form.save(playlist_id = kwargs['playlist_id'])
-        return redirect('playlist_songs',playlist_id=kwargs['playlist_id'])
+        return JsonResponse({'id':form.song.id, 'title': form.data['title'] , 'link':form.data['link'],'playlist_id':form.playlist_id},safe = False)
 
 
 class SongDetail(TemplateView):

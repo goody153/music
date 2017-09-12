@@ -6,7 +6,7 @@
   <div class="row">
   <div class="col-md-3">
 
-      <form method = "post">
+      <form method = "post" id = "addsong">
         {% csrf_token %}
             <label>Title:</label><input type = "text" name ="title"><br>
             <label>Link:</label>{{form.link}}<br>
@@ -18,15 +18,14 @@
     {{playlist.date_updated}}<br>
   </div>
 
-<div class= "col-md-3">
-    <div class="card">
-      <div class="card-header">
-        SONGS
-      </div>
+<div class= "col-md-6">
+</div>
+
+<div class = "col-md-3">
+    <div class="card" id = "songlist">
         <br>
         {% for song in songlist %}
-        <div class="card-block">
-
+            <div class="card-block">
                 <span>
                 <a href="{% url 'playlist_songdetail' playlist.id song.id %}" class="card-link">{{song.title}}  </a><br>
                     <small style = "float:right;">
@@ -39,11 +38,42 @@
 
                 <label>Link:</label><textarea readonly="">{{song.link}}</textarea>
                 <div>Added:<small>{{song.date_created}}</small></small>
-              </div>
+            </div>
         {% endfor %}
-
-    </div>
+        </div>
 
 </div>
+
+<script>
+
+/*             AJAX Add For Songs                 */
+playlist_id = "{{playlist.id}}";
+Playlist_Detail_Songs = "{% url 'playlist_songs' 11111111 %}"; // add songs to playlist
+proper_url = Playlist_Detail_Songs.replace('11111111',playlist_id);
+$(document).on('submit','#addsong', function(e){
+    e.preventDefault();
+        $.ajax({
+            method: 'POST',
+            url: proper_url,
+            data: $(this).serialize() 
+          }).done(function(response){
+        song_detail_url = Song_Detail_URL.replace(34578, playlist_id); // playlist ID 
+        song_detail_url = Song_Detail_URL.replace(2378486, response.id); // 
+        song_detail_url = Song_Delete_URL.replace(56989, playlist_id); // playlist ID 
+        song_detail_url = Song_Delete_URL.replace(9999999, response.id); //
+        var content_to_prepend ="<div class='card-block'>"
+                + "<span><a href='"+Song_Detail_URL.replace(2378486, response.id)+"' class = 'card-link'>"+response.title+"</a><br>"
+                + "<small style = 'float:right;'>"
+                + "<form method = 'post' action = '"+Song_Delete_URL.replace(9999999, response.id)+"' >" + crsf_token
+                + "<button type = 'Submit'>x</button>"
+                + "</form></small></span>"
+                + "<label>Link:</label><textarea readonly=''>"+response.link+"</textarea>"
+                + "<div>Added:<small>" +response.date_created+ "</small></small>"
+                + "</div>";
+         $( "#songlist" ).prepend(content_to_prepend);
+      });   
+});
+/*             AJAX Add For Songs                 */
+</script>
 
 {% endblock %}

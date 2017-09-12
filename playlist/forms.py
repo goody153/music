@@ -28,6 +28,9 @@ class SongListForm(forms.ModelForm):
             song = Song.objects.create(title = title,link = link)
             pl = Playlist.objects.get(id = add_song)
             pl.songs.add(song)
+            #so that it can be used for ajax
+            self.song = song
+            self.playlist_id = kwargs['playlist_id']
 
         #condition when to edit Song
         else:
