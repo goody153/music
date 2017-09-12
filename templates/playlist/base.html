@@ -19,49 +19,14 @@
   </div>
 </nav>
 
-
-
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/jquery-ui.js' %}"></script>
 <script src="{% static 'js/bootstrap.js' %}"></script>
 
-<script>
-
-Playlist_Add_URL = "{% url 'playlists' %}"; // to add playlist
-Playlist_Detail_URL = "{% url 'playlist_detail' 345345 %}"; // url for edit playlist
-Playlist_Detail_Songs = "{% url 'playlist_songs' 11111111 %}"; // add songs to playlist
-Playlist_Delete = "{% url 'playlist_delete' 9090909 %}";       // url for deleting playlist
-Song_Detail_URL = " {% url 'playlist_songdelete' 34578 2378486 %}"; // url for editing song detail
-Song_Delete_URL = " {% url 'playlist_songdetail' 56989 9999999 %}"; // url for deleting song
-crsf_token = "{% csrf_token %}";
-
-/*             AJAX Add For Playlist                 */
-$( "#Create_List" ).submit(function( e ){
-    e.preventDefault();
-    $.ajax({
-            method: 'POST',
-            url: Playlist_Add_URL,
-            data: $(this).serialize() 
-          }).done(function(response){
-          var content_to_prepend = "<li><span><span>"
-                              +"<a href = '"+Playlist_Detail_Songs.replace('11111111', response.id)
-                              +"'>"+response.title+"</a>"
-                              +"<small style = 'float:right;'>"
-                              +" <form method = 'post' action ='" + Playlist_Delete.replace('9090909', response.id)
-                              +"'><br>"+ crsf_token + "<button type = 'submit'>x</button>"
-                              +"</form></small>"
-                              +"</span></span>"
-                              +" <small><small>"
-                              +"<a href = '"+Playlist_Detail_URL.replace('345345', response.id)+"'>Edit</a></small></small></span><br>";
-                              +"<p value= '"+response.description+"'></p>";
-                              +"</li>";
-
-            $( "#playlists" ).prepend(content_to_prepend);
-        });
-});
-/*             AJAX Add For Playlist                 */
-
-</script>
 
 {% block content %}
-{% endblock %}  
+
+{% block js %}
+{% endblock %}
+
+{% endblock %}

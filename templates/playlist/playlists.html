@@ -40,6 +40,45 @@
   </div>
 </div>
 
+{% block js %}
 
+<script>
+
+Playlist_Add_URL = "{% url 'playlists' %}"; // to add playlist
+Playlist_Detail_URL = "{% url 'playlist_detail' 345345 %}"; // url for edit playlist
+Playlist_Detail_Songs = "{% url 'playlist_songs' 11111111 %}"; // add songs to playlist
+Playlist_Delete = "{% url 'playlist_delete' 9090909 %}";       // url for deleting playlist
+crsf_token = "{% csrf_token %}";
+
+/*             AJAX Add For Playlist                 */
+$( "#Create_List" ).submit(function( e ){
+    e.preventDefault();
+    $.ajax({
+            method: 'POST',
+            url: Playlist_Add_URL,
+            data: $(this).serialize() 
+          }).done(function(response){
+          var content_to_prepend = "<li><span><span>"
+                              +"<a href = '"+Playlist_Detail_Songs.replace('11111111', response.id)
+                              +"'>"+response.title+"</a>"
+                              +"<small style = 'float:right;'>"
+                              +" <form method = 'post' action ='" + Playlist_Delete.replace('9090909', response.id)
+                              +"'><br>"+ crsf_token + "<button type = 'submit'>x</button>"
+                              +"</form></small>"
+                              +"</span></span>"
+                              +" <small><small>"
+                              +"<a href = '"+Playlist_Detail_URL.replace('345345', response.id)+"'>Edit</a></small></small></span><br>";
+                              +"<p value= '"+response.description+"'></p>";
+                              +"</li>";
+
+            $( "#playlists" ).prepend(content_to_prepend);
+        });
+});
+/*             AJAX Add For Playlist                 */
+
+</script>
 
 {% endblock %}
+
+{% endblock %}
+

@@ -68,7 +68,7 @@ class PlaylistSongs(TemplateView):
         # show songs in the playlist
         playlist = Playlist.objects.get(id= kwargs['playlist_id'])
         form = SongListForm()
-        songlist = playlist.songs.all().order_by('-date_created')
+        songlist = playlist.songs.all().order_by('date_created')
         context = {'form':form,'playlist':playlist,'songlist':songlist}
         return render(self.request,self.template_name,context)
 
