@@ -15,9 +15,17 @@ class Song(models.Model):
 
     @property
     def get_url_end(self):
-        #javascript for playing the video only needs the end of the link
-        crimped_link = ""+self.link
-        return crimped_link.split("watch?v=",1)[1]
+        #for javascript process of playing where it only needs the end of the URL
+        link = ""+self.link
+        if '/v/' in link:
+            return link.split("/v/",1)[1]
+        elif '/watch?v=' in link:
+            return link.split("/watch?v=",1)[1]
+        elif '/watch?feature=player&v=' in link:
+            return link.split("/watch?feature=player&v=",1)[1]
+        elif '.be/' in link:
+            return link.split(".be/",1)[1]
+
 
 class Playlist(models.Model):
     """

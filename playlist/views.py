@@ -16,6 +16,7 @@ class PlaylistView(TemplateView):
         #Display the Playlists
         form= PlaylistForm()
         pl = Playlist.objects.all().order_by('-date_created')
+        #import pdb; pdb.set_trace()
         context = {'form':form,
                     'pl':pl}
         return render(self.request,self.template_name,context)

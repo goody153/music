@@ -26,6 +26,11 @@
                 </span><br>
                 <small><small><a href = "{% url 'playlist_detail' playlist.id %}">Edit</a></small></small></span><br>
                 <p>{{playlist.description}}</p>
+                <ul>
+                    {% for song in playlist.songs.values|slice:":4" %}
+                        <li><a href = "{% url 'playlist_songdetail' playlist.id song.id %}">{{song.title}}</a><pre>{{song.link}}</pre></li>
+                    {% endfor %}
+                </ul>
             </li>
             {% endfor %}
         </ul>
