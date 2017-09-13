@@ -4,22 +4,24 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-var list = [];
-var currentlyPlaying = 0;
-var player;
+
+var list = []
+var currentVideo = 0;
 
 // this will server as the videoplayer class
 var videoPlayer = function(){
   /*
     this block will handle the player
   */
+  var player;
+  var pList = playList();
 
   // handles the initialization of 
   function init(code){
     player =  new YT.Player('player', {
       height: '390',
       width: '640', 
-      videoId: list[code],
+      videoId: code,
       events: {
         'onReady': play,
         'onStateChange': onPlayerStateChange
@@ -35,17 +37,12 @@ var videoPlayer = function(){
     player.pauseVideo();
   }
 
-  function videoNext(event){
+  function videoNext(){
     // destroy the current player
-    player.destroy();
-    // check if the video playing is the last on the list
-    if(currentlyPlaying >= list.length-1){
-      currentlyPlaying = 0;
-    }
-    else{
-      currentlyPlaying += 1;
-    }
-    init(currentlyPlaying);
+    console.log(pList.getList());
+    console.log(pList.getCurrent());
+    console.log(pList.getNext());
+    console.log(pList.getPrev());
   }
 
   function onPlayerStateChange(event){
@@ -73,13 +70,70 @@ var playList = function(){
     this block will hold the list functions
   */
 
+  // load the playlist from the template to the JS file
   function loadPlaylist(){
     list = songlist;
   }
 
-  return{
+  // add a video to the list
+  function addVideo(code){
+    list.append(code);
+  }
+
+  // get the playlist
+  function getPlaylist(){
+    return list;
+  }
+
+  // get the current video that's playing
+  function getCurrentVideo(){
+    return currentVideo;
+  }
+
+  // get the next video
+  function getNextVideo(){
+    next = getCurrentVideo() + 1;
+    if(next > songlist.length){
+      currentVideo = next;
+      return next = 0;
+    }
+    currentVideo = next;
+    return next
+  }
+
+  // get the previous video
+  function getPrevVideo(){
+    prev = getCurrentVideo() - 1;
+    if(prev < 0){
+      return prev = songlist.length;
+    }
+    return prev;
+  }
+
+  // start playing the playlist
+  function playPlaylist(){
+    loadPlaylist();
+    videoPlayer().init(list[0])
+  }
+
+  return {
     load: function(){
       loadPlaylist();
+    },
+    playall: function(){
+      playPlaylist();
+    },
+    getCurrent: function(){
+      return getCurrentVideo();
+    },
+    getList: function(){
+      return getPlaylist();
+    },
+    getNext: function(){
+      return getNextVideo();
+    },
+    getPrev: function(){
+      return getPrevVideo();
     }
   }
 }

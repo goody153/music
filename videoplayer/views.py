@@ -10,8 +10,8 @@ class MainTemplateview(TemplateView):
     def get(self, *args, **kwargs):
         
         # this date will come from the playlist module
-        songs = ['0Vf1TpucUss','QH2-TGUlwu4', 'e3cHO_Ud86Y']
+        songs = ['0Vf1TpucUss', 'e3cHO_Ud86Y', 'dKRyLaSKJrs', 'QH2-TGUlwu4']
 
         return render(self.request, self.template_name, {
             'songs': songs,
-            }) 
+            })

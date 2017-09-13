@@ -8,12 +8,10 @@
     <ul>
     {% for song in songs %}
       <li>{{ song }}</li>
-      <!-- <li><input type="button" onclick="videoPlayer().init('{{ song }}')"></li> -->
     {% endfor %}
     </ul>
 
-    <input type="button" value="Load" onclick="playList().load()">
-    <input type="button" value="Play" onclick="videoPlayer().init(0)">
+    <input type="button" value="Play" onclick="playList().playall()">
   </body>
   <script>
      var songlist = {{ songs|safe }};
