@@ -2,6 +2,7 @@ from django import forms
 
 from playlist.models import Playlist,Song
 
+
 class PlaylistForm(forms.ModelForm):
 
     class Meta:

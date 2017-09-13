@@ -20,8 +20,10 @@ class PlaylistsView(TemplateView):
 
     def post(self, *args, **kwargs):
         form = self.form(self.request.POST)
-        form.save()
-        return redirect('playlists')
+        if form.is_valid():
+            form.save()
+        return redirect('playlists') # add validation
+
 
 class PlaylistView(TemplateView):
     """ View Playlist
@@ -56,7 +58,10 @@ class PlaylistDetail(TemplateView):
         form = self.form(self.request.POST, instance = playlist)
         if form.is_valid():
             form.save()
-        return redirect('playlists')
+            return redirect('playlists')
+        return render(self.request, self.template_name, {'form':form})
+
+
 
 
 class PlaylistDelete(View):
