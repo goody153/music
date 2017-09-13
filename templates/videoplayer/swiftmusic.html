@@ -1,16 +1,22 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+  <head>
+  </head>
   <body>
     <div id="player"></div>
-    <br>
     <ul>
     {% for song in songs %}
-      <li> <input type="button" onclick="videoPlayer().init('{{ song }}')" value="{{ song }}"></li>
+      <li>{{ song }}</li>
+      <!-- <li><input type="button" onclick="videoPlayer().init('{{ song }}')"></li> -->
     {% endfor %}
     </ul>
 
+    <input type="button" value="Load" onclick="playList().load()">
+    <input type="button" value="Play" onclick="videoPlayer().init(0)">
   </body>
-
+  <script>
+     var songlist = {{ songs|safe }};
+  </script>
   <script src="{% static 'js/videoplayer.js' %}"></script>
 </html>
