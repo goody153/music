@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="player"></div>
+    <br>
+    <ul>
+    {% for song in songs %}
+      <li> <input type="button" onclick="videoPlayer().init('{{ song }}')" value="{{ song }}"></li>
+    {% endfor %}
+    </ul>
+
+  </body>
+
+  <script src="{% static 'js/videoplayer.js' %}"></script>
+</html>
