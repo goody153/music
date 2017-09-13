@@ -15,7 +15,11 @@
 
             <ul>
                 {% for playlist in playlists %}
-                    <li>{{playlist.title}}</li>
+                    <li>{{playlist.title}}
+                       <small>
+                       <a href = "{% url 'delete_playlist' playlist.id %}">Delete</a> 
+                        </small>
+                    </li>
                 {% endfor %}
             </ul>
         </div>

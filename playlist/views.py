@@ -22,3 +22,11 @@ class PlaylistsView(TemplateView):
         form = self.form(self.request.POST)
         form.save()
         return redirect('playlists')
+
+
+class PlaylistDelete(View):
+
+        def get(self,*args,**kwargs):
+            playlist_id = kwargs['playlist_id']
+            Playlist.objects.get(id= playlist_id).delete()
+            return redirect('playlists')
