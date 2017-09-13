@@ -17,17 +17,18 @@
   </div>
 </nav>
 
-<script src="{% static 'js/jquery.js' %}"></script>
-<script src="{% static 'js/jquery-ui.js' %}"></script>
-<script src="{% static 'js/bootstrap.js' %}"></script>
-
-<script>
-
-</script>
 
 {% block content %}
 {% endblock %}
 
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jquery-ui.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+
+
+{% block js %}
+{% endblock %}
+<script src="{% static 'js/playlist-functions.js'%}"></script>
 
 </body>
 </html>

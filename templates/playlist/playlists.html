@@ -6,16 +6,17 @@
   <div class="row">
 
         <div class = "col-md-3">
-            <form method = 'POST'>
+            <form method = 'POST' id = "CreatePlaylist">
                 {% csrf_token %}
                 <input type = "text" name = "title" placeholder = "Playlist Name">
+                    <div id = "playlist_add_error"></div>
                 {{form.description}}
                 <button type = "Submit">Create Playlist</button>
             </form>
 
-            <ul>
+            <ul id = "PlayLists">
                 {% for playlist in playlists %}
-                    <li><a href = "{% url 'playlist' playlist.id %}">{{playlist.title}}</a>
+                    <li><a href="{% url 'playlist' playlist.id %}" data-url="{% url 'playlist' playlist.id %}" class="playlist_view">{{playlist.title}}</a>
                         <br>
                         <small>
                             <a href = "{% url 'playlist_detail' playlist.id %}">Edit</a> 
@@ -37,5 +38,13 @@
 
     </div>
 </div>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+    /* django urls from playlist module for playlist-functions.js */
+        create_playlist_url = '{% url "playlists" %}';
+    </script>
 
 {% endblock %}
