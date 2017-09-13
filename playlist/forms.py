@@ -4,6 +4,8 @@ from playlist.models import Playlist, Song
 
 
 class PlaylistForm(forms.ModelForm):
+    """To Add/Edit Playlist
+    """
 
     class Meta:
         model = Playlist
@@ -11,6 +13,8 @@ class PlaylistForm(forms.ModelForm):
 
 
 class SongForm(forms.ModelForm):
+    """To Add/Edit Songs on playlist
+    """
 
     class Meta:
         model = Song
