@@ -27,8 +27,8 @@ class PlaylistsView(TemplateView):
             view_url = reverse('playlist', args=(form.instance.id,))
             edit_url = reverse('playlist_detail', args=(form.instance.id,))
             delete_url = reverse('delete_playlist', args=(form.instance.id,))
-            context = {'id':form.instance.id,'title':form.instance.title,
-                       'view_url':view_url,'edit_url':edit_url,
+            context = {'id':form.instance.id, 'title':form.instance.title,
+                       'view_url':view_url, 'edit_url':edit_url,
                        'delete_url':delete_url}
             return JsonResponse(context,safe=False)
         else:
