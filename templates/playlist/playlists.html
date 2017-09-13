@@ -16,7 +16,7 @@
 
             <ul id = "PlayLists">
                 {% for playlist in playlists %}
-                    <li><a href="{% url 'playlist' playlist.id %}" data-url="{% url 'playlist' playlist.id %}" class="playlist_view">{{playlist.title}}</a>
+                    <li><a href="{% url 'playlist' playlist.id %}">{{playlist.title}}</a>
                         <br>
                         <small>
                             <a href = "{% url 'playlist_detail' playlist.id %}">Edit</a> 

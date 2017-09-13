@@ -1,6 +1,4 @@
-
 /*  Ajax Create Playlist and it's form validation */
-console.log(create_playlist_url+"asdasdas");
 $(document).on('submit','#CreatePlaylist', function(event){
       event.preventDefault();
           $.ajax({
