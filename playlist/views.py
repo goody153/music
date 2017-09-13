@@ -23,9 +23,21 @@ class PlaylistsView(TemplateView):
         form.save()
         return redirect('playlists')
 
+class PlaylistView(TemplateView):
+    """ View Playlist
+    """
+
+    template_name = "playlist/playlist.html"
+
+    def get(self, *args, **kwargs):
+        playlist_id = kwargs['playlist_id']
+        playlist = Playlist.objects.get(id=playlist_id)
+        context = {'playlist':playlist}
+        return render(self.request, self.template_name, context)
+
 
 class PlaylistDetail(TemplateView):
-    """ Playlist View Detail and Edit Playlist Info
+    """ Playlist Detail to edit and Edit Playlist Info
     """
 
     template_name = "playlist/playlist_detail.html"

@@ -15,7 +15,8 @@
 
             <ul>
                 {% for playlist in playlists %}
-                    <li>{{playlist.title}}
+                    <li><a href = "{% url 'playlist' playlist.id %}">{{playlist.title}}</a>
+                        <br>
                         <small>
                             <a href = "{% url 'playlist_detail' playlist.id %}">Edit</a> 
                         </small>
