@@ -134,6 +134,14 @@ var videoPlayer = function(){
     player.stopVideo();
   }
 
+  function videoMute(){
+    player.mute();
+  }
+
+  function videoUnmute(){
+    player.unMute();
+  }
+
   // this will trigger every time the state of the video changes
   function onPlayerStateChange(event){
     console.log(event.data) // for debugging
@@ -154,6 +162,12 @@ var videoPlayer = function(){
     },
     stop: function(){
       videoStop();
+    },
+    mute: function(){
+      videoMute();
+    },
+    unmute: function(){
+      videoUnmute();
     }
   }
 };
