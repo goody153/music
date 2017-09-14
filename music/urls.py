@@ -22,7 +22,5 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('users.urls'))
-    url(r'^videoplayer/', include('videoplayer.urls', namespace="videoplayer")),
+    url(r'^videoplayer/', include('videoplayer.urls')),
 ]
-
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
