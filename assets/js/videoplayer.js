@@ -102,7 +102,6 @@ var videoPlayer = function(){
   /*
     this block will handle the player
   */
-  var pList = playList();
 
   // handles the initialization of a video
   // must get passed by a video id
@@ -114,6 +113,9 @@ var videoPlayer = function(){
       events: {
         'onReady': videoPlay,
         'onStateChange': onPlayerStateChange
+      },
+      playerVars: {
+        'controls': 0,
       },
     });
   }
@@ -132,7 +134,7 @@ var videoPlayer = function(){
   function onPlayerStateChange(event){
     console.log(event.data) // for debugging
     if(event.data === 0){
-      videoNext();
+      playList().getNext();
     }
   }
 
