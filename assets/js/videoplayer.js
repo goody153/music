@@ -37,13 +37,17 @@ var playList = function(){
     // destroy the current player
     player.destroy();
     // set the next index
-    next = getCurrentVideo() + 1;
+    next = getCurrentVideo();
     // if the current video is the last video on the list
-    if(next >= list.length){
+    if(next >= list.length-1){
       // reset the index of the current video
       next = 0;
     }
-    // set the index of the current video
+    else{
+      // set the current video to its next index
+      next += 1;
+    }
+    // set the global index
     currentVideo = next;
     // reinstantiate
     videoPlayer().init(list[currentVideo]);
@@ -53,13 +57,17 @@ var playList = function(){
     // destroy the current player
     player.destroy();
     // set the next index
-    next = getCurrentVideo() - 1;
+    next = getCurrentVideo();
     // if the current video is the last video on the list
     if(next <= 0){
       // reset the index of the current video
       next = list.length-1;
     }
-    // set the index of the current video
+    else{
+      // set the current video to its previous index
+      next -= 1;
+    }
+    // set the global index
     currentVideo = next;
     // reinstantiate
     videoPlayer().init(list[currentVideo]);
