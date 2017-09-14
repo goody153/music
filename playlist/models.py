@@ -72,3 +72,4 @@ class SongHistory(models.Model):
         return "{}-{}".format(self.title, self.action)
 
 
+
