@@ -1,0 +1,12 @@
+<form method = 'post'>
+    {% csrf_token %}
+    <input type = "text" name = "title" placeholder="song title" novalidate>
+    <input type = "text" name = "link" placeholder="song title" novalidate>
+    <button type = 'submit'>(+)</button>
+</form>
+
+<ul>
+    {% for song in songs %}
+        <li><a href="">{{song.link}}</a></li>
+    {% endfor %}
+</ul>
