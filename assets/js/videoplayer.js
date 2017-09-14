@@ -130,6 +130,10 @@ var videoPlayer = function(){
     player.pauseVideo();
   }
 
+  function videoStop(){
+    player.stopVideo();
+  }
+
   // this will trigger every time the state of the video changes
   function onPlayerStateChange(event){
     console.log(event.data) // for debugging
@@ -147,6 +151,9 @@ var videoPlayer = function(){
     },
     pause: function(){
       videoPause();
+    },
+    stop: function(){
+      videoStop();
     }
   }
 };
