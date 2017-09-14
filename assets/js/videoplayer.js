@@ -9,6 +9,7 @@ var list = []
 var currentVideo = 0;
 var player;
 
+// this will be the playList class, which will "inherit" the videoplayer "class"
 var playList = function(){
   /*
     this block will hold the list functions
@@ -35,28 +36,39 @@ var playList = function(){
   }
 
   // get the next video
-  // this will return an integer that will represent index
   function getNextVideo(){
+    // destroy the current player
+    player.destroy();
+    // set the next index
     next = getCurrentVideo() + 1;
-    if(next > songlist.length){
-      currentVideo = next;
-      return next = 0;
+    // if the current video is the last video on the list
+    if(next >= songlist.length){
+      // reset the index of the current video
+      next = 0;
     }
+    // set the index of the current video
     currentVideo = next;
-    return next
+    // reinstantiate
+    videoPlayer().init(list[currentVideo]);
   }
 
-  // get the previous video
-  // this will return an integer that will represent index
   function getPrevVideo(){
-    prev = getCurrentVideo() - 1;
-    if(prev < 0){
-      return prev = songlist.length;
+    // destroy the current player
+    player.destroy();
+    // set the next index
+    next = getCurrentVideo() - 1;
+    // if the current video is the last video on the list
+    if(next <= 0){
+      // reset the index of the current video
+      next = songlist.length-1;
     }
-    return prev;
+    // set the index of the current video
+    currentVideo = next;
+    // reinstantiate
+    videoPlayer().init(list[currentVideo]);
   }
 
-  // start playing the playlist
+  // start playing the playlist starting with the first song
   function startPlaylist(){
     loadPlaylist();
     videoPlayer().init(list[0])
@@ -84,6 +96,7 @@ var playList = function(){
   }
 };
 
+
 // this will server as the videoplayer class
 var videoPlayer = function(){
   /*
@@ -99,30 +112,20 @@ var videoPlayer = function(){
       width: '640', 
       videoId: code,
       events: {
-        'onReady': playVideo,
+        'onReady': videoPlay,
         'onStateChange': onPlayerStateChange
       },
     });
   }
 
   // play the video
-  function playVideo(){
+  function videoPlay(){
     player.playVideo();
   }
 
   // pause the video
-  function pauseVideo(){
+  function videoPause(){
     player.pauseVideo();
-  }
-
-  // trigger the next video
-  function videoNext(code){
-    // destroy the current player
-    player.destroy();
-    // get the next video id
-    var code = list[pList.getNext()];
-    // recreate the player
-    init(code);
   }
 
   // this will trigger every time the state of the video changes
@@ -138,13 +141,10 @@ var videoPlayer = function(){
       init(code);
     },
     play: function(){
-      playVideo();
+      videoPlay();
     },
     pause: function(){
-      pauseVideo();
-    },
-    next: function(){
-      videoNext();
+      videoPause();
     }
   }
 };
