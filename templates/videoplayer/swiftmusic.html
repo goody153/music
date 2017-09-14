@@ -11,9 +11,16 @@
     {% endfor %}
     </ul>
 
-    <input type="button" value="Prev" onclick="videoPlayer().prev()">
-    <input type="button" value="Play" onclick="playList().playall()">
-    <input type="button" value="Next" onclick="videoPlayer().next()">
+    <input type="button" value="Prev" onclick="playList().getPrev()">
+    <input type="button" value="Play Playlist" onclick="playList().playall()">
+    <input type="button" value="Next" onclick="playList().getNext()">
+    <br>Video Controls<br>
+    <input type="button" value="Play" onclick="videoPlayer().play()">
+    <input type="button" value="Pause" onclick="videoPlayer().pause()">
+    <input type="button" value="Stop" onclick="videoPlayer().stop()">
+    <input type="button" value="Mute" onclick="videoPlayer().mute()">
+    <input type="button" value="UnMute" onclick="videoPlayer().unmute()">
+
   </body>
   <script>
      var songlist = {{ songs|safe }};

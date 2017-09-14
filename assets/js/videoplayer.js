@@ -116,8 +116,9 @@ var videoPlayer = function(){
 
   // this will trigger every time the state of the video changes
   function onPlayerStateChange(event){
-    // if the state of the video is 0
+    // if the state of the video is 0 (stopped)
     if(event.data === 0){
+      // play the next video
       playList().getNext();
     }
   }
