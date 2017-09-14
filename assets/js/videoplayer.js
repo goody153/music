@@ -11,9 +11,6 @@ var player;
 
 // this will be the playList class, which will "inherit" the videoplayer "class"
 var playList = function(){
-  /*
-    this block will hold the list functions
-  */
 
   // load the playlist from the template to the JS file
   function loadPlaylist(){
@@ -42,7 +39,7 @@ var playList = function(){
     // set the next index
     next = getCurrentVideo() + 1;
     // if the current video is the last video on the list
-    if(next >= songlist.length){
+    if(next >= list.length){
       // reset the index of the current video
       next = 0;
     }
@@ -60,7 +57,7 @@ var playList = function(){
     // if the current video is the last video on the list
     if(next <= 0){
       // reset the index of the current video
-      next = songlist.length-1;
+      next = list.length-1;
     }
     // set the index of the current video
     currentVideo = next;
@@ -99,9 +96,6 @@ var playList = function(){
 
 // this will server as the videoplayer class
 var videoPlayer = function(){
-  /*
-    this block will handle the player
-  */
 
   // handles the initialization of a video
   // must get passed by a video id
@@ -120,34 +114,37 @@ var videoPlayer = function(){
     });
   }
 
-  // play the video
+  // this will trigger every time the state of the video changes
+  function onPlayerStateChange(event){
+    // if the state of the video is 0
+    if(event.data === 0){
+      playList().getNext();
+    }
+  }
+
+  // plays the video
   function videoPlay(){
     player.playVideo();
   }
 
-  // pause the video
+  // pauses the video
   function videoPause(){
     player.pauseVideo();
   }
 
+  // stops the video
   function videoStop(){
     player.stopVideo();
   }
 
+  // mutes the video
   function videoMute(){
     player.mute();
   }
 
+  // unmutes the video
   function videoUnmute(){
     player.unMute();
-  }
-
-  // this will trigger every time the state of the video changes
-  function onPlayerStateChange(event){
-    console.log(event.data) // for debugging
-    if(event.data === 0){
-      playList().getNext();
-    }
   }
 
   return {
