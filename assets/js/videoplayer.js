@@ -111,7 +111,7 @@ var playList = function(){
   }
 
   // start playing the playlist
-  function playPlaylist(){
+  function startPlaylist(){
     loadPlaylist();
     videoPlayer().init(list[0])
   }
@@ -121,7 +121,7 @@ var playList = function(){
       loadPlaylist();
     },
     playall: function(){
-      playPlaylist();
+      startPlaylist();
     },
     getCurrent: function(){
       return getCurrentVideo();
