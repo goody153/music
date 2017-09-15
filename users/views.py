@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LoginForm, RegistrationForm
 
 
-class UserLogin(TemplateView):
+class UserLoginView(TemplateView):
     """ User login account
     """
     template_name = 'auth/login.html'
@@ -29,7 +29,7 @@ class UserLogin(TemplateView):
         return render(self.request, self.template_name, {'form':form})
 
 
-class Dashboard(LoginRequiredMixin, TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
     """ Displays the dashboard page and used LoginRequiredMixin 
         to check the user if logged in.
     """
@@ -41,7 +41,7 @@ class Dashboard(LoginRequiredMixin, TemplateView):
         return render(self.request, self.template_name, {})
 
 
-class UserLogout(View):
+class UserLogoutView(View):
     """ Logout the user account
     """
     def get(self, *args, **kwargs):
