@@ -4,7 +4,7 @@ from django.views import View
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import LoginForm
+from .forms import LoginForm, RegistrationForm
 
 
 class UserLogin(TemplateView):
@@ -47,3 +47,24 @@ class UserLogout(View):
     def get(self, *args, **kwargs):
         logout(self.request)
         return redirect('user_login')
+
+
+class RegisterView(TemplateView):
+    """ Registers the new user
+    """
+    template_name = 'registration.html'
+
+    def get(self, *args, **kwargs):
+        """ Renders the registration form
+        """
+        form = RegistrationForm()
+        return render(self.request, self.template_name, {'form':form})
+
+    def post(self, *args, **kwargs):
+        """ Gets the data
+        """
+        form = RegistrationForm(self.request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('user_login')
+        return render(self.request, self.template_name, {'form':form})

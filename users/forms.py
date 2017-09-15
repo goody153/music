@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
+from users.models import User
+
 
 class LoginForm(forms.Form):
     """ The user login form
@@ -22,3 +24,56 @@ class LoginForm(forms.Form):
             self.user = auth
 
         return cleaned_data
+
+
+class RegistrationForm(forms.ModelForm):
+    """ Contains the fields of the registration form
+    """
+    confirm_password=forms.CharField()
+    class Meta:
+        model = User
+        fields = ('first_name','last_name','email','password')
+
+    def clean_confirm_password(self):
+        """ Checks if the password are matched
+        """
+        cleaned_data = super(RegistrationForm, self).clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if password != confirm_password:
+            raise forms.ValidationError(
+                "password did not match!"
+            )
+        return confirm_password
+
+    def clean_email(self):
+        """ Checks if the email is already taken
+        """
+        getclean_email = self.cleaned_data['email']
+        emails = User.objects.filter(email=getclean_email)
+        if len(emails) != 0:
+            raise forms.ValidationError("Sorry but the Email is already TAKEN")
+        return getclean_email
+        
+    def clean(self):
+        """ Gets the clean data
+        """
+        cleaned_data = super(RegistrationForm, self).clean()
+        first_name = cleaned_data.get('first_name')
+        last_name = cleaned_data.get('last_name')
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+        return cleaned_data
+
+    def save(self):
+        """ Saves the user data
+        """
+        data = self.cleaned_data
+        user = User.objects.create(first_name=data['first_name'], 
+                                   last_name=data['last_name'],
+                                   email=data['email'],)
+        user.set_password(data['password'])
+        user.save()
+        return user
