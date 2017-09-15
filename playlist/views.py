@@ -19,7 +19,8 @@ class PlaylistView(TemplateView):
         context={
             'playlist':playlist,
             'form':self.form,
-            'songs':songs,}
+            'songs':songs,
+        }
         return render(self.request, self.template_name, context)
 
     def post(self,*args,**kwargs):
@@ -34,7 +35,18 @@ class PlaylistView(TemplateView):
         context={
             'playlist':playlist,
             'form':form,
-            'songs':songs}
+            'songs':songs
+        }
         return render(self.request,template_name,context)
 
 
+class SongDelete(View):
+    """Delete Song from Playlist
+    """
+
+    def get(self, *args, **kwargs):
+        playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
+        song = get_object_or_404(Song,id=kwargs['song_id'], playlist=playlist)
+        if self.request.user == song.user:
+            song.delete()
+        return redirect('playlist', kwargs['playlist_id'])
