@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views import View
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import LoginForm, RegistrationForm
@@ -66,5 +66,8 @@ class RegisterView(TemplateView):
         form = RegistrationForm(self.request.POST)
         if form.is_valid():
             form.save()
-            return redirect('user_login')
+            user = authenticate(self.request, email=self.request.POST['email'], 
+                                              password=self.request.POST['password'])
+            login(self.request, user)
+            return redirect('dashboard')
         return render(self.request, self.template_name, {'form':form})
