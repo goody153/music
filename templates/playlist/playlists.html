@@ -1,12 +1,12 @@
 <form method = 'post'>
     {% csrf_token %}
-    <input type = "text" name = "title" placeholder="song title" novalidate>
-    <input type = "text" name = "link" placeholder="song title" novalidate>
+    <input type = "text" name = "title" placeholder="title" novalidate>
+    <input type = "text" name = "description" placeholder="description of playlist" novalidate>
     <button type = 'submit'>(+)</button>
 </form>
 
 <ul>
-    {% for song in songs %}
-        <li><a href="">{{song.link}}</a></li>
+    {% for playlist in playlists %}
+        <li><a href="{% url 'playlist' playlist.id %}">{{playlist.title}}</a></li>
     {% endfor %}
 </ul>
