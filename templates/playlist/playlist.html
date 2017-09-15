@@ -11,7 +11,7 @@
 <ul>
     {% for song in songs %}
         <li>
-            {{song.id}}
+            {{song.title}}
             <small>
                 <a href="{% url 'song_delete' playlist.id song.id %}">Delete</a>
             </small>
