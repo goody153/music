@@ -79,6 +79,7 @@ DATABASES = {
     }
 }
 
+LOGIN_URL = '/login/'
 
 # Password validation
 
