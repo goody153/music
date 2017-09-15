@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate
 from users.models import User
 
 
+from .models import User
+
 class LoginForm(forms.Form):
     """ The user login form
     """
@@ -77,3 +79,23 @@ class RegistrationForm(forms.ModelForm):
         user.set_password(data['password'])
         user.save()
         return user
+
+
+class UpdateProfileModelForm(forms.ModelForm):
+    """ Form for updating the user's profile
+    """
+    class Meta:
+        # what table to use
+        model = User
+        
+        # what fields to be rendered to template from that table
+        fields = ('first_name', 'last_name')
+        
+        widgets = {
+            'first_name' : forms.TextInput(attrs={
+                'class' : 'form-control',
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'form-control',
+            })
+        }

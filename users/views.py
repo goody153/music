@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import LoginForm, RegistrationForm
 
-from .forms import LoginForm
+from .forms import LoginForm, UpdateProfileModelForm
 from .models import User
 
 class UserLoginView(TemplateView):
@@ -50,6 +50,9 @@ class UserLogoutView(View):
         logout(self.request)
         return redirect('user_login')
 
+#====================================================================
+#====================================================================
+#====================================================================
 
 class RegisterView(TemplateView):
     """ Registers the new user
@@ -75,16 +78,35 @@ class RegisterView(TemplateView):
         return render(self.request, self.template_name, {'form':form})
 
 
-class UserProfile(TemplateView):
-    """ The main controls of a user's profile
+class UserProfileView(View):
+    """ display a user's profile
     """
     template_name = 'user/profile.html'
 
-    """ display a user's profile
-    """
     def get(self, *args, **kwargs):
         """render a user's profile
         """
+        # get the user that is currently logged in
         user = get_object_or_404(User, id=self.request.user.id)
-        # import pdb;pdb.set_trace()
         return render(self.request, self.template_name, {'user':user})
+
+
+class UpdateProfileView(TemplateView):
+    """ Update the user's first and last names
+    """
+    template_name = 'user/edit.html'
+
+    def get(self, *args, **kwargs):
+        #import pdb;pdb.set_trace()
+        user = get_object_or_404(User, id=self.request.user.id)
+        form = UpdateProfileModelForm(instance=user)
+        return render(self.request, self.template_name, {'form':form})
+
+    def post(self, *args, **kwargs):
+        """update the user's profile (first name, last name)
+        """
+        user = get_object_or_404(User, id=self.request.user.id)
+        form = UpdateProfileModelForm(self.request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user_profile')
