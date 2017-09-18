@@ -121,7 +121,9 @@ class UpdatePasswordModelForm(forms.Form):
         return new_pass
 
     def save(self, *args, **kwargs):
-
+        """save function
+        """
+        # data from the form
         data = self.cleaned_data
         user = kwargs['user']
 

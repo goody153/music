@@ -50,7 +50,6 @@ class UserLogoutView(View):
         logout(self.request)
         return redirect('user_login')
 
-#==
 
 class RegisterView(TemplateView):
     """ Registers the new user
@@ -158,6 +157,7 @@ class UpdatePasswordView(TemplateView):
         """
         form = UpdatePasswordModelForm(self.request.POST)
         if form.is_valid():
+            # save the form and relogin the user, using the new credentials
             form.save(user=self.request.user)
             user = authenticate(self.request, email = self.request.user.email,
                                             password = self.request.POST['newpassword'])
