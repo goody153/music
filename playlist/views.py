@@ -114,4 +114,5 @@ class SongDelete(View):
         song = get_object_or_404(Song,id=kwargs['song_id'], playlist=playlist)
         if self.request.user == song.user:
             song.delete()
-        return redirect('playlist', kwargs['playlist_id'])
+            return redirect('playlist', kwargs['playlist_id'])
+        raise Http404("User does not have permission to delete the song.")
