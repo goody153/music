@@ -15,6 +15,7 @@ class PlaylistForm(forms.ModelForm):
 class SongForm(forms.ModelForm):
     """To Add/Edit Playlist
     """
+
     class Meta:
         model = Song
         fields = ['title', 'link']
