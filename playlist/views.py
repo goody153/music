@@ -16,9 +16,9 @@ class PlaylistsView(TemplateView):
     def get(self, *args, **kwargs):
         playlists = Playlist.objects.all()
         context = {
-            'playlists':playlists,
-            'form':self.form,
-            }
+            'playlists': playlists,
+            'form': self.form,
+        }
         return render(self.request, self.template_name, context)
 
     def post(self, *args, **kwargs):
@@ -38,10 +38,10 @@ class PlaylistView(TemplateView):
         playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
         songs = Song.objects.filter(playlist=playlist)
         context={
-            'playlist':playlist,
-            'form':self.form,
-            'songs':songs,
-            }
+            'playlist': playlist,
+            'form': self.form,
+            'songs': songs,
+        }
         return render(self.request, self.template_name, context)
 
     def post(self,*args,**kwargs):
@@ -54,11 +54,36 @@ class PlaylistView(TemplateView):
             form.save()
             return redirect('playlist', kwargs['playlist_id'])
         context={
-            'playlist':playlist,
-            'form':form,
-            'songs':songs
+            'playlist': playlist,
+            'form': form,
+            'songs': songs,
         }
         return render(self.request, template_name, context)
+
+
+class SongDetail(View):
+    """ View song && edit song from playlist
+    """
+    template_name = 'playlist/songdetail.html'
+    form = SongForm
+
+    def get(self, *args, **kwargs):
+        playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
+        song = get_object_or_404(Song, id=kwargs['song_id'])
+        form = self.form(instance=song)
+        context = {
+            'form': form,
+            'playlist': playlist,
+        }
+        return render(self.request, self.template_name, context)
+
+    def post(self, *args, **kwargs):
+        song = get_object_or_404(Song, id=kwargs['song_id'])
+        if self.request.user == song.user:
+            form = self.form(self.request.POST,instance=song)
+            form.save()
+        return redirect('playlist',kwargs['playlist_id'])
+
 
 
 class SongDelete(View):
