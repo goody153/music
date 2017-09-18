@@ -85,7 +85,6 @@ class SongDetail(View):
         return redirect('playlist',kwargs['playlist_id'])
 
 
-
 class SongDelete(View):
     """Delete Song from Playlist
     """
