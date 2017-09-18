@@ -1,6 +1,6 @@
 <form method="post">
 {% csrf_token %}
-	First Name : {{ form.first_name }}<br>
-	Last Name : {{ form.last_name }}<br>
+	Old Email : {{ user.email }}<br>
+	New Email : {{ form.email }}<br>
 	<input type="submit" value="Submit">
 </form>

@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import LoginForm, RegistrationForm
 
-from .forms import LoginForm, UpdateProfileModelForm
+from .forms import LoginForm, UpdateProfileModelForm, UpdateEmailModelForm
 from .models import User
 
 class UserLoginView(TemplateView):
@@ -82,7 +82,7 @@ class UserProfileView(View):
     template_name = 'user/profile.html'
 
     def get(self, *args, **kwargs):
-        """render a user's profile
+        """ render a user's profile
         """
         # get the user that is currently logged in
         user = get_object_or_404(User, id=self.request.user.id)
@@ -95,7 +95,8 @@ class UpdateProfileView(TemplateView):
     template_name = 'user/edit.html'
 
     def get(self, *args, **kwargs):
-        #import pdb;pdb.set_trace()
+        """ display
+        """
         user = get_object_or_404(User, id=self.request.user.id)
         form = UpdateProfileModelForm(instance=user)
         return render(self.request, self.template_name, {'form':form})
@@ -105,6 +106,30 @@ class UpdateProfileView(TemplateView):
         """
         user = get_object_or_404(User, id=self.request.user.id)
         form = UpdateProfileModelForm(self.request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user_profile')
+
+
+class UpdateEmailView(TemplateView):
+    """ Updates the user's email
+    """
+    template_name = 'user/editemail.html'
+
+    def get(self, *args, **kwargs):
+        """display form
+        """
+        user = get_object_or_404(User, id=self.request.user.id)
+        form = UpdateEmailModelForm(instance=user)
+        return render(self.request, self.template_name, {'form':form,
+                                                         'user': user
+                                                        })
+
+    def post(self, *args, **kwargs):
+        """save the changes of email
+        """
+        user = get_object_or_404(User, id=self.request.user.id)
+        form = UpdateEmailModelForm(self.request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect('user_profile')

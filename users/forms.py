@@ -87,15 +87,24 @@ class UpdateProfileModelForm(forms.ModelForm):
     class Meta:
         # what table to use
         model = User
-        
         # what fields to be rendered to template from that table
         fields = ('first_name', 'last_name')
-        
-        widgets = {
-            'first_name' : forms.TextInput(attrs={
-                'class' : 'form-control',
-            }),
-            'last_name': forms.TextInput(attrs={
-                'class': 'form-control',
-            })
-        }
+
+
+class UpdateEmailModelForm(forms.ModelForm):
+    """ Form for updating the user's email
+    """
+    class Meta:
+        # what table to use
+        model = User
+        # what fields to be rendered to template from that table
+        fields = ('email',)
+
+class UpdatePasswordModelForm(forms.ModelForm):
+    """ Form for updating the user's password
+    """
+    class Meta:
+        # what table to use
+        model = User
+        # what fields to be rendered to template from that table
+        fields = ('password',)
