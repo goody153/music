@@ -1,5 +1,15 @@
-<form method="post">
+{% if permission %}
+<form method="post" novalidate>
     {% csrf_token %}
-    {{form.as_ul}}
-    <button type="submit">Update</button>
+    <input type="text" name="title" placeholder="song title" value="{{ form.instance.title }}">
+    {{ form.title.errors}}
+    <br>
+    <input type="text" name="link" placeholder="youtube id of the song" value="{{ form.instance.link }}">
+    {{ form.link.errors}}
+    <button type="submit">Update Song</button>
 </form>
+{% endif %}
+
+{% if not permission %}
+    <h5>You do not have the permission to update this song.</h5>
+{% endif %}
