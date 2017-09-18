@@ -2,9 +2,10 @@
     {% csrf_token %}
     <label>Title:</label>
     <input type="text" name="title" placeholder="song title">
+    <span>{{ form.errors.title }}</span>
     <label>URL:</label>
     <input type="text" name="link" placeholder="song title">
-    <span>{{ form.errors }}</span>
+    <span>{{ form.errors.link }}</span>
     <button type="submit">(+)</button>
 </form>
 
