@@ -16,9 +16,8 @@ class PlaylistsView(TemplateView):
     def get(self, *args, **kwargs):
         """show all playlist
         """
-        playlists = Playlist.objects.all()
         context = {
-            'playlists': playlists,
+            'playlists': Playlist.objects.all(),
             'form': self.form,
         }
         return render(self.request, self.template_name, context)
@@ -29,7 +28,12 @@ class PlaylistsView(TemplateView):
         form = self.form(self.request.POST)
         if form.is_valid():
             form.save()
-        return redirect('playlists')
+            return redirect('playlists')
+        context = {
+            'playlists': Playlist.objects.all(),
+            'form': form,
+        }
+        return render(self.request, self.template_name, context)
 
 
 class PlaylistView(TemplateView):
