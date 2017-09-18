@@ -122,7 +122,7 @@ class UpdateEmailView(TemplateView):
         user = get_object_or_404(User, id=self.request.user.id)
         form = UpdateEmailModelForm(instance=user)
         return render(self.request, self.template_name, {'form':form,
-                                                         'user': user
+                                                         'user':user
                                                         })
 
     def post(self, *args, **kwargs):
@@ -133,3 +133,17 @@ class UpdateEmailView(TemplateView):
         if form.is_valid():
             form.save()
             return redirect('user_profile')
+
+
+class UpdatePasswordView(TemplateView):
+    """ Updates the user's password
+    """
+    template_name = 'user/editpassword.html'
+
+    def get(self, *args, **kwargs):
+        """"""
+        user = get_object_or_404(User, id=self.request.user.id)
+        form = UpdatePasswordModelForm(instance=user)
+        return render(self.request, self.template_name, {'form':form,
+                                                         'user':user
+                                                         })
