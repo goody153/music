@@ -9,7 +9,7 @@ from playlist.forms import SongForm, PlaylistForm
 
 
 class PlaylistsView(TemplateView):
-    """ViewPlaylists && Add PLAYLIST
+    """ViewPlaylists and add Playlist
     """
     template_name = 'playlist/playlists.html'
 
@@ -18,7 +18,6 @@ class PlaylistsView(TemplateView):
         """
         return render(self.request, self.template_name, {
             'playlists': Playlist.objects.all(),
-            'form': PlaylistForm(),
         })
 
     def post(self, *args, **kwargs):
@@ -35,7 +34,7 @@ class PlaylistsView(TemplateView):
 
 
 class PlaylistView(TemplateView):
-    """ViewPlaylist && Add SONG
+    """ViewPlaylist and add Song
     """
     template_name = 'playlist/playlist.html'
 
@@ -46,7 +45,6 @@ class PlaylistView(TemplateView):
         songs = Song.objects.filter(playlist=playlist)
         return render(self.request, self.template_name, {
             'playlist': playlist,
-            'form': SongForm(),
             'songs': songs,
         })
 
@@ -71,28 +69,23 @@ class PlaylistView(TemplateView):
 class SongDetail(View):
     """ View song && edit song from playlists
     """
-    template_name = 'playlist/songdetail.html'
+    template_name = 'playlist/detail.html'
 
-    def get(self, *args, **kwargs):
+    def get(self, *args, **kwargs): 
         """show song details
         """
-        playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
         song = get_object_or_404(Song, id=kwargs['song_id'])
         form = SongForm(instance=song)
-        permission = False
-        if self.request.user == song.user:
-            permission = True
         return render(self.request, self.template_name, {
-                'permission': permission,
                 'form': form,
-                'playlist': playlist,
+                'song': song,
         })
 
     def post(self, *args, **kwargs):
         """update song details
         """
         song = get_object_or_404(Song, id=kwargs['song_id'])
-        form = SongForm(self.request.POST,instance=song)
+        form = SongForm(self.request.POST, instance=song)
         if form.is_valid():
             if self.request.user == song.user:
                 form.save()
@@ -100,8 +93,7 @@ class SongDetail(View):
             else:
                 raise Http404("User does not have permission to edit the song.")
         return render(self.request, self.template_name, {
-            'playlist': get_object_or_404(Playlist, id=kwargs['playlist_id']),
-            'form':form,
+            'form': form,
         })
 
 
