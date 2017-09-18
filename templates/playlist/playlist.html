@@ -1,18 +1,19 @@
-<form method = "post" novalidate>
+<form method="post" novalidate>
     {% csrf_token %}
     <label>Title:</label>
-    <input type = "text" name = "title" placeholder="song title">
+    <input type="text" name="title" placeholder="song title">
     <label>URL:</label>
-    <input type = "text" name = "link" placeholder="song title">
-    <span>{{form.errors}}</span>
-    <button type = "submit">(+)</button>
+    <input type="text" name="link" placeholder="song title">
+    <span>{{ form.errors }}</span>
+    <button type="submit">(+)</button>
 </form>
 
 <ul>
     {% for song in songs %}
         <li>
-            {{song.title}}
+            {{ song.title }}
             <small>
+                <a href="{% url 'song_detail' playlist.id song.id %}">Edit</a>
                 <a href="{% url 'song_delete' playlist.id song.id %}">Delete</a>
             </small>
         </li>
