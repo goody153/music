@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
-from users.models import User
-
+from django.contrib.auth.hashers import check_password, make_password
 
 from .models import User
 
@@ -100,11 +99,37 @@ class UpdateEmailModelForm(forms.ModelForm):
         # what fields to be rendered to template from that table
         fields = ('email',)
 
-class UpdatePasswordModelForm(forms.ModelForm):
+class UpdatePasswordModelForm(forms.Form):
     """ Form for updating the user's password
     """
-    class Meta:
-        # what table to use
-        model = User
-        # what fields to be rendered to template from that table
-        fields = ('password',)
+
+    oldpassword = forms.CharField(required=True, widget=forms.PasswordInput)
+    newpassword = forms.CharField(required=True, widget=forms.PasswordInput)
+    retypepassword = forms.CharField(required=True, widget=forms.PasswordInput)
+
+    def clean_oldpassword(self):
+        cln_oldpassword = self.cleaned_data.get('oldpassword')
+        return cln_oldpassword
+
+    def confirm_password(self):
+        # check the new password and confirm password
+        new_pass = self.cleaned_data.get('newpassword')
+        retype = self.cleaned_data.get('retypepassword')
+
+        if new_pass != retype:
+            raise forms.ValidationError("Passwords do not match!")
+        return new_pass
+
+    def save(self, *args, **kwargs):
+
+        data = self.cleaned_data
+        user = kwargs['user']
+
+        # validate the passwords
+        if check_password(data['oldpassword'], user.password):
+            # save the new data
+            user_update = User.objects.get(id=user.id)
+            user_update.password = make_password(data['newpassword'])
+            user_update.save()
+        else:
+            raise forms.ValidationError("Invalid Old Password")

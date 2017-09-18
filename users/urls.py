@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from .views import (UserLoginView, DashboardView, UserLogoutView, RegisterView,
-                    UserProfileView, UpdateProfileView, UpdateEmailView)
+                    UserProfileView, UpdateProfileView, UpdateEmailView, UpdatePasswordView)
 
 urlpatterns = [
     url(r'^login/$', UserLoginView.as_view(), name='user_login'),
@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^profile/$', UserProfileView.as_view(), name="user_profile"),
     url(r'^profile/edit/$', UpdateProfileView.as_view(), name="edit_profile"),
     url(r'^profile/editemail/$', UpdateEmailView.as_view(), name="edit_email"),
+    url(r'^profile/editpassword/$', UpdatePasswordView.as_view(), name="edit_password"),
 ]

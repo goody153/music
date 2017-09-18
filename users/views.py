@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import LoginForm, RegistrationForm
 
-from .forms import LoginForm, UpdateProfileModelForm, UpdateEmailModelForm
+from .forms import LoginForm, UpdateProfileModelForm, UpdateEmailModelForm, UpdatePasswordModelForm
 from .models import User
 
 class UserLoginView(TemplateView):
@@ -50,7 +50,7 @@ class UserLogoutView(View):
         logout(self.request)
         return redirect('user_login')
 
-#====================================================================
+#==
 
 class RegisterView(TemplateView):
     """ Registers the new user
@@ -85,8 +85,7 @@ class UserProfileView(View):
         """ render a user's profile
         """
         # get the user that is currently logged in
-        user = get_object_or_404(User, id=self.request.user.id)
-        return render(self.request, self.template_name, {'user':user})
+        return render(self.request, self.template_name, {'user':self.request.user})
 
 
 class UpdateProfileView(TemplateView):
@@ -109,6 +108,8 @@ class UpdateProfileView(TemplateView):
         if form.is_valid():
             form.save()
             return redirect('user_profile')
+        return render(self.request, self.template_name, {'form':form})
+
 
 
 class UpdateEmailView(TemplateView):
@@ -133,6 +134,10 @@ class UpdateEmailView(TemplateView):
         if form.is_valid():
             form.save()
             return redirect('user_profile')
+        return render(self.request, self.template_name, {'form':form,
+                                                         'user':user
+                                                        })
+
 
 
 class UpdatePasswordView(TemplateView):
@@ -141,9 +146,20 @@ class UpdatePasswordView(TemplateView):
     template_name = 'user/editpassword.html'
 
     def get(self, *args, **kwargs):
-        """"""
-        user = get_object_or_404(User, id=self.request.user.id)
-        form = UpdatePasswordModelForm(instance=user)
+        """display the form
+        """
+        form = UpdatePasswordModelForm()
         return render(self.request, self.template_name, {'form':form,
-                                                         'user':user
-                                                         })
+                                                        'user':self.request.user
+                                                        })
+
+    def post(self, *args, **kwargs):
+        """save the changes
+        """
+        form = UpdatePasswordModelForm(self.request.POST)
+        if form.is_valid():
+            form.save(user=self.request.user)
+            return redirect('user_profile')
+        return render(self.request, self.template_name, {'form':form,
+                                                        'user':self.request.user
+                                                        })
