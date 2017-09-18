@@ -159,6 +159,9 @@ class UpdatePasswordView(TemplateView):
         form = UpdatePasswordModelForm(self.request.POST)
         if form.is_valid():
             form.save(user=self.request.user)
+            user = authenticate(self.request, email = self.request.user.email,
+                                            password = self.request.POST['newpassword'])
+            login(self.request, user)
             return redirect('user_profile')
         return render(self.request, self.template_name, {'form':form,
                                                         'user':self.request.user

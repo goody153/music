@@ -1,6 +1,6 @@
 Hello {{ user.first_name }}!<br>
 
-<a href="">Edit Profile</a>
+<a href="{% url 'edit_profile' %}">Edit Profile</a>
 <a href="{% url 'edit_email' %}">Edit Email</a>
 <a href="{% url 'edit_password' %}">Edit Password</a>
 <hr>
