@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import LoginForm, RegistrationForm
 
-from .forms import LoginForm, UpdateProfileModelForm, UpdateEmailModelForm, UpdatePasswordForm
+from .forms import LoginForm, UpdateProfileModelForm, UpdatePasswordForm
 from .models import User
 
 class UserLoginView(TemplateView):
@@ -84,7 +84,7 @@ class UserProfileView(View):
         """ render a user's profile
         """
         # get the user that is currently logged in
-        return render(self.request, self.template_name, {'user':self.request.user})
+        return render(self.request, self.template_name, {})
 
 
 class UpdateProfileView(TemplateView):
@@ -95,46 +95,17 @@ class UpdateProfileView(TemplateView):
     def get(self, *args, **kwargs):
         """ display
         """
-        user = get_object_or_404(User, id=self.request.user.id)
-        form = UpdateProfileModelForm(instance=user)
+        form = UpdateProfileModelForm(instance=self.request.user)
         return render(self.request, self.template_name, {'form':form})
 
     def post(self, *args, **kwargs):
         """update the user's profile (first name, last name)
         """
-        user = get_object_or_404(User, id=self.request.user.id)
-        form = UpdateProfileModelForm(self.request.POST, instance=user)
+        form = UpdateProfileModelForm(self.request.POST,instance=self.request.user)
         if form.is_valid():
             form.save()
             return redirect('user_profile')
         return render(self.request, self.template_name, {'form':form})
-
-
-class UpdateEmailView(TemplateView):
-    """ Updates the user's email
-    """
-    template_name = 'user/editemail.html'
-
-    def get(self, *args, **kwargs):
-        """display form
-        """
-        user = get_object_or_404(User, id=self.request.user.id)
-        form = UpdateEmailModelForm(instance=user)
-        return render(self.request, self.template_name, {'form':form,
-                                                         'user':user
-                                                        })
-
-    def post(self, *args, **kwargs):
-        """save the changes of email
-        """
-        user = get_object_or_404(User, id=self.request.user.id)
-        form = UpdateEmailModelForm(self.request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            return redirect('user_profile')
-        return render(self.request, self.template_name, {'form':form,
-                                                         'user':user
-                                                        })
 
 
 class UpdatePasswordView(TemplateView):
@@ -146,9 +117,7 @@ class UpdatePasswordView(TemplateView):
         """display the form
         """
         form = UpdatePasswordForm(user=self.request.user)
-        return render(self.request, self.template_name, {'form':form,
-                                                        'user':self.request.user
-                                                        })
+        return render(self.request, self.template_name, {'form':form})
 
     def post(self, *args, **kwargs):
         """save the changes
@@ -161,6 +130,4 @@ class UpdatePasswordView(TemplateView):
                                 password = self.request.POST['new_password'])
             login(self.request, user)
             return redirect('user_profile')
-        return render(self.request, self.template_name, {'form':form,
-                                                        'user':self.request.user
-                                                        })
+        return render(self.request, self.template_name, {'form':form})

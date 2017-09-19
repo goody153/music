@@ -85,15 +85,7 @@ class UpdateProfileModelForm(forms.ModelForm):
     """
     class Meta:
         model = User
-        fields = ('first_name', 'last_name')
-
-
-class UpdateEmailModelForm(forms.ModelForm):
-    """ Form for updating the user's email
-    """
-    class Meta:
-        model = User
-        fields = ('email',)
+        fields = ('first_name', 'last_name', 'email')
 
 
 class UpdatePasswordForm(forms.Form):
