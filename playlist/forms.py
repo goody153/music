@@ -26,17 +26,9 @@ class SongForm(forms.ModelForm):
         return super(SongForm, self).__init__(*args, **kwargs)
 
     def save(self):
-        # checks if save is supposed to update or create 
-        if self.instance.id:
-            Song.objects.filter(id=self.instance.id).update(
-                title=self.cleaned_data['title'],
-                link=self.cleaned_data['link'],
-            )
-            return
-        Song.objects.create(
-            title=self.cleaned_data['title'],
-            link=self.cleaned_data['link'],
-            playlist=self.playlist,
-            user=self.user,
-        )
-        return
+        instance = super(SongForm, self).save(commit=False)
+        if self.user is not None and self.playlist is not None:
+            instance.user = self.user
+            instance.playlist = self.playlist
+        instance.save()
+        return instance

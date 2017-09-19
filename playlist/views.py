@@ -56,11 +56,11 @@ class PlaylistView(TemplateView):
         form = SongForm(
             self.request.POST,
             user=self.request.user,
-            playlist=playlist,
+            playlist=playlist
         )
         if form.is_valid():
             form.save()
-            return redirect('playlist', kwargs['playlist_id'])
+            return redirect('playlist', playlist.id)
         return render(self.request, self.template_name, {
             'playlist': playlist,
             'form': form,
@@ -68,7 +68,7 @@ class PlaylistView(TemplateView):
         })
 
 
-class SongDetail(View):
+class SongDetail(TemplateView):
     """ Display song details and can edit song from a playlist
     """
     template_name = 'playlist/detail.html'
@@ -93,12 +93,12 @@ class SongDetail(View):
         song = get_object_or_404(
             Song,
             id=kwargs['song_id'],
-            user=self.request.user,
+            user=self.request.user
         )
         form = SongForm(self.request.POST, instance=song)
         if form.is_valid():
             form.save()
-            return redirect('playlist',kwargs['playlist_id'])
+            return redirect('playlist', kwargs['playlist_id'])
         return render(self.request, self.template_name, {
             'form': form,
         })
