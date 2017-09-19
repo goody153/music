@@ -9,12 +9,12 @@ from playlist.forms import SongForm, PlaylistForm
 
 
 class PlaylistsView(TemplateView):
-    """ViewPlaylists and add Playlist
+    """Displays all playlist and can create playlist
     """
     template_name = 'playlist/playlists.html'
 
     def get(self, *args, **kwargs):
-        """show all playlist
+        """show all playlists
         """
         return render(self.request, self.template_name, {
             'playlists': Playlist.objects.all(),
@@ -34,7 +34,7 @@ class PlaylistsView(TemplateView):
 
 
 class PlaylistView(TemplateView):
-    """ViewPlaylist and add Song
+    """Display a playlist and can add a song on that playlist
     """
     template_name = 'playlist/playlist.html'
 
@@ -53,10 +53,12 @@ class PlaylistView(TemplateView):
         """
         playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
         songs = Song.objects.filter(playlist=playlist)
-        form = SongForm(self.request.POST)
+        form = SongForm(
+            self.request.POST,
+            user=self.request.user,
+            playlist=playlist,
+        )
         if form.is_valid():
-            form.instance.playlist = playlist
-            form.instance.user = self.request.user
             form.save()
             return redirect('playlist', kwargs['playlist_id'])
         return render(self.request, self.template_name, {
@@ -67,14 +69,18 @@ class PlaylistView(TemplateView):
 
 
 class SongDetail(View):
-    """ View song && edit song from playlists
+    """ Display song details and can edit song from a playlist
     """
     template_name = 'playlist/detail.html'
 
     def get(self, *args, **kwargs): 
         """show song details
         """
-        song = get_object_or_404(Song, id=kwargs['song_id'])
+        song = get_object_or_404(
+            Song,
+            id=kwargs['song_id'],
+            user=self.request.user,
+        )
         form = SongForm(instance=song)
         return render(self.request, self.template_name, {
                 'form': form,
@@ -84,14 +90,15 @@ class SongDetail(View):
     def post(self, *args, **kwargs):
         """update song details
         """
-        song = get_object_or_404(Song, id=kwargs['song_id'])
+        song = get_object_or_404(
+            Song,
+            id=kwargs['song_id'],
+            user=self.request.user,
+        )
         form = SongForm(self.request.POST, instance=song)
         if form.is_valid():
-            if self.request.user == song.user:
-                form.save()
-                return redirect('playlist',kwargs['playlist_id'])
-            else:
-                raise Http404("User does not have permission to edit the song.")
+            form.save()
+            return redirect('playlist',kwargs['playlist_id'])
         return render(self.request, self.template_name, {
             'form': form,
         })
@@ -102,8 +109,7 @@ class SongDelete(View):
     """
 
     def get(self, *args, **kwargs):
-        playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
-        song = get_object_or_404(Song,id=kwargs['song_id'], playlist=playlist)
+        song = get_object_or_404(Song,id=kwargs['song_id'])
         if self.request.user == song.user:
             song.delete()
             return redirect('playlist', kwargs['playlist_id'])
