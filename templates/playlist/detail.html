@@ -1,4 +1,3 @@
-{% if request.user == song.user %}
 <form method="post" novalidate>
   {% csrf_token %}
   <input type="text" name="title" placeholder="song title" value="{{ form.instance.title }}">
@@ -8,7 +7,3 @@
   {{ form.link.errors}}
   <button type="submit">Update Song</button>
 </form>
-
-{% else %}
-  <h5>You do not have the permission to update this song.</h5>
-{% endif %}
