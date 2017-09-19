@@ -160,7 +160,7 @@ class UpdatePasswordView(TemplateView):
             # save the form and relogin the user, using the new credentials
             form.save(user=self.request.user)
             user = authenticate(self.request, email = self.request.user.email,
-                                            password = self.request.POST['newpassword'])
+                                            password = self.request.POST['new_password'])
             login(self.request, user)
             return redirect('user_profile')
         return render(self.request, self.template_name, {'form':form,

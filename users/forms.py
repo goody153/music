@@ -84,9 +84,7 @@ class UpdateProfileModelForm(forms.ModelForm):
     """ Form for updating the user's profile
     """
     class Meta:
-        # what table to use
         model = User
-        # what fields to be rendered to template from that table
         fields = ('first_name', 'last_name')
 
 
@@ -94,29 +92,27 @@ class UpdateEmailModelForm(forms.ModelForm):
     """ Form for updating the user's email
     """
     class Meta:
-        # what table to use
         model = User
-        # what fields to be rendered to template from that table
         fields = ('email',)
+
 
 class UpdatePasswordModelForm(forms.Form):
     """ Form for updating the user's password
     """
-
-    oldpassword = forms.CharField(required=True, widget=forms.PasswordInput)
-    newpassword = forms.CharField(required=True, widget=forms.PasswordInput)
-    retypepassword = forms.CharField(required=True, widget=forms.PasswordInput)
+    old_password = forms.CharField(required=True, widget=forms.PasswordInput)
+    new_password = forms.CharField(required=True, widget=forms.PasswordInput)
+    confirm_password = forms.CharField(required=True, widget=forms.PasswordInput)
 
     def clean_oldpassword(self):
-        cln_oldpassword = self.cleaned_data.get('oldpassword')
-        return cln_oldpassword
+        password = self.cleaned_data.get('old_password')
+        return password
 
-    def confirm_password(self):
+    def clean_confirm_password(self):
         # check the new password and confirm password
-        new_pass = self.cleaned_data.get('newpassword')
-        retype = self.cleaned_data.get('retypepassword')
+        new_pass = self.cleaned_data.get('new_password')
+        confirm_pass = self.cleaned_data.get('confirm_password')
 
-        if new_pass != retype:
+        if new_pass != confirm_pass:
             raise forms.ValidationError("Passwords do not match!")
         return new_pass
 
@@ -128,10 +124,10 @@ class UpdatePasswordModelForm(forms.Form):
         user = kwargs['user']
 
         # validate the passwords
-        if check_password(data['oldpassword'], user.password):
+        if check_password(data['old_password'], user.password):
             # save the new data
             user_update = User.objects.get(id=user.id)
-            user_update.password = make_password(data['newpassword'])
+            user_update.password = make_password(data['new_password'])
             user_update.save()
         else:
             raise forms.ValidationError("Invalid Old Password")
