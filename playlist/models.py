@@ -32,16 +32,13 @@ class Song(models.Model):
         """ Override the save function to 
             add song history
         """
-        log = SongHistory.objects.create(user=self.user,
-                                         title=self.title,
-                                         link=self.link)
-        if self.id:
-            log.action = SongHistory.UPDATED
-        else:
-            log.action = SongHistory.ADDED
-        log.save()
-
-        super(Song, self).save(*args, **kwargs) # Calls the real save method
+        log = SongHistory.objects.create(
+            user=self.user,
+            title=self.title,
+            link=self.link,
+            action=SongHistory.UPDATED if self.id else SongHistory.ADDED
+        )
+        return super(Song, self).save(*args, **kwargs) # Calls the real save method
 
 
 class SongHistory(models.Model):
