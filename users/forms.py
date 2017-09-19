@@ -96,15 +96,23 @@ class UpdateEmailModelForm(forms.ModelForm):
         fields = ('email',)
 
 
-class UpdatePasswordModelForm(forms.Form):
+class UpdatePasswordForm(forms.Form):
     """ Form for updating the user's password
     """
     old_password = forms.CharField(required=True, widget=forms.PasswordInput)
     new_password = forms.CharField(required=True, widget=forms.PasswordInput)
     confirm_password = forms.CharField(required=True, widget=forms.PasswordInput)
+    user = None
 
-    def clean_oldpassword(self):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        return super(UpdatePasswordForm, self).__init__(*args,**kwargs)
+
+    def clean_old_password(self):
         password = self.cleaned_data.get('old_password')
+        # validate the passwords
+        if not check_password(password, self.user.password):
+            raise forms.ValidationError("Invalid Old Password")
         return password
 
     def clean_confirm_password(self):
@@ -123,11 +131,7 @@ class UpdatePasswordModelForm(forms.Form):
         data = self.cleaned_data
         user = kwargs['user']
 
-        # validate the passwords
-        if check_password(data['old_password'], user.password):
-            # save the new data
-            user_update = User.objects.get(id=user.id)
-            user_update.password = make_password(data['new_password'])
-            user_update.save()
-        else:
-            raise forms.ValidationError("Invalid Old Password")
+        # save the new data
+        user_update = User.objects.get(id=user.id)
+        user_update.password = make_password(data['new_password'])
+        user_update.save()

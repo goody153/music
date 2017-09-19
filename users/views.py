@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import LoginForm, RegistrationForm
 
-from .forms import LoginForm, UpdateProfileModelForm, UpdateEmailModelForm, UpdatePasswordModelForm
+from .forms import LoginForm, UpdateProfileModelForm, UpdateEmailModelForm, UpdatePasswordForm
 from .models import User
 
 class UserLoginView(TemplateView):
@@ -145,7 +145,7 @@ class UpdatePasswordView(TemplateView):
     def get(self, *args, **kwargs):
         """display the form
         """
-        form = UpdatePasswordModelForm()
+        form = UpdatePasswordForm(user=self.request.user)
         return render(self.request, self.template_name, {'form':form,
                                                         'user':self.request.user
                                                         })
@@ -153,7 +153,7 @@ class UpdatePasswordView(TemplateView):
     def post(self, *args, **kwargs):
         """save the changes
         """
-        form = UpdatePasswordModelForm(self.request.POST)
+        form = UpdatePasswordForm(self.request.POST, user=self.request.user)
         if form.is_valid():
             # save the form and relogin the user, using the new credentials
             form.save(user=self.request.user)
