@@ -64,7 +64,6 @@ class RegistrationForm(forms.ModelForm):
         last_name = cleaned_data.get('last_name')
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
         return cleaned_data
 
     def save(self):
