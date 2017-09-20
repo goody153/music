@@ -24,6 +24,7 @@ class Song(models.Model):
     user = models.ForeignKey(User)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    archive = models.BooleanField(default=False)
 
     def __str__(self):
         return "{}".format(self.title)
@@ -35,9 +36,17 @@ class Song(models.Model):
         log = SongHistory.objects.create(
             user=self.user,
             title=self.title,
-            link=self.link,
-            action=SongHistory.UPDATED if self.id else SongHistory.ADDED
+            link=self.link
         )
+        if self.id:
+            if self.archive == True:  # DELETED
+                log.action = SongHistory.DELETED
+            else:  # UPDATED
+                log.action = SongHistory.UPDATED
+        else:
+            log.action = SongHistory.ADDED
+
+        log.save()
         return super(Song, self).save(*args, **kwargs) # Calls the real save method
 
 
