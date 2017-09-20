@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import LoginForm, RegistrationForm
 
-from .forms import LoginForm, UpdateProfileModelForm, UpdatePasswordForm
+from .forms import LoginForm, UpdateProfileForm, UpdatePasswordForm
 from .models import User
 
 class UserLoginView(TemplateView):
@@ -75,7 +75,7 @@ class RegisterView(TemplateView):
         return render(self.request, self.template_name, {'form':form})
 
 
-class UserProfileView(View):
+class UserProfileView(LoginRequiredMixin, View):
     """ display a user's profile
     """
     template_name = 'user/profile.html'
@@ -87,7 +87,7 @@ class UserProfileView(View):
         return render(self.request, self.template_name, {})
 
 
-class UpdateProfileView(TemplateView):
+class UpdateProfileView(LoginRequiredMixin, TemplateView):
     """ Update the user's first and last names
     """
     template_name = 'user/edit.html'
@@ -95,20 +95,20 @@ class UpdateProfileView(TemplateView):
     def get(self, *args, **kwargs):
         """ display
         """
-        form = UpdateProfileModelForm(instance=self.request.user)
+        form = UpdateProfileForm(instance=self.request.user)
         return render(self.request, self.template_name, {'form':form})
 
     def post(self, *args, **kwargs):
-        """update the user's profile (first name, last name)
+        """update the user's profile (first name, last name, email)
         """
-        form = UpdateProfileModelForm(self.request.POST,instance=self.request.user)
+        form = UpdateProfileForm(self.request.POST,instance=self.request.user)
         if form.is_valid():
             form.save()
             return redirect('user_profile')
         return render(self.request, self.template_name, {'form':form})
 
 
-class UpdatePasswordView(TemplateView):
+class UpdatePasswordView(LoginRequiredMixin, TemplateView):
     """ Updates the user's password
     """
     template_name = 'user/editpassword.html'
@@ -126,8 +126,8 @@ class UpdatePasswordView(TemplateView):
         if form.is_valid():
             # save the form and relogin the user, using the new credentials
             form.save(user=self.request.user)
-            user = authenticate(self.request, email = self.request.user.email,
-                                password = self.request.POST['new_password'])
+            user = authenticate(self.request, email=form.user.email,
+                                password=form.cleaned_data['new_password'])
             login(self.request, user)
             return redirect('user_profile')
         return render(self.request, self.template_name, {'form':form})

@@ -80,7 +80,7 @@ class RegistrationForm(forms.ModelForm):
         return user
 
 
-class UpdateProfileModelForm(forms.ModelForm):
+class UpdateProfileForm(forms.ModelForm):
     """ Form for updating the user's profile
     """
     class Meta:
@@ -120,10 +120,10 @@ class UpdatePasswordForm(forms.Form):
         """save function
         """
         # data from the form
-        data = self.cleaned_data
-        user = kwargs['user']
+        password = self.cleaned_data.get('new_password')
 
         # save the new data
-        user_update = User.objects.get(id=user.id)
-        user_update.password = make_password(data['new_password'])
-        user_update.save()
+        user = User.objects.get(id=kwargs['user'].id)
+        user.password = make_password(password)
+        user.save()
+        return user
