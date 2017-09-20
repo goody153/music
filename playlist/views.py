@@ -3,12 +3,12 @@ from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 
-from playlist.models import Playlist, Song
+from playlist.models import Playlist, Song, SongHistory
 from users.models import User
 from playlist.forms import SongForm, PlaylistForm
 
 
-class PlaylistsView(TemplateView):
+class AllPlaylistView(TemplateView):
     """Displays all playlist and can create playlist
     """
     template_name = 'playlist/playlists.html'
@@ -17,7 +17,7 @@ class PlaylistsView(TemplateView):
         """show all playlists
         """
         return render(self.request, self.template_name, {
-            'playlists': Playlist.objects.all(),
+            'playlists': Playlist.objects.all()
         })
 
     def post(self, *args, **kwargs):
@@ -26,10 +26,10 @@ class PlaylistsView(TemplateView):
         form = PlaylistForm(self.request.POST)
         if form.is_valid():
             form.save()
-            return redirect('playlists')
+            return redirect('all_playlist')
         return render(self.request, self.template_name, {
             'playlists': Playlist.objects.all(),
-            'form': form,
+            'form': form
         })
 
 
@@ -42,17 +42,17 @@ class PlaylistView(TemplateView):
         """show all songs from playlist
         """
         playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
-        songs = Song.objects.filter(playlist=playlist)
+        songs = Song.objects.filter(playlist=playlist, archive=False)
         return render(self.request, self.template_name, {
             'playlist': playlist,
-            'songs': songs,
+            'songs': songs
         })
 
     def post(self,*args,**kwargs):
         """add song to playlist
         """
         playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
-        songs = Song.objects.filter(playlist=playlist)
+        songs = Song.objects.filter(playlist=playlist, archive=False)
         form = SongForm(
             self.request.POST,
             user=self.request.user,
@@ -64,7 +64,7 @@ class PlaylistView(TemplateView):
         return render(self.request, self.template_name, {
             'playlist': playlist,
             'form': form,
-            'songs': songs,
+            'songs': songs
         })
 
 
@@ -79,12 +79,12 @@ class SongDetail(TemplateView):
         song = get_object_or_404(
             Song,
             id=kwargs['song_id'],
-            user=self.request.user,
+            user=self.request.user
         )
         form = SongForm(instance=song)
         return render(self.request, self.template_name, {
                 'form': form,
-                'song': song,
+                'song': song
         })
 
     def post(self, *args, **kwargs):
@@ -100,7 +100,7 @@ class SongDetail(TemplateView):
             form.save()
             return redirect('playlist', kwargs['playlist_id'])
         return render(self.request, self.template_name, {
-            'form': form,
+            'form': form
         })
 
 
@@ -109,8 +109,12 @@ class SongDelete(View):
     """
 
     def get(self, *args, **kwargs):
-        song = get_object_or_404(Song,id=kwargs['song_id'])
-        if self.request.user == song.user:
-            song.delete()
-            return redirect('playlist', kwargs['playlist_id'])
-        raise Http404("User does not have permission to delete the song.")
+        song = get_object_or_404(
+            Song,
+            id=kwargs['song_id'],
+            user=self.request.user
+        )
+        # passes archive True to the overriden save method to represent as delete
+        song.save(archive=True)
+        return redirect('playlist', kwargs['playlist_id'])
+

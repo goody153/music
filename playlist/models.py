@@ -33,6 +33,8 @@ class Song(models.Model):
         """ Override the save function to 
             add song history
         """
+        if kwargs.pop('archive', None): # if archive isn't None then the song is deleted
+            self.archive = True
         log = SongHistory.objects.create(
             user=self.user,
             title=self.title,
