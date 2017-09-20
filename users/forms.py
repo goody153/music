@@ -55,17 +55,6 @@ class RegistrationForm(forms.ModelForm):
         if len(emails) != 0:
             raise forms.ValidationError("Sorry but the Email is already TAKEN")
         return getclean_email
-        
-    def clean(self):
-        """ Gets the clean data
-        """
-        cleaned_data = super(RegistrationForm, self).clean()
-        first_name = cleaned_data.get('first_name')
-        last_name = cleaned_data.get('last_name')
-        email = cleaned_data.get('email')
-        password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
-        return cleaned_data
 
     def save(self):
         """ Saves the user data
