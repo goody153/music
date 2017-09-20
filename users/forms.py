@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth import authenticate
-from users.models import User
+from django.contrib.auth.hashers import check_password, make_password
 
+from .models import User
 
 class LoginForm(forms.Form):
     """ The user login form
@@ -64,5 +65,62 @@ class RegistrationForm(forms.ModelForm):
                                    last_name=data['last_name'],
                                    email=data['email'],)
         user.set_password(data['password'])
+        user.save()
+        return user
+
+
+class UpdateProfileForm(forms.ModelForm):
+    """ Form for updating the user's profile
+    """
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
+
+    def clean_email(self):
+        """ Check if the new email is already taken
+        """
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email already been used.")
+        return email
+
+
+class UpdatePasswordForm(forms.Form):
+    """ Form for updating the user's password
+    """
+    old_password = forms.CharField(required=True, widget=forms.PasswordInput)
+    new_password = forms.CharField(required=True, widget=forms.PasswordInput)
+    confirm_password = forms.CharField(required=True, widget=forms.PasswordInput)
+    user = None
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        return super(UpdatePasswordForm, self).__init__(*args,**kwargs)
+
+    def clean_old_password(self):
+        password = self.cleaned_data.get('old_password')
+        # validate the passwords
+        if not check_password(password, self.user.password):
+            raise forms.ValidationError("Invalid Old Password")
+        return password
+
+    def clean_confirm_password(self):
+        # check the new password and confirm password
+        new_pass = self.cleaned_data.get('new_password')
+        confirm_pass = self.cleaned_data.get('confirm_password')
+
+        if new_pass != confirm_pass:
+            raise forms.ValidationError("Passwords do not match!")
+        return new_pass
+
+    def save(self, *args, **kwargs):
+        """save function
+        """
+        # data from the form
+        password = self.cleaned_data.get('new_password')
+
+        # set and save the new password
+        user = User.objects.get(id=kwargs['user'].id)
+        user.set_password(password)
         user.save()
         return user

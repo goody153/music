@@ -1,0 +1,10 @@
+Hello {{ user.first_name }}!<br>
+
+<a href="{% url 'edit_profile' %}">Edit Profile</a>
+<a href="{% url 'edit_password' %}">Edit Password</a>
+<hr>
+
+{{ user.first_name }}<br>
+{{ user.last_name }}<br>
+{{ user.email }}<br>
+{{ user.password }}<br>

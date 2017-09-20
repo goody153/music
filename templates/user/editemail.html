@@ -1,0 +1,6 @@
+<form method="post">
+{% csrf_token %}
+	Old Email : {{ user.email }}<br>
+	New Email : {{ form.email }}<br>
+	<input type="submit" value="Submit">
+</form>
