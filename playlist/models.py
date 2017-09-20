@@ -20,7 +20,7 @@ class Song(models.Model):
     """
     playlist = models.ForeignKey(Playlist)
     title = models.CharField(max_length=255)
-    link = models.CharField(max_length=50)
+    link = models.CharField(max_length=11)
     user = models.ForeignKey(User)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
@@ -64,7 +64,7 @@ class SongHistory(models.Model):
     )
     user = models.ForeignKey(User)
     title = models.CharField(max_length=255)
-    link = models.URLField()
+    link = models.CharField(max_length=11)
     action = models.CharField(max_length=16, choices=actions)
     date = models.DateTimeField(auto_now_add=True) 
 
