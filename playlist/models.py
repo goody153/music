@@ -38,10 +38,10 @@ class Song(models.Model):
             title=self.title,
             link=self.link
         )
-        if self.id:
-            if self.archive == True:  # DELETED
+        if self.id: #  if id is empty the user added a song
+            if self.archive == True: #  if true the user deleted the song
                 log.action = SongHistory.DELETED
-            else:  # UPDATED
+            else:
                 log.action = SongHistory.UPDATED
         else:
             log.action = SongHistory.ADDED
