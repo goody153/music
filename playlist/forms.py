@@ -21,14 +21,28 @@ class SongForm(forms.ModelForm):
         fields = ['title', 'link']
 
     def __init__(self, *args, **kwargs):
+        #needed to create song
         self.user = kwargs.pop('user', None)
         self.playlist = kwargs.pop('playlist', None)
+
         return super(SongForm, self).__init__(*args, **kwargs)
 
     def save(self):
-        instance = super(SongForm, self).save(commit=False)
-        if self.user is not None and self.playlist is not None:
-            instance.user = self.user
-            instance.playlist = self.playlist
-        instance.save()
-        return instance
+        super(SongForm, self).save(commit=False)
+        song = Song.objects.create(
+            user=self.user,
+            playlist=self.playlist,
+            title=self.cleaned_data['title'],
+            link=self.cleaned_data['link']
+        )
+
+        return song
+
+
+class UpdateSongForm(forms.ModelForm):
+    """To Add/Edit Song
+    """
+
+    class Meta:
+        model = Song
+        fields = ['title', 'link']

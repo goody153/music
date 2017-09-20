@@ -5,10 +5,10 @@ from django.http import Http404
 
 from playlist.models import Playlist, Song
 from users.models import User
-from playlist.forms import SongForm, PlaylistForm
+from playlist.forms import SongForm, PlaylistForm, UpdateSongForm
 
 
-class PlaylistsView(TemplateView):
+class AllPlaylistView(TemplateView):
     """Displays all playlist and can create playlist
     """
     template_name = 'playlist/playlists.html'
@@ -42,7 +42,7 @@ class PlaylistView(TemplateView):
         """show all songs from playlist
         """
         playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
-        songs = Song.objects.filter(playlist=playlist)
+        songs = Song.objects.filter(playlist=playlist).order_by('-date_created')
         return render(self.request, self.template_name, {
             'playlist': playlist,
             'songs': songs,
@@ -52,11 +52,11 @@ class PlaylistView(TemplateView):
         """add song to playlist
         """
         playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
-        songs = Song.objects.filter(playlist=playlist)
+        songs = Song.objects.filter(playlist=playlist).order_by('-date_created')
         form = SongForm(
             self.request.POST,
             user=self.request.user,
-            playlist=playlist
+            playlist=playlist,
         )
         if form.is_valid():
             form.save()
@@ -81,7 +81,7 @@ class SongDetail(TemplateView):
             id=kwargs['song_id'],
             user=self.request.user,
         )
-        form = SongForm(instance=song)
+        form = UpdateSongForm(instance=song)
         return render(self.request, self.template_name, {
                 'form': form,
                 'song': song,
@@ -93,9 +93,9 @@ class SongDetail(TemplateView):
         song = get_object_or_404(
             Song,
             id=kwargs['song_id'],
-            user=self.request.user
+            user=self.request.user,
         )
-        form = SongForm(self.request.POST, instance=song)
+        form = UpdateSongForm(self.request.POST, instance=song)
         if form.is_valid():
             form.save()
             return redirect('playlist', kwargs['playlist_id'])
