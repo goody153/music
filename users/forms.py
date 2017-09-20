@@ -87,6 +87,14 @@ class UpdateProfileForm(forms.ModelForm):
         model = User
         fields = ('first_name', 'last_name', 'email')
 
+    def clean_email(self):
+        """ Check if the new email is already taken
+        """
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email already been used.")
+        return email
+
 
 class UpdatePasswordForm(forms.Form):
     """ Form for updating the user's password
@@ -122,8 +130,8 @@ class UpdatePasswordForm(forms.Form):
         # data from the form
         password = self.cleaned_data.get('new_password')
 
-        # save the new data
+        # set and save the new password
         user = User.objects.get(id=kwargs['user'].id)
-        user.password = make_password(password)
+        user.set_password(password)
         user.save()
         return user
