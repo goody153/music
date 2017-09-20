@@ -4,7 +4,7 @@ from playlist.models import Song, Playlist
 
 
 class PlaylistForm(forms.ModelForm):
-    """To Add/Edit Playlist
+    """Form for creating playlist
     """
 
     class Meta:
@@ -13,7 +13,7 @@ class PlaylistForm(forms.ModelForm):
 
 
 class SongForm(forms.ModelForm):
-    """To Add/Edit Song
+    """Form for adding song on a playlist
     """
 
     class Meta:
@@ -21,14 +21,29 @@ class SongForm(forms.ModelForm):
         fields = ['title', 'link']
 
     def __init__(self, *args, **kwargs):
+        """ User and playlist are used for creation of song
+        """
         self.user = kwargs.pop('user', None)
         self.playlist = kwargs.pop('playlist', None)
+
         return super(SongForm, self).__init__(*args, **kwargs)
 
     def save(self):
-        instance = super(SongForm, self).save(commit=False)
-        if self.user is not None and self.playlist is not None:
-            instance.user = self.user
-            instance.playlist = self.playlist
-        instance.save()
-        return instance
+        """ Song creation needs user and playlist 
+        """
+        song = Song.objects.create(
+            title=self.cleaned_data['title'],
+            link=self.cleaned_data['link'],
+            user=self.user,
+            playlist=self.playlist
+        )
+        return song
+
+
+class UpdateSongForm(forms.ModelForm):
+    """ Form for editing a song from a playlist
+    """
+
+    class Meta:
+        model = Song
+        fields = ['title', 'link']
