@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <form method="POST" no validate>
 	{% csrf_token %}
 	<label>First name</label>
@@ -19,3 +21,4 @@
 	<br>
 	<button type="submit">Register</button>
 </form>
+{% endblock %}

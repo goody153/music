@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <h5>Playlist {{ playlist.title }}</h5>
 
 <form method="post" novalidate>
@@ -23,3 +26,4 @@
   </li>
 {% endfor %}
 </ul>
+{% endblock %}

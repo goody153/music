@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-{% block content %}
 
+{% block content %}
 <form method="POST" no validate>
 	{% csrf_token %}
 	{{ form.non_field_errors }}

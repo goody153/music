@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <form method="post" novalidate>
   {% csrf_token %}
   <label>Title:</label>
@@ -14,3 +17,4 @@
   <li><a href="{% url 'playlist' playlist.id %}">{{ playlist.title }}</a> by {{ playlist.user }}</li>
 {% endfor %}
 </ul>
+{% endblock %}
