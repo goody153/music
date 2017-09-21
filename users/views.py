@@ -17,6 +17,8 @@ class UserLoginView(TemplateView):
     def get(self, *args, **kwargs):
         """ Renders the login form
         """
+        if self.request.user.is_authenticated():
+            return redirect('dashboard')
         form = LoginForm()
         return render(self.request, self.template_name, {'form':form})
 
