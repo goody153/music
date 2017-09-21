@@ -20,8 +20,10 @@
   <li>
   {{ song.title }}
   <small>
+  {% if request.user == song.user %}
   <a href="{% url 'song_detail' playlist.id song.id %}">Edit</a>
   <a href="{% url 'song_delete' playlist.id song.id %}">Delete</a>
+  {% endif %}
   </small>
   </li>
 {% endfor %}
