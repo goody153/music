@@ -74,6 +74,7 @@ class RegisterView(TemplateView):
                                               password=self.request.POST['password'])
             login(self.request, user)
             return redirect('dashboard')
+            
         return render(self.request, self.template_name, {'form':form})
 
 
