@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
-from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.hashers import check_password
 
 from .models import User
 
@@ -58,14 +58,13 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError("Sorry but the Email is already TAKEN")
         return getclean_email
 
-    def save(self):
+    def save(self, commit=True):
         """ Saves the user data
         """
-        data = self.cleaned_data
-        user = User.objects.create(email=data['email'])
-        user.set_password(data['password'])
-        user.save()
-        return user
+        instance = super(RegistrationForm, self).save(commit=False)
+        instance.set_password(self.cleaned_data['password'])
+        instance.save()
+        return instance
 
 
 class UpdateProfileForm(forms.ModelForm):
