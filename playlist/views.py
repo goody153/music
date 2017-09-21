@@ -2,13 +2,14 @@ from django.views.generic import TemplateView, View
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.http import Http404
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from playlist.models import Playlist, Song, SongHistory
 from users.models import User
 from playlist.forms import SongForm, PlaylistForm, UpdateSongForm
 
 
-class AllPlaylistView(TemplateView):
+class AllPlaylistView(LoginRequiredMixin, TemplateView):
     """Displays all playlist and can create playlist
     """
     template_name = 'playlist/playlists.html'
@@ -35,7 +36,7 @@ class AllPlaylistView(TemplateView):
         })
 
 
-class PlaylistView(TemplateView):
+class PlaylistView(LoginRequiredMixin, TemplateView):
     """Display a playlist and can add a song on that playlist
     """
     template_name = 'playlist/playlist.html'
@@ -70,7 +71,7 @@ class PlaylistView(TemplateView):
         })
 
 
-class SongDetail(TemplateView):
+class SongDetail(LoginRequiredMixin, TemplateView):
     """ Display song details and can edit song from a playlist
     """
     template_name = 'playlist/detail.html'
@@ -106,7 +107,7 @@ class SongDetail(TemplateView):
         })
 
 
-class SongDelete(View):
+class SongDelete(LoginRequiredMixin, View):
     """Delete Song from Playlist
     """
 
