@@ -25,6 +25,8 @@ class AllPlaylistView(TemplateView):
         """
         form = PlaylistForm(self.request.POST)
         if form.is_valid():
+            form = form.save(commit=False)
+            form.user=self.request.user
             form.save()
             return redirect('all_playlist')
         return render(self.request, self.template_name, {
