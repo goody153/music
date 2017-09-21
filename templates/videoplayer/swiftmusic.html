@@ -1,29 +1,26 @@
 {% load static %}
-<!DOCTYPE html>
-<html>
-  <head>
-  </head>
-  <body>
-    <div id="player"></div>
-    <ul>
-    {% for song in songs %}
-      <li>{{ song }}</li>
-    {% endfor %}
-    </ul>
+{% extends 'base.html' %}
 
-    <input type="button" value="Prev" onclick="playList().getPrev()">
-    <input type="button" value="Play Playlist" onclick="playList().playall()">
-    <input type="button" value="Next" onclick="playList().getNext()">
-    <br>Video Controls<br>
-    <input type="button" value="Play" onclick="videoPlayer().play()">
-    <input type="button" value="Pause" onclick="videoPlayer().pause()">
-    <input type="button" value="Stop" onclick="videoPlayer().stop()">
-    <input type="button" value="Mute" onclick="videoPlayer().mute()">
-    <input type="button" value="UnMute" onclick="videoPlayer().unmute()">
+{% block content %}
+<div id="player"></div>
+<ul>
+{% for song in songs %}
+  <li>{{ song }}</li>
+{% endfor %}
+</ul>
 
-  </body>
-  <script>
-     var songlist = {{ songs|safe }};
-  </script>
-  <script src="{% static 'js/videoplayer.js' %}"></script>
-</html>
+<input type="button" value="Prev" onclick="playList().getPrev()">
+<input type="button" value="Play Playlist" onclick="playList().playall()">
+<input type="button" value="Next" onclick="playList().getNext()">
+<br>Video Controls<br>
+<input type="button" value="Play" onclick="videoPlayer().play()">
+<input type="button" value="Pause" onclick="videoPlayer().pause()">
+<input type="button" value="Stop" onclick="videoPlayer().stop()">
+<input type="button" value="Mute" onclick="videoPlayer().mute()">
+<input type="button" value="UnMute" onclick="videoPlayer().unmute()">
+
+<script>
+   var songlist = {{ songs|safe }};
+</script>
+<script src="{% static 'js/videoplayer.js' %}"></script>
+{% endblock %}
