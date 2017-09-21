@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="post">
+<form method="post" novalidate>
 {% csrf_token %}
 	First Name : {{ form.first_name }}<br>
+	{{ form.first_name.errors }}
 	Last Name : {{ form.last_name }}<br>
+	{{ form.last_name.errors }}
 	Email : {{ form.email }}
+	{{ form.email.errors }}
 
 	<input type="submit" value="Submit">
-	{{ form.errors }}
 </form>
 {% endblock %}

@@ -103,7 +103,7 @@ class UpdateProfileView(LoginRequiredMixin, TemplateView):
     def post(self, *args, **kwargs):
         """update the user's profile (first name, last name, email)
         """
-        form = UpdateProfileForm(self.request.POST,instance=self.request.user)
+        form = UpdateProfileForm(self.request.POST, instance=self.request.user)
         if form.is_valid():
             form.save()
             return redirect('user_profile')

@@ -72,9 +72,21 @@ class RegistrationForm(forms.ModelForm):
 class UpdateProfileForm(forms.ModelForm):
     """ Form for updating the user's profile
     """
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email')
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        filter_email = User.objects.filter(email=email).exclude(email=self.instance.email)
+        if len(filter_email) != 0:
+            raise forms.ValidationError("Someone's already using this email")
+        return email
+
 
 
 class UpdatePasswordForm(forms.Form):
