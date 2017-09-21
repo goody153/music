@@ -4,7 +4,7 @@ from users.models import User
 
 
 class Playlist(models.Model):
-    """Songlist
+    """Playlist
     """
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -20,7 +20,7 @@ class Song(models.Model):
     """
     playlist = models.ForeignKey(Playlist)
     title = models.CharField(max_length=255)
-    link = models.URLField()
+    link = models.CharField(max_length=11)
     user = models.ForeignKey(User)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
@@ -33,6 +33,8 @@ class Song(models.Model):
         """ Override the save function to 
             add song history
         """
+        if kwargs.pop('archive', None): # if archive isn't None then the song is deleted
+            self.archive = True
         log = SongHistory.objects.create(
             user=self.user,
             title=self.title,
@@ -64,11 +66,10 @@ class SongHistory(models.Model):
     )
     user = models.ForeignKey(User)
     title = models.CharField(max_length=255)
-    link = models.URLField()
+    link = models.CharField(max_length=11)
     action = models.CharField(max_length=16, choices=actions)
     date = models.DateTimeField(auto_now_add=True) 
 
     def __str__(self):
         return "{}-{}".format(self.title, self.action)
-
 
