@@ -47,10 +47,12 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
         playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
         form = SongForm(user=self.request.user, playlist=playlist)
         songs = Song.objects.filter(playlist=playlist, archive=False)
+        song_ids = songs.values_list('link', flat=True)
         return render(self.request, self.template_name, {
             'playlist': playlist,
             'songs': songs,
-            'form':form
+            'form':form,
+            'song_ids': song_ids
         })
 
     def post(self,*args,**kwargs):
