@@ -8,6 +8,7 @@ from .forms import LoginForm, RegistrationForm
 
 from .forms import LoginForm, UpdateProfileForm, UpdatePasswordForm
 from .models import User
+from playlist.models import Playlist, Song
 
 class UserLoginView(TemplateView):
     """ User login account
@@ -86,8 +87,8 @@ class UserProfileView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         """ render a user's profile
         """
-        # get the user that is currently logged in
-        return render(self.request, self.template_name, {})
+        playlists = Playlist.objects.filter(user=self.request.user)
+        return render(self.request, self.template_name, {'playlists':playlists})
 
 
 class UpdateProfileView(LoginRequiredMixin, TemplateView):
