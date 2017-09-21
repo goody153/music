@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from playlist.models import Playlist, Song, SongHistory
 from users.models import User
-from playlist.forms import SongForm, PlaylistForm, UpdateSongForm
+from playlist.forms import SongForm, PlaylistForm
 
 
 class AllPlaylistView(LoginRequiredMixin, TemplateView):
@@ -82,7 +82,7 @@ class SongDetail(LoginRequiredMixin, TemplateView):
             id=kwargs['song_id'],
             user=self.request.user
         )
-        form = UpdateSongForm(instance=song)
+        form = SongForm(instance=song)
         return render(self.request, self.template_name, {
                 'form': form,
                 'song': song
@@ -96,7 +96,7 @@ class SongDetail(LoginRequiredMixin, TemplateView):
             id=kwargs['song_id'],
             user=self.request.user
         )
-        form = UpdateSongForm(self.request.POST, instance=song)
+        form = SongForm(self.request.POST, instance=song)
         if form.is_valid():
             form.save()
             return redirect('playlist', kwargs['playlist_id'])

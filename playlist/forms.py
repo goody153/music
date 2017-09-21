@@ -53,16 +53,13 @@ class SongForm(forms.ModelForm):
         """ Song creation needs user and playlist 
         """
         instance = super(SongForm, self).save(commit=False)
-        instance.user = self.user
-        instance.playlist = self.playlist
+        #checks if self.user and self.playlist exists to determine if it's a creation process
+        if self.user and self.playlist:
+            instance.user = self.user
+            instance.playlist = self.playlist
+        #when updating a song it only uses the instance passed
+        else:
+            instance.user = self.instance.user
+            instance.playlist = self.instance.playlist
         instance.save()
         return instance
-
-
-class UpdateSongForm(forms.ModelForm):
-    """ Form for editing a song from a playlist
-    """
-
-    class Meta:
-        model = Song
-        fields = ['title', 'link']
