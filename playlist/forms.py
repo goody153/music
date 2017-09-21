@@ -52,14 +52,9 @@ class SongForm(forms.ModelForm):
     def save(self, commit=True):
         """ Song creation needs user and playlist 
         """
-        instance = super(SongForm, self).save(commit=False)
-        #checks if self.user and self.playlist exists to determine if it's a creation process
-        if self.user and self.playlist:
-            instance.user = self.user
-            instance.playlist = self.playlist
-        #when updating a song it only uses the instance passed
-        else:
-            instance.user = self.instance.user
-            instance.playlist = self.instance.playlist
-        instance.save()
-        return instance
+        song = super(SongForm, self).save(commit=False)
+        # if self.user and self.playlist exists then it creates otherwise update
+        song.user = self.user if self.user else self.instance.user
+        song.playlist = self.playlist if self.playlist else self.instance.playlist
+        song.save()
+        return song
