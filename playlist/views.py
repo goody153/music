@@ -24,10 +24,8 @@ class AllPlaylistView(LoginRequiredMixin, TemplateView):
     def post(self, *args, **kwargs):
         """create playlist
         """
-        form = PlaylistForm(self.request.POST)
+        form = PlaylistForm(self.request.POST, user=self.request.user)
         if form.is_valid():
-            form = form.save(commit=False)
-            form.user=self.request.user
             form.save()
             return redirect('all_playlist')
         return render(self.request, self.template_name, {
