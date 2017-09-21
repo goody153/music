@@ -6,11 +6,16 @@ from users.models import User
 class Playlist(models.Model):
     """Playlist
     """
-    title = models.CharField(max_length=255, unique=True)
+    title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     user = models.ForeignKey(User)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        """ title has to be unique as per user
+        """
+        unique_together = (('title','user'),)
 
     def __str__(self):
         return "{}".format(self.title)

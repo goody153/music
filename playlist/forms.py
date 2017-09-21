@@ -25,6 +25,19 @@ class PlaylistForm(forms.ModelForm):
         instance.save()
         return instance
 
+    def clean_title(self):
+        """ overriden so that there cannot be the same playlist name from a user
+        """
+        playlist = Playlist.objects.filter(
+            title=self.cleaned_data['title'],
+            user=self.user
+        )
+        if playlist:
+            raise forms.ValidationError(
+                'You already have a playlist with the same name'
+            )
+        return self.cleaned_data['title']
+
 
 class SongForm(forms.ModelForm):
     """Form for adding song on a playlist
