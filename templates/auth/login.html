@@ -1,7 +1,5 @@
-<ul>
-  <li><a href="{% url 'register' %}">Register</a></li>
-</ul>
-<br>
+{% extends 'base.html' %}
+{% block content %}
 
 <form method="POST" no validate>
 	{% csrf_token %}
@@ -15,3 +13,4 @@
 	<button type="submit">Login</button>
 
 </form>
+{% endblock %}

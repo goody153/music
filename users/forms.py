@@ -76,14 +76,6 @@ class UpdateProfileForm(forms.ModelForm):
         model = User
         fields = ('first_name', 'last_name', 'email')
 
-    def clean_email(self):
-        """ Check if the new email is already taken
-        """
-        email = self.cleaned_data['email']
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Email already been used.")
-        return email
-
 
 class UpdatePasswordForm(forms.Form):
     """ Form for updating the user's password
