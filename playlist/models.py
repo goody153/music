@@ -6,7 +6,7 @@ from users.models import User
 class Playlist(models.Model):
     """Playlist
     """
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True)
     user = models.ForeignKey(User)
     date_created = models.DateTimeField(auto_now_add=True)
