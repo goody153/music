@@ -39,6 +39,13 @@ class SongForm(forms.ModelForm):
         )
         return song
 
+    def clean_link(self):
+        """ check youtube id length
+        """
+        if len(self.cleaned_data['link']) < 11:
+            raise forms.ValidationError("Youtube id length is invalid.")
+        return self.cleaned_data['link']
+
 
 class UpdateSongForm(forms.ModelForm):
     """ Form for editing a song from a playlist
