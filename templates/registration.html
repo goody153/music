@@ -2,18 +2,17 @@
 {% block content %}
 <form method="POST" no validate>
 	{% csrf_token %}
-	<label>First name</label>
-	<input type="text" name="first_name">
-	<br>
-	<label>Last name</label>
-	<input type="text" name="last_name">
-	<br>
 	<label>Email</label>
-	<input type="email" name="email">
+    {% if form.email.value is None %}
+      <input type="email" name="email">
+    {% else %}
+      <input type="email" name="email" value="{{form.email.value}}">
+    {% endif %}
 	{{form.email.errors}}
 	<br>
 	<label>Password</label>
 	<input type="password" name="password">
+    {{form.password.errors}}
 	<br>
 	<label>Confirm Password</label>
 	<input type="password" name="confirm_password">

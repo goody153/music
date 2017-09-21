@@ -33,7 +33,8 @@ class RegistrationForm(forms.ModelForm):
     confirm_password=forms.CharField()
     class Meta:
         model = User
-        fields = ('first_name','last_name','email','password')
+        fields = ('email','password')
+
 
     def clean_confirm_password(self):
         """ Checks if the password are matched
@@ -61,9 +62,7 @@ class RegistrationForm(forms.ModelForm):
         """ Saves the user data
         """
         data = self.cleaned_data
-        user = User.objects.create(first_name=data['first_name'], 
-                                   last_name=data['last_name'],
-                                   email=data['email'],)
+        user = User.objects.create(email=data['email'])
         user.set_password(data['password'])
         user.save()
         return user
