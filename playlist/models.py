@@ -15,6 +15,9 @@ class Playlist(models.Model):
     def __str__(self):
         return "{}".format(self.title)
 
+    def number_of_songs(self):
+        return self.song_set.filter(archive=False).count()
+
 
 class Song(models.Model):
     """Song
