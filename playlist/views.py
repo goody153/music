@@ -23,7 +23,7 @@ class AllPlaylistView(TemplateView):
     def post(self, *args, **kwargs):
         """create playlist
         """
-        form = PlaylistForm(self.request.POST)
+        form = PlaylistForm(self.request.POST, user=self.request.user)
         if form.is_valid():
             form.save()
             return redirect('all_playlist')

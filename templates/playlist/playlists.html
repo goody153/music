@@ -11,6 +11,6 @@
 
 <ul>
 {% for playlist in playlists %}
-  <li><a href="{% url 'playlist' playlist.id %}">{{ playlist.title }}</a></li>
+  <li><a href="{% url 'playlist' playlist.id %}">{{ playlist.title }}</a> by {{ playlist.user }}</li>
 {% endfor %}
 </ul>

@@ -11,6 +11,23 @@ class PlaylistForm(forms.ModelForm):
         model = Playlist
         fields = ['title', 'description']
 
+    def __init__(self, *args, **kwargs):
+        """ playlist needs user
+        """
+        self.user = kwargs.pop('user', None)
+
+        return super(PlaylistForm, self).__init__(*args, **kwargs)
+
+    def save(self):
+        """playlist creation
+        """
+        playlist = Playlist.objects.create(
+            title=self.cleaned_data['title'],
+            description=self.cleaned_data['description'],
+            user=self.user
+        )
+        return playlist
+
 
 class SongForm(forms.ModelForm):
     """Form for adding song on a playlist
