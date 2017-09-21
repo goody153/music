@@ -69,37 +69,24 @@ class RegistrationForm(forms.ModelForm):
         return user
 
 
-class UpdateProfileForm(forms.Form):
+class UpdateProfileForm(forms.ModelForm):
     """ Form for updating the user's profile
     """
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     email = forms.EmailField(required=True)
-    user = None
 
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        return super(UpdateProfileForm, self).__init__(*args, **kwargs)
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        filter_email = User.objects.filter(email=email).exclude(id=self.user.id)
+        filter_email = User.objects.filter(email=email).exclude(email=self.instance.email)
         if len(filter_email) != 0:
             raise forms.ValidationError("Someone's already using this email")
         return email
 
-    def save(self, *args, **kwargs):
-        first_name = self.cleaned_data.get('first_name')
-        last_name = self.cleaned_data.get('last_name')
-        email = self.cleaned_data.get('email')
-
-        user = User.objects.get(id=kwargs['user'].id)
-
-        user.first_name = first_name
-        user.last_name = last_name
-        user.email = email
-        user.save()
-        return user
 
 
 class UpdatePasswordForm(forms.Form):

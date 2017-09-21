@@ -97,23 +97,15 @@ class UpdateProfileView(LoginRequiredMixin, TemplateView):
     def get(self, *args, **kwargs):
         """ display
         """
-        form = UpdateProfileForm(user=self.request.user, initial={
-            'first_name':self.request.user.first_name,
-            'last_name':self.request.user.last_name,
-            'email':self.request.user.email
-            })
+        form = UpdateProfileForm(instance=self.request.user)
         return render(self.request, self.template_name, {'form':form})
 
     def post(self, *args, **kwargs):
         """update the user's profile (first name, last name, email)
         """
-        form = UpdateProfileForm(self.request.POST, user=self.request.user, initial={
-            'first_name':self.request.user.first_name,
-            'last_name':self.request.user.last_name,
-            'email':self.request.user.email
-            })
+        form = UpdateProfileForm(self.request.POST, instance=self.request.user)
         if form.is_valid():
-            form.save(user=self.request.user)
+            form.save()
             return redirect('user_profile')
         return render(self.request, self.template_name, {'form':form})
 
