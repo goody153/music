@@ -1,31 +1,79 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<h5>Playlist {{ playlist.title }}</h5>
+<div class="row">
+  <div class="col-sm-8">
+    <!-- VIDEO PLAYER -->
+    <div id="player"></div>
+    <!-- VIDEO CONTROLS -->
+    <div id="videocontroller" style="display:none" class="btn-group" role="group">
+      <input type="button" value="Prev" onclick="playList().getPrev()" class="btn btn-default">
+      <input type="button" value="Play" onclick="videoPlayer().play()" class="btn btn-default">
+      <input type="button" value="Pause" onclick="videoPlayer().pause()" class="btn btn-default">
+      <input type="button" value="Stop" onclick="videoPlayer().stop()" class="btn btn-default">
+      <input type="button" value="Next" onclick="playList().getNext()" class="btn btn-default">
+      <input type="button" value="Mute" onclick="videoPlayer().mute()" class="btn btn-default">
+      <input type="button" value="UnMute" onclick="videoPlayer().unmute()" class="btn btn-default">
+    </div>
+  </div>
 
-<form method="post" novalidate>
-  {% csrf_token %}
-  <label>Title:</label>
-  {{ form.title }}
-  {{ form.title.errors }}
-  <br>
-  <label>Link:</label>
-  {{ form.link }}
-  {{ form.link.errors }}
-  <button type="submit">(+)</button>
-</form>
+  <div class="col-sm-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Playlist: {{ playlist.title }}</h3>
+      </div>
+      <div class="panel-body">
+        <form method="post" novalidate>
+          {% csrf_token %}
+          <label>Title:</label>
+             {{ form.title }}
+             {{ form.title.errors }}
+            <br>
+          <label>URL:</label>
+            {{ form.link }}
+            {{ form.link.errors }}
+          <button type="submit">(+)</button>
+        </form>
+      </div>
+    </div>
 
-<ul>
-{% for song in songs %}
-  <li>
-  {{ song.title }}
-  {% if request.user == song.user %}
-  <small>
-  <a href="{% url 'song_detail' playlist.id song.id %}">Edit</a>
-  <a href="{% url 'song_delete' playlist.id song.id %}">Delete</a>
-  </small>
-  {% endif %}
-  </li>
-{% endfor %}
-</ul>
+    <!-- LIST OF SONGS WITH CONTROLS -->
+    <ul class="list-group">
+  
+    {% for song in songs %}
+      <li class="list-group-item">
+      {{ song.title }}
+      {% if request.user == song.user %}
+      <small class="pull-right">
+      <a href="{% url 'song_detail' playlist.id song.id %}">Edit</a>
+      <a href="{% url 'song_delete' playlist.id song.id %}">Delete</a>
+      </small>
+      {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+    <div id="main" style="display:block">
+      <input type="button" value="Play Playlist" onclick="playList().playall()" id="btncontrol">
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+<script>
+  var songlist = {{ song_ids|safe }}
+
+  // when the button "Play Playlist" is clicked, it will show the controller
+  $('#btncontrol').click(function(){
+    var controller = document.getElementById('videocontroller');
+    var main = document.getElementById('main');
+    controller.style.display = 'block';
+    main.style.display = 'none';
+  });
+
+</script>
+<script src="{% static 'js/videoplayer.js' %}"></script>
+
 {% endblock %}
