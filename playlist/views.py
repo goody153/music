@@ -17,8 +17,10 @@ class AllPlaylistView(LoginRequiredMixin, TemplateView):
     def get(self, *args, **kwargs):
         """show all playlists
         """
+        form = PlaylistForm()
         return render(self.request, self.template_name, {
-            'playlists': Playlist.objects.all()
+            'playlists': Playlist.objects.all(),
+            'form':form
         })
 
     def post(self, *args, **kwargs):
@@ -45,10 +47,12 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
         """show all songs from playlist
         """
         playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
+        form = SongForm(user=self.request.user, playlist=playlist)
         songs = Song.objects.filter(playlist=playlist, archive=False)
         return render(self.request, self.template_name, {
             'playlist': playlist,
-            'songs': songs
+            'songs': songs,
+            'form':form
         })
 
     def post(self,*args,**kwargs):
