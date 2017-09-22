@@ -63,12 +63,7 @@
 {% block js %}
 
 <script>
-  var songlist = []
-  {% for ids in song_ids %}
-    songlist.push('{{ ids }}')
-  {% endfor %}
-  // var songlist = {{ song_ids }}
-  // console.log(songlist);
+  var songlist = {{ song_ids|safe }}
 
   // when the button "Play Playlist" is clicked, it will show the controller
   $('#btncontrol').click(function(){
