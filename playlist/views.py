@@ -52,7 +52,7 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
             'playlist': playlist,
             'songs': songs,
             'form':form,
-            'song_ids': song_ids
+            'song_ids': list(song_ids)
         })
 
     def post(self,*args,**kwargs):
