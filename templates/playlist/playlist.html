@@ -14,7 +14,11 @@
   {{ form.title.errors }}
   <br>
   <label>URL:</label>
+  {% if form.title.value is None %}
   <input type="text" name="link" placeholder="youtube id of the song">
+  {% else %}
+  <input type="text" name="link" value ="{{ form.link.value }}">
+  {% endif %}
   {{ form.link.errors }}
   <button type="submit">(+)</button>
 </form>
