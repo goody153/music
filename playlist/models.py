@@ -12,6 +12,11 @@ class Playlist(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        """ title has to be unique as per user
+        """
+        unique_together = (('title','user'),)
+
     def __str__(self):
         return "{}".format(self.title)
 
