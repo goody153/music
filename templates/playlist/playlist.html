@@ -6,19 +6,11 @@
 <form method="post" novalidate>
   {% csrf_token %}
   <label>Title:</label>
-  {% if form.title.value is None %}
-  <input type="text" name="title" placeholder="song title">
-  {% else %}
-  <input type="text" name="title" value="{{ form.title.value }}">
-  {% endif %} 
+  {{ form.title }}
   {{ form.title.errors }}
   <br>
-  <label>URL:</label>
-  {% if form.title.value is None %}
-  <input type="text" name="link" placeholder="youtube id of the song">
-  {% else %}
-  <input type="text" name="link" value ="{{ form.link.value }}">
-  {% endif %}
+  <label>Link:</label>
+  {{ form.link }}
   {{ form.link.errors }}
   <button type="submit">(+)</button>
 </form>
