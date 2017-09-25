@@ -18,6 +18,7 @@
         // clean the error containers
         $('#title_error').text('');
         $('#link_error').text('');
+
         if(error.responseJSON.title !== undefined)
           $('#title_error').text(error.responseJSON.title);
         if(error.responseJSON.link !== undefined)
@@ -25,8 +26,3 @@
       }
     });
   });
-
-  // https://www.youtube.com/watch?v=93OCi10BsX4
-  // https://www.youtube.com/watch?v=7_8_G_uj-kU
-  // https://www.youtube.com/watch?v=YraOnCD9bVQ
-  // https://www.youtube.com/watch?v=2DpHMwhiSvE

@@ -82,6 +82,7 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
                 },
                 safe = False
             )
+
         return JsonResponse(form.errors, status=400)
 
 
