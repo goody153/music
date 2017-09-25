@@ -1,23 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="POST" no validate>
+<form method="POST" novalidate>
 	{% csrf_token %}
-	<label>Email</label>
-    {% if form.email.value is None %}
-      <input type="email" name="email">
-    {% else %}
-      <input type="email" name="email" value="{{form.email.value}}">
-    {% endif %}
+	{{form.email.label}}
+	{{form.email}}
 	{{form.email.errors}}
-	<br>
-	<label>Password</label>
-	<input type="password" name="password">
-    {{form.password.errors}}
-	<br>
-	<label>Confirm Password</label>
-	<input type="password" name="confirm_password">
+	{{form.password.label}}
+	{{form.password}}
+	{{form.password.errors}}
+	{{form.confirm_password.label}}
+	{{form.confirm_password}}
 	{{form.confirm_password.errors}}
-	<br>
 	<button type="submit">Register</button>
 </form>
 {% endblock %}
