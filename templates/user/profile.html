@@ -15,7 +15,7 @@ Hello {{ user.first_name }}!<br>
 <ul>
   {% for playlist in playlists %}
     <li>
-      <a href="{% url 'playlist' playlist.id %}">{{playlist.title}}({{ playlist.number_of_songs }} song/s)</a>
+      <a href="{% url 'playlist' playlist.id %}">{{playlist.title}}({{ playlist.number_of_songs }} song{{ playlist.number_of_songs|pluralize }})</a>
       
     </li>
   {% endfor %}
