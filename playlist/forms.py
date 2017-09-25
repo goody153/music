@@ -1,7 +1,7 @@
 from django import forms
 
 from playlist.models import Song, Playlist
-
+from playlist.YoutubeApi import Youtube
 
 class PlaylistForm(forms.ModelForm):
     """Form for creating playlist
@@ -39,7 +39,7 @@ class PlaylistForm(forms.ModelForm):
         return self.cleaned_data['title']
 
 
-class SongForm(forms.ModelForm):
+class SongForm(Youtube, forms.ModelForm):
     """Form for adding song on a playlist
     """
 
@@ -69,5 +69,8 @@ class SongForm(forms.ModelForm):
         # if self.user and self.playlist exists then it creates otherwise update
         song.user = self.user if self.user else self.instance.user
         song.playlist = self.playlist if self.playlist else self.instance.playlist
+        yt_video = self.set_data(song.link)
+        thumb_url = self.get_image_url()
+        song.thumb_url = thumb_url
         song.save()
         return song
