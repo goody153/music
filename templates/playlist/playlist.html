@@ -28,11 +28,11 @@
           {% csrf_token %}
           <label>Title:</label>
              {{ form.title }}
-             <span id="title_error"></span>
+             <span id="title_error" class="error"></span>
             <br>
           <label>URL:</label>
             {{ form.link }}
-            <span id="link_error"></span>
+            <span id="link_error" class="error"></span>
           <button type="submit">Add</button>
         </form>
       </div>
