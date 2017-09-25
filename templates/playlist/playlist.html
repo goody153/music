@@ -24,22 +24,22 @@
         <h3 class="panel-title">Playlist: {{ playlist.title }}</h3>
       </div>
       <div class="panel-body">
-        <form method="post" novalidate>
+        <form method="post" action="{% url 'playlist' playlist.id %}" id="songForm" novalidate>
           {% csrf_token %}
           <label>Title:</label>
              {{ form.title }}
-             {{ form.title.errors }}
+             <span id="title_error"></span>
             <br>
           <label>URL:</label>
             {{ form.link }}
-            {{ form.link.errors }}
-          <button type="submit">(+)</button>
+            <span id="link_error"></span>
+          <button type="submit">Add</button>
         </form>
       </div>
     </div>
 
     <!-- LIST OF SONGS WITH CONTROLS -->
-    <ul class="list-group">
+    <ul class="list-group" id="songlist" >
   
     {% for song in songs %}
       <li class="list-group-item">
@@ -75,5 +75,6 @@
 
 </script>
 <script src="{% static 'js/videoplayer.js' %}"></script>
+<script src="{% static 'js/playlist.js' %}"></script>
 
 {% endblock %}
