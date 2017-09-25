@@ -30,7 +30,8 @@ class LoginForm(forms.Form):
 class RegistrationForm(forms.ModelForm):
     """ Contains the fields of the registration form
     """
-    confirm_password=forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password=forms.CharField(widget=forms.PasswordInput())
     class Meta:
         model = User
         fields = ('email','password')

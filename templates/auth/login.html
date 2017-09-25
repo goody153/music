@@ -1,19 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="POST" no validate>
+<form method="POST" novalidate>
     {% csrf_token %}
     {{ form.non_field_errors }}
-    <label>Email</label>
-    <span>{{form.email.errors}}</span>
-    {% if form.email.value is None %}
-      <input type="text" name="email">
-    {% else %}
-      <input type="text" name="email" value="{{form.email.value}}">
-    {% endif %}
-    <label>Password</label>
-    <input type="password" name="password">
-    
+    {{form.email.label}}
+    {{form.email}}
+    {{form.errors.email}}
+    {{form.password.label}}
+    {{form.password}}
     <button type="submit">Login</button>
 
 </form>
