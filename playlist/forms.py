@@ -3,6 +3,8 @@ from django import forms
 from playlist.models import Song, Playlist
 from playlist.YoutubeApi import Youtube
 
+import re
+
 class PlaylistForm(forms.ModelForm):
     """Form for creating playlist
     """
@@ -62,20 +64,16 @@ class SongForm(Youtube, forms.ModelForm):
         #check youtube id length validation
         if len(self.cleaned_data['link']) < 11:
             raise forms.ValidationError("Youtube id length is invalid.")
-        #turns full url sent into proper youtube id needed
+
         url = self.cleaned_data['link']
-        if '/v/' in url:
-            url = url.split('/v/',1)[1]
-        elif '/watch?v=' in url:
-            url = url.split('/watch?v=',1)[1]
-        elif '/watch?feature=player&v=' in url:
-            url = url.split('/watch?feature=player&v=',1)[1]
-        elif '/youtu.be/' in url:
-            url = url.split('/youtu.be/',1)[1]
-        elif '/embed/' in url:
-            url = url.split('/embed/')[1]
-        #to make it only takes 11 characters from the delimiter
-        self.cleaned_data['link'] = url[:11]
+        #turns full url into proper youtube id needed
+        if '/v/' in url or 'v=' in url or 'be/' in url or '/embed/' in url:
+            yt_id = re.search(
+                '((?<=/v/)\w+|(?<=v=)\w+|(?<=be/)\w+|(?<=/embed/)\w+)',
+                url
+            )
+            #gets the youtube id after the delimter
+            self.cleaned_data['link'] = yt_id.group(0)[:11]
         #check if song already exists
         song = Song.objects.filter(
             link=self.cleaned_data['link'],
