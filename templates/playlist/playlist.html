@@ -26,13 +26,9 @@
       <div class="panel-body">
         <form method="post" action="{% url 'playlist' playlist.id %}" id="songForm" novalidate>
           {% csrf_token %}
-          <label>Title:</label>
-             {{ form.title }}
-             <span id="title_error" class="error"></span>
-            <br>
           <label>URL:</label>
             {{ form.link }}
-            <span id="link_error" class="error"></span>
+            {{ form.link.errors }}
           <button type="submit">Add</button>
         </form>
       </div>
@@ -42,15 +38,20 @@
     <ul class="list-group" id="songlist" >
   
     {% for song in songs %}
-      <li class="list-group-item">
-      {{ song.title }}
-      {% if request.user == song.user %}
-      <small class="pull-right">
-      <a href="{% url 'song_detail' playlist.id song.id %}">Edit</a>
-      <a href="{% url 'song_delete' playlist.id song.id %}">Delete</a>
-      </small>
-      {% endif %}
-      </li>
+      <div class="media">
+        <div class="media-left media-middle">
+            <img class="media-object" src="{{song.thumb_url}}" alt="...">
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">{{ song.title }}</h4>
+          Duration: {{ song.duration }}
+          {% if request.user == song.user %}
+          <br>
+          <a href="{% url 'song_detail' playlist.id song.id %}">Edit</a>
+          <a href="{% url 'song_delete' playlist.id song.id %}">Delete</a>
+          {% endif %}
+        </div>
+      </div>
     {% endfor %}
     </ul>
     <div id="main" style="display:block">
