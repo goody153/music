@@ -1,6 +1,7 @@
   //ajax for adding songs
   $(document).on('submit', '#songForm' , function( event ){
     event.preventDefault();
+    $('#validation_error').text('');
     // submit new song on the playlist
     $.ajax({
       method: 'POST',
@@ -24,11 +25,10 @@
                    + '</div>'
                 + '</div>';
       $('#songlist').append(songEntry);
+      $('#id_link').val('');
     }).fail(function(error){
       if(error.status === 400){
         // clean the error containers
-        $('#validation_error').text('');
-
         if(error.responseJSON.link !== undefined)
           $('#validation_error').append(error.responseJSON.link);
       }
