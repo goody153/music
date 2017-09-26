@@ -78,7 +78,9 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
                 'delete_url':reverse('song_delete', kwargs={
                     'playlist_id':form.playlist.id,
                     'song_id':form.instance.id
-                    })
+                    }),
+                'thumb_url':form.instance.thumb_url,
+                'duration':form.instance.duration
                 },
                 safe = False
             )
