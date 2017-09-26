@@ -8,13 +8,13 @@
     <div id="player"></div>
     <!-- VIDEO CONTROLS -->
     <div id="videocontroller" style="display:none" class="btn-group" role="group">
-      <input type="button" value="Prev" onclick="playList().getPrev()" class="btn btn-default">
-      <input type="button" value="Play" onclick="videoPlayer().play()" class="btn btn-default">
-      <input type="button" value="Pause" onclick="videoPlayer().pause()" class="btn btn-default">
-      <input type="button" value="Stop" onclick="videoPlayer().stop()" class="btn btn-default">
-      <input type="button" value="Next" onclick="playList().getNext()" class="btn btn-default">
-      <input type="button" value="Mute" onclick="videoPlayer().mute()" class="btn btn-default">
-      <input type="button" value="UnMute" onclick="videoPlayer().unmute()" class="btn btn-default">
+      <input type="button" id="btn_prev" value="Prev" class="btn btn-default">
+      <input type="button" id="btn_play" value="Play" class="btn btn-default">
+      <input type="button" id="btn_pause" value="Pause" class="btn btn-default">
+      <input type="button" id="btn_stop" value="Stop" class="btn btn-default">
+      <input type="button" id="btn_next" value="Next" class="btn btn-default">
+      <input type="button" id="btn_mute" value="Mute" class="btn btn-default">
+      <input type="button" id="btn_unmute" value="UnMute" class="btn btn-default">
     </div>
   </div>
 
@@ -57,7 +57,7 @@
     {% endfor %}
     </ul>
     <div id="main" style="display:block">
-      <input type="button" value="Play Playlist" onclick="playList().playall()" id="btncontrol">
+      <input type="button" value="Play Playlist" id="btncontrol">
     </div>
   </div>
 </div>
@@ -65,19 +65,52 @@
 
 {% block js %}
 
-<script>
-  var songlist = {{ song_ids|safe }}
+<script src="{% static 'js/videoplayer.js' %}"></script>
+<script src="{% static 'js/playlist.js' %}"></script>
 
-  // when the button "Play Playlist" is clicked, it will show the controller
+
+<script>
+  // var songlist = {{ song_ids|safe }}
+
+  var listplayer = new ListPlayer( {{ song_ids|safe }} );
+
   $('#btncontrol').click(function(){
     var controller = document.getElementById('videocontroller');
     var main = document.getElementById('main');
     controller.style.display = 'block';
     main.style.display = 'none';
+    listplayer.start();
+  });
+
+  $('#btn_next').click(function(){
+    listplayer.next();
+  });
+
+  $('#btn_prev').click(function(){
+    listplayer.prev();
+  });
+
+  $('#btn_pause').click(function(){
+    listplayer.pause();
+  });
+
+  $('#btn_stop').click(function(){
+    listplayer.stop();
+  });
+
+  $('#btn_play').click(function(){
+    listplayer.play();
+  });
+
+  $('#btn_mute').click(function(){
+    listplayer.mute();
+  });
+
+  $('#btn_unmute').click(function(){
+    listplayer.unmute();
   });
 
 </script>
-<script src="{% static 'js/videoplayer.js' %}"></script>
-<script src="{% static 'js/playlist.js' %}"></script>
+
 
 {% endblock %}
