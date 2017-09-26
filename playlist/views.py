@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView, View
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.shortcuts import get_object_or_404
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from playlist.models import Playlist, Song, SongHistory
@@ -67,12 +67,23 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
         )
         if form.is_valid():
             form.save()
-            return redirect('playlist', playlist.id)
-        return render(self.request, self.template_name, {
-            'playlist': playlist,
-            'form': form,
-            'songs': songs
-        })
+            return JsonResponse(
+                {
+                'title':form.instance.title,
+                'link':form.instance.link,
+                'edit_url':reverse('song_detail', kwargs={
+                    'playlist_id':form.playlist.id,
+                    'song_id':form.instance.id
+                    }),
+                'delete_url':reverse('song_delete', kwargs={
+                    'playlist_id':form.playlist.id,
+                    'song_id':form.instance.id
+                    })
+                },
+                safe = False
+            )
+
+        return JsonResponse(form.errors, status=400)
 
 
 class SongDetail(LoginRequiredMixin, TemplateView):
