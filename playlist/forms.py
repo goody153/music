@@ -42,6 +42,7 @@ class PlaylistForm(forms.ModelForm):
 class SongForm(Youtube, forms.ModelForm):
     """Form for adding song on a playlist
     """
+    link = forms.CharField(max_length=60)
 
     class Meta:
         model = Song
@@ -61,13 +62,27 @@ class SongForm(Youtube, forms.ModelForm):
         #check youtube id length validation
         if len(self.cleaned_data['link']) < 11:
             raise forms.ValidationError("Youtube id length is invalid.")
+        #turns full url sent into proper youtube id needed
+        url = self.cleaned_data['link']
+        if '/v/' in url:
+            url = url.split('/v/',1)[1]
+        elif '/watch?v=' in url:
+            url = url.split('/watch?v=',1)[1]
+        elif '/watch?feature=player&v=' in url:
+            url = url.split('/watch?feature=player&v=',1)[1]
+        elif '/youtu.be/' in url:
+            url = url.split('/youtu.be/',1)[1]
+        elif '/embed/' in url:
+            url = url.split('/embed/')[1]
+        #to make it only takes 11 characters from the delimiter
+        self.cleaned_data['link'] = url[:11]
+        #check if song already exists
         song = Song.objects.filter(
             link=self.cleaned_data['link'],
             user=self.user,
             playlist=self.playlist,
             archive=False
             )
-        #check if song already exists
         if song.exists():
             raise forms.ValidationError("Song already exists on this playlist.")
      
