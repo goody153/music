@@ -8,10 +8,21 @@
       data: $(this).serialize()
     }).done(function(response){
       // songEntry will be used to append on the songlist
-      songEntry = '<li class="list-group-item">' 
-        + response.title + '<small class="pull-right"><a href="' 
-        + response.edit_url + '">Edit</a> <a href="'
-        + response.delete_url + '">Delete</a></small></li>';
+      songEntry = '<div class="media">'
+                    + '<div class="media-left media-middle">'
+                    +    '<img class="media-object" src="'+ response.thumb_url +'" alt="...">'
+                    + '</div>'
+                   + '<div class="media-body">'
+                    +  '<h4 class="media-heading">'+ response.title +'</h4>'
+                     + 'Duration: '+ response.duration +''
+                     + '<br>'
+                     + '<a href="' 
+                    + response.edit_url + '">Edit</a>'
+                    + ' '
+                     + '<a href="'
+                    + response.delete_url + '">Delete</a>'
+                   + '</div>'
+                + '</div>';
       $('#songlist').append(songEntry);
     }).fail(function(error){
       if(error.status === 400){
