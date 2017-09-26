@@ -70,7 +70,6 @@ class SongForm(Youtube, forms.ModelForm):
         #check if song already exists
         if song.exists():
             raise forms.ValidationError("Song already exists on this playlist.")
-
         return self.cleaned_data['link']
 
     def save(self, commit=True):
