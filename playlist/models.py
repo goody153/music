@@ -23,6 +23,12 @@ class Playlist(models.Model):
     def number_of_songs(self):
         return self.song_set.filter(archive=False).count()
 
+    def get_thumb_url(self):
+        song = self.song_set.filter(archive=False).first()
+        if song:
+            return song.thumb_url
+        return None
+
 
 class Song(models.Model):
     """Song
