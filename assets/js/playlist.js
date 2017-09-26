@@ -10,7 +10,7 @@
       // songEntry will be used to append on the songlist
       songEntry = '<div class="media">'
                     + '<div class="media-left media-middle">'
-                    +    '<img class="media-object" src="'+ response.thumb_url +'" alt="...">'
+                    +    '<img class="media-object" src="'+ response.thumb_url +'">'
                     + '</div>'
                    + '<div class="media-body">'
                     +  '<h4 class="media-heading">'+ response.title +'</h4>'
