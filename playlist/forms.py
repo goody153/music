@@ -45,7 +45,7 @@ class SongForm(Youtube, forms.ModelForm):
 
     class Meta:
         model = Song
-        fields = ['title', 'link']
+        fields = ['link']
 
     def __init__(self, *args, **kwargs):
         """ User and playlist are used for creation of song
@@ -70,7 +70,8 @@ class SongForm(Youtube, forms.ModelForm):
         song.user = self.user if self.user else self.instance.user
         song.playlist = self.playlist if self.playlist else self.instance.playlist
         yt_video = self.set_data(song.link)
-        thumb_url = self.get_image_url()
-        song.thumb_url = thumb_url
+        song.title = self.get_title()
+        song.thumb_url = self.get_image_url()
+        song.duration = self.get_duration(self.get_time_code())
         song.save()
         return song

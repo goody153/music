@@ -3,6 +3,7 @@ import os
 import sys
 import re
 
+# from datetime import timedelta
 from apiclient.discovery import build
 from apiclient.errors import HttpError
 from oauth2client.client import flow_from_clientsecrets
@@ -94,9 +95,9 @@ class Youtube(object):
             return item
         return None
 
-    def _convert_duration(self, dur):
+    def _convert_duration(self, duration):
         # converts the string to int
-        return int(''.join([x for x in dur if x.isdigit()]))
+        return int(''.join([x for x in duration if x.isdigit()]))
 
     def get_time_code(self):
         # returns the time code in this format: PTHMS (string)
@@ -105,7 +106,7 @@ class Youtube(object):
             return duration
         return None
 
-    def get_duration(self, duration):
+    def get_duration_in_seconds(self, duration):
         # accepts a string time code and returns time in seconds
         if duration:
             # match the duration to the regex
@@ -116,7 +117,12 @@ class Youtube(object):
             return hours * 3600 + minutes * 60 + seconds
         return None
 
-
-
-
+    def get_duration(self, duration):
+        # accepts a string time code and returns time in mm:ss format
+        if duration:
+            seconds = self.get_duration_in_seconds(duration)
+            # time = str(datetime.timedelta(seconds=seconds))
+            time = "%02d:%02d" % divmod(seconds, 60)
+            return time
+        return None
 
