@@ -56,11 +56,22 @@ class SongForm(Youtube, forms.ModelForm):
         return super(SongForm, self).__init__(*args, **kwargs)
 
     def clean_link(self):
-        """ check youtube id length
+        """ check link validations
         """
+        #check youtube id length validation
         if len(self.cleaned_data['link']) < 11:
             raise forms.ValidationError("Youtube id length is invalid.")
+        #check if song already exists
+        if Song.objects.filter(
+            link=self.cleaned_data['link'],
+            user=self.user,
+            playlist=self.playlist,
+            archive=False
+            ):
+            raise forms.ValidationError("Song already exists on this playlist.")
         return self.cleaned_data['link']
+
+
 
     def save(self, commit=True):
         """ Song creation needs user and playlist 

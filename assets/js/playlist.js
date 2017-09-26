@@ -27,13 +27,10 @@
     }).fail(function(error){
       if(error.status === 400){
         // clean the error containers
-        $('#title_error').text('');
-        $('#link_error').text('');
+        $('#validation_error').text('');
 
-        if(error.responseJSON.title !== undefined)
-          $('#title_error').text(error.responseJSON.title);
         if(error.responseJSON.link !== undefined)
-          $('#link_error').text(error.responseJSON.link);
+          $('#validation_error').append(error.responseJSON.link);
       }
     });
   });

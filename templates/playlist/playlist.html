@@ -28,7 +28,7 @@
           {% csrf_token %}
           <label>URL:</label>
             {{ form.link }}
-            {{ form.link.errors }}
+            <span class="error" id="validation_error"></span>
           <button type="submit">Add</button>
         </form>
       </div>
