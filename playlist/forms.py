@@ -72,7 +72,7 @@ class SongForm(Youtube, forms.ModelForm):
             raise forms.ValidationError("Song already exists on this playlist.")
      
         # Validates if the user added recently a song 
-        all_song = Song.objects.filter(archive=False)
+        all_song = Song.objects.filter(archive=False, playlist=self.playlist)
         if all_song:
             get_last_user = all_song.last().user
             if self.user == get_last_user:
