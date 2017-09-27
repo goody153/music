@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <ul>
+  {% for search in searches.items %}
+  <li>
+    <img src="{{ search.snippet.thumbnails.default.url }}">
+    {{ search.snippet.title }}
+    {{ search.id.videoId }}
+  </li>
+  {% endfor %}
+  </ul>
+{% endblock %}
