@@ -73,9 +73,10 @@ class SongForm(Youtube, forms.ModelForm):
      
         # Validates if the user added recently a song 
         all_song = Song.objects.filter(archive=False)
-        get_last_user = all_song.last().user
-        if self.user == get_last_user:
-            raise forms.ValidationError('You cannot add right now!')
+        if all_song:
+            get_last_user = all_song.last().user
+            if self.user == get_last_user:
+                raise forms.ValidationError('You cannot add right now!')
 
         return self.cleaned_data['link']
 
