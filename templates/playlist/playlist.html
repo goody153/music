@@ -45,6 +45,8 @@
         <div class="media-body">
           <h4 class="media-heading">{{ song.title }}</h4>
           Duration: {{ song.duration }}
+          <br>
+          By: {{ song.user }}
           {% if request.user == song.user %}
           <br>
           <a href="{% url 'song_detail' playlist.id song.id %}">Edit</a>
