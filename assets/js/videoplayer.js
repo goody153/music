@@ -41,6 +41,14 @@ var ListPlayer = function(songlist){
     }
   }
 
+  function addVideo(code){
+    self.list.push(code);
+  }
+
+  function getPlaylist(){
+    return self.list;
+  }
+
   // start player
   function startPlayer(){
     init();
@@ -84,7 +92,8 @@ var ListPlayer = function(songlist){
     pause: pause,
     stop: stop,
     mute: mute,
-    unmute: unmute
+    unmute: unmute,
+    add: addVideo,
+    getlist: getPlaylist
   }
-
 };

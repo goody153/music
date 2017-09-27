@@ -29,7 +29,7 @@
           <label>URL:</label>
             {{ form.link }}
             <span class="error" id="validation_error"></span>
-          <button type="submit">Add</button>
+          <button type="submit" id="btn_add">Add</button>
         </form>
       </div>
     </div>
@@ -70,8 +70,6 @@
 
 
 <script>
-  // var songlist = {{ song_ids|safe }}
-
   var listplayer = new ListPlayer( {{ song_ids|safe }} );
 
   $('#btncontrol').click(function(){
@@ -80,6 +78,18 @@
     controller.style.display = 'block';
     main.style.display = 'none';
     listplayer.start();
+  });
+
+  $('#btn_add').click(function(){
+    var code = $("[name=link]").val();
+    listplayer.add(code);
+    console.log(listplayer.getlist());
+  });
+
+  $('#btn_testing').click(function(){
+    var test = $("[name=input_test]").val();
+    listplayer.add(test);
+    console.log(listplayer.getlist());
   });
 
   $('#btn_next').click(function(){
