@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <ul>
+  <h2>Search results from {{ keyword }}</h2>
   {% for search in searches.items %}
-  <li>
-    <img src="{{ search.snippet.thumbnails.default.url }}">
-    {{ search.snippet.title }}
-    {{ search.id.videoId }}
-  </li>
+  <div class="media">
+    <div class="media-left media-middle">
+      <img src="{{ search.snippet.thumbnails.default.url }}">
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">{{ search.snippet.title }}</h4>
+      {{ search.id.videoId }}
+    </div>
+  </div>
   {% endfor %}
-  </ul>
+
 {% endblock %}
