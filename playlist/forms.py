@@ -69,11 +69,11 @@ class SongForm(Youtube, forms.ModelForm):
         #turns full url into proper youtube id needed
         if '/v/' in url or 'v=' in url or 'be/' in url or '/embed/' in url:
             yt_id = re.search(
-                '((?<=/v/)\w+|(?<=v=)\w+|(?<=be/)\w+|(?<=/embed/)\w+)',
+                '((?<=/v/)\S+|(?<=v=)\S+|(?<=be/)\S+|(?<=/embed/)\S+)',
                 url
             )
             #gets the youtube id after the delimter
-            self.cleaned_data['link'] = yt_id.group(0)[:11]
+            self.cleaned_data['link'] = yt_id.group()[:11]
         #check if song already exists
         song = Song.objects.filter(
             link=self.cleaned_data['link'],
