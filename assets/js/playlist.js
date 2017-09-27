@@ -19,6 +19,8 @@
                     +  '<h4 class="media-heading">'+ response.title +'</h4>'
                     + 'Duration: '+ response.duration +''
                     + '<br>'
+                    + 'By: '+ response.user +''
+                    + '<br>'
                     + '<a href="' 
                     + response.edit_url + '">Edit</a>'
                     + ' '

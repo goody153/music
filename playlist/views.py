@@ -80,7 +80,8 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
                     'song_id':form.instance.id
                     }),
                 'thumb_url':form.instance.thumb_url,
-                'duration':form.instance.duration
+                'duration':form.instance.duration,
+                'user':form.instance.user.email
                 },
                 safe = False
             )
