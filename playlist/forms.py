@@ -1,9 +1,9 @@
+import re
+
 from django import forms
 
 from playlist.models import Song, Playlist
 from playlist.YoutubeApi import Youtube
-
-import re
 
 class PlaylistForm(forms.ModelForm):
     """Form for creating playlist
