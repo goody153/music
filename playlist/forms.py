@@ -105,3 +105,7 @@ class SongForm(Youtube, forms.ModelForm):
         song.duration = self.get_duration(self.get_time_code())
         song.save()
         return song
+
+
+class SearchPlaylist(forms.Form):
+    keyword = forms.CharField()

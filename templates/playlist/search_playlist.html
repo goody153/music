@@ -1,24 +1,5 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block content %}
-<form method="post" novalidate>
-  {% csrf_token %}
-  <label>Title:</label>
-  {{ form.title }}
-  {{ form.title.errors }}
-  <br>
-  <label>Description:</label>
-  {{ form.description}}
-  <button type = 'submit'>Add Playlist</button>
-</form>
 
-<form method="POST" action-url="{% url 'search_playlist' %}" id="search_playlist" novalidation>
-  {% csrf_token %}
-  {{search_form.keyword}}
-  <button type='submit'>Search</button>
-</form>
-
-<div id="playlists">
 {% for playlist in playlists %}
  <div class="media">
   <div class="media-left">
@@ -38,6 +19,4 @@
   </div>
 </div>
 {% endfor %}
-</div>
 
-{% endblock %}

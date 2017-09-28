@@ -1,3 +1,4 @@
+
 from django.views.generic import TemplateView, View
 from django.shortcuts import render, redirect, reverse
 from django.shortcuts import get_object_or_404
@@ -6,8 +7,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from playlist.models import Playlist, Song, SongHistory
 from users.models import User
+<<<<<<< 81e31d33241dd666433be9af7c65aabd8c377019
 from playlist.forms import SongForm, PlaylistForm
 from playlist.YoutubeApi import Youtube
+=======
+from playlist.forms import SongForm, PlaylistForm, SearchPlaylist
+>>>>>>> search function of the playlist
 
 
 class AllPlaylistView(LoginRequiredMixin, TemplateView):
@@ -19,9 +24,11 @@ class AllPlaylistView(LoginRequiredMixin, TemplateView):
         """show all playlists
         """
         form = PlaylistForm()
+        search_form = SearchPlaylist()
         return render(self.request, self.template_name, {
             'playlists': Playlist.objects.all(),
-            'form':form
+            'form':form,
+            'search_form':search_form
         })
 
     def post(self, *args, **kwargs):
@@ -160,3 +167,13 @@ class SearchSongYoutube(Youtube, LoginRequiredMixin, TemplateView):
             'searches':searches,
             'keyword':qs
         })
+
+
+class SearchedPlaylist(LoginRequiredMixin, TemplateView):
+    """ Searched playlist according to the keyword
+    """
+    template_name = 'playlist/search_playlist.html'
+    def post(self, *args, **kwargs):
+        keyword = self.request.POST['keyword']
+        playlists = Playlist.objects.filter(title__icontains=keyword)
+        return render(self.request, self.template_name, {'playlists':playlists})
