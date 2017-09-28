@@ -151,17 +151,17 @@ class SearchSongYoutube(Youtube, LoginRequiredMixin, TemplateView):
             self.authenticate_yt(),
             part='snippet',
             maxResults=25,
-            q=self.request.POST.get('youtube_keyboard'),
+            q=self.request.POST.get('youtube_search_keyword'),
             type='video'
         )
         return render(self.request, self.template_name, {
             'searches':searches,
-            'keyword':self.request.POST.get('youtube_keyboard'),
+            'keyword':self.request.POST.get('youtube_search_keyword'),
             'playlists':Playlist.objects.all()
         })
 
 
-class AddToPlaylist(LoginRequiredMixin, View):
+class AddToPlaylistFromYoutube(LoginRequiredMixin, TemplateView):
     """Add to playlist from youtube search
     """
     template_name = 'playlist/playlist.html'

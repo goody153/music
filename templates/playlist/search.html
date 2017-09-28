@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
-{% block content %}
-  <h2>Search results from {{ keyword }}</h2>
+  {% block content %}
+  <h2>Search results from "{{ keyword }}"</h2>
   {% for search in searches.items %}
+  {% if search.id.videoId %}
   <div class="media">
     <div class="media-left media-middle">
       <img src="{{ search.snippet.thumbnails.default.url }}">
@@ -23,6 +24,7 @@
       </form>
     </div>
   </div>
+  {% endif %}
   {% endfor %}
 
 {% endblock %}
