@@ -148,14 +148,15 @@ class SearchSongYoutube(Youtube, LoginRequiredMixin, TemplateView):
 
     def post(self, *args, **kwargs):
         # get the data from youtube api
+        qs = self.request.POST.get('youtube_keyword')
         searches = self.search_list_by_keyword(
             self.authenticate_yt(),
             part='snippet',
             maxResults=25,
-            q=self.request.POST.get('youtube_keyboard'),
+            q=qs,
             type='video'
         )
         return render(self.request, self.template_name, {
             'searches':searches,
-            'keyword':self.request.POST.get('youtube_keyboard')
+            'keyword':qs
         })
