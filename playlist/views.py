@@ -156,5 +156,25 @@ class SearchSongYoutube(Youtube, LoginRequiredMixin, TemplateView):
         )
         return render(self.request, self.template_name, {
             'searches':searches,
-            'keyword':self.request.POST.get('youtube_keyboard')
+            'keyword':self.request.POST.get('youtube_keyboard'),
+            'playlists':Playlist.objects.all()
         })
+
+
+class AddToPlaylist(LoginRequiredMixin, View):
+    """Add to playlist from youtube search
+    """
+
+    def post(self, *args, **kwargs):
+        playlist = get_object_or_404(
+            Playlist,
+            id=self.request.POST.get('playlist')
+        )
+        form = SongForm(
+            self.request.POST,
+            user=self.request.user,
+            playlist=playlist,
+        )
+        if form.is_valid():
+            form.save()
+        return redirect('playlist', self.request.POST.get('playlist'))
