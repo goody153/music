@@ -73,7 +73,17 @@
 
 {% block js %}
 <script>
+  
 var song_ids = {{ song_ids|safe }};
+  // when the button "Play Playlist" is clicked, it will show the controller
+  $('#btncontrol').click(function(){
+    var controller = document.getElementById('videocontroller');
+    var main = document.getElementById('main');
+    controller.style.display = 'block';
+    main.style.display = 'none';
+  });
+
+
 </script>
 
 {% endblock %}

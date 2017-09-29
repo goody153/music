@@ -11,9 +11,9 @@
       data: data
     }).done(function(response){
       // songEntry will be used to append on the songlist
-      songEntry = '<div class="media">'
+      songEntry = '<div class="media" id="'+ response.id +'">'
                     + '<div class="media-left media-middle">'
-                    +    '<img class="media-object" src="'+ response.thumb_url +'">'
+                    + '<img class="media-object" src="'+ response.thumb_url +'">'
                     + '</div>'
                     + '<div class="media-body">'
                     +  '<h4 class="media-heading">'+ response.title +'</h4>'
@@ -23,9 +23,8 @@
                     + '<br>'
                     + '<a href="' 
                     + response.edit_url + '">Edit</a>'
-                    + ' '
-                    + '<a href="'
-                    + response.delete_url + '">Delete</a>'
+                    + '<a href="' 
+                    + response.delete_url + '" class="deleteSong">Delete</a>'
                     + '</div>'
                     + '</div>';
       $('#songlist').append(songEntry);
@@ -61,4 +60,16 @@
     }).done(function(response){
       $('#playlists').html(response)
     });
+  });
+
+  // ajax for deleting songs
+  $(document).on('click', '.deleteSong', function( event ){
+  $.ajax({
+    method: 'GET',
+    url: $(this).attr('href'),
+    data: $(this).serialize()
+  }).done(function(response){
+      $("#"+response.song_id).remove();
+  });
+  event.preventDefault();
   });

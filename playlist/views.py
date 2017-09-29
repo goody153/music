@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, reverse
 from django.shortcuts import get_object_or_404
 from django.http import Http404, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.middleware.csrf import get_token
 
 from playlist.models import Playlist, Song, SongHistory
 from users.models import User
@@ -74,6 +75,7 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
             form.save()
             return JsonResponse(
                 {
+                'id':form.instance.id,
                 'title':form.instance.title,
                 'link':form.instance.link,
                 'edit_url':reverse('song_detail', kwargs={
@@ -140,9 +142,9 @@ class SongDelete(LoginRequiredMixin, View):
             id=kwargs['song_id'],
             user=self.request.user
         )
-        # passes archive True to the overriden save method to represent as delete
+        #to archive a song
         song.save(archive=True)
-        return redirect('playlist', kwargs['playlist_id'])
+        return JsonResponse({'song_id':song.id}, safe=False)
 
 
 class SearchSongYoutube(Youtube, LoginRequiredMixin, TemplateView):
