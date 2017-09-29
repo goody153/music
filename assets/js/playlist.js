@@ -56,7 +56,7 @@
     event.preventDefault();
     $.ajax({
       type: 'Get',
-      url: $(this).attr('url-all'),
+      url: $(this).attr('url'),
       data: $(this).serialize()
     }).done(function(response){
       $('#playlists').html(response)
