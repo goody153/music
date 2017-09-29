@@ -41,12 +41,12 @@
     });
   });
 
-    $(document).on('submit', '#search_playlist', function(event){
+    $(document).on('keyup', '#id_keyword', function(event){
     event.preventDefault();
-    $.ajax({
-      type: 'POST',
-      url: $(this).attr('action-url'),
-      data: $(this).serialize()
+    var form = $("#search_playlist");
+    $.post({
+      url: form.attr('action-url'),
+      data: form.serialize()
     }).done(function(response){
       $('#playlists').html(response)
     });
