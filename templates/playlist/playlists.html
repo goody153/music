@@ -20,25 +20,29 @@
 </form>
 
 <div id="playlists">
-{% for playlist in playlists %}
- <div class="media">
-  <div class="media-left">
-    <a href="#">
-      {% if playlist.get_thumb_url %}
-        <img class="media-object" src="{{ playlist.get_thumb_url }}">
-      {% else %}
-        <img class="media-object" src="{% static 'picture/playlist_default.jpg' %}" width="120px" height="90px">
-      {% endif %}
-    </a>
+{% if playlists %}
+  {% for playlist in playlists %}
+   <div class="media">
+    <div class="media-left">
+      <a href="#">
+        {% if playlist.get_thumb_url %}
+          <img class="media-object" src="{{ playlist.get_thumb_url }}">
+        {% else %}
+          <img class="media-object" src="{% static 'picture/playlist_default.jpg' %}" width="120px" height="90px">
+        {% endif %}
+      </a>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading"><a href="{% url 'playlist' playlist.id %}">{{ playlist.title }}</a></h4>
+      {{ playlist.number_of_songs }} song{{ playlist.number_of_songs|pluralize }}
+      <br>
+      by {{ playlist.user }}
+    </div>
   </div>
-  <div class="media-body">
-    <h4 class="media-heading"><a href="{% url 'playlist' playlist.id %}">{{ playlist.title }}</a></h4>
-    {{ playlist.number_of_songs }} song{{ playlist.number_of_songs|pluralize }}
-    <br>
-    by {{ playlist.user }}
-  </div>
-</div>
-{% endfor %}
+  {% endfor %}
+{% else %}
+  Create a playlist now!
+{% endif %}
 </div>
 
 {% endblock %}
