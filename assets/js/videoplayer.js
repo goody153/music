@@ -4,68 +4,86 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-// this will be the main class
-var ListPlayer = function(songlist){
-
+// onYouTubeIframeAPIReady is needed so that YT won't have any errors
+function onYouTubeIframeAPIReady() {
+ var ListPlayer = function(songlist){
   // create the list
   var self = this;
   self.list = songlist;
-  self.player = undefined;
+  var index = 0;
 
-  // init the player
-  function init(){
+  // initialize the player, autoplay when ready
+  function init(code){
     self.player = new YT.Player('player', {
     height: '390',
     width: '640',
-    videoId: self.list[0],
+    videoId: code,
     events: {
-      'onReady': onPlayerReady,
-      'onStateChange': onPlayerStateChange
+      'onReady': play,
+      'onStateChange': function(event){
+                        if(event.data == 0){
+                          next();
+                        }
+                      }
     },
-      playerVars: {
-          playlist: self.list.slice(1).join(','),
-          controls: 0,
-          loop: 1,
-          showinfo: 0,
+    playerVars: {
+        controls: 0,
+        showinfo: 0,
       }
     });
   }
 
-  function onPlayerReady(event){
-    event.target.playVideo();
-  }
-
-  function onPlayerStateChange(event){
-    if(event.data == 0){
-      console.log("lalalala");
+  // control functions
+  function next(){
+    // destroy the current player
+    self.player.destroy();
+    // check if the index is greater than the list length
+    if(getIndex() >= self.list.length-1){
+      init(self.list[0]);
+      index = 0;
+    }
+    else{
+      // init the next player with the next index
+      init(self.list[getIndex()+1]);
+      // set the index
+      index = getIndex()+1;
     }
   }
 
-  function addVideo(code){
-    self.list.push(code);
-  }
-
-  function getPlaylist(){
-    return self.list;
-  }
-
-  // start player
-  function startPlayer(){
-    init();
-  }
-
-  // next video
-  function next(){
-    self.player.nextVideo();
-  }
-
-  // previous video
   function prev(){
-    self.player.previousVideo();
+    // destroy the current player
+    self.player.destroy();
+    // check if the index is greater than the list length
+    if(getIndex() <= 0){
+      init(self.list[self.list.length-1]);
+      index = self.list.length-1;
+    }
+    else{
+      // init the next player with the next index
+      init(self.list[getIndex()-1]);
+      // set the index
+      index = getIndex()-1;
+    }
+  }
+
+  function start(){
+    init(self.list[0]);
+  }
+
+  function getLength(){
+    return self.list.length;
+  }
+
+  function getIndex(){
+    return index;
   }
 
   function play(){
     self.player.playVideo();
+  }
+
+  function stop(){
+    self.player.stopVideo();
   }
 
   function pause(){
@@ -83,17 +101,62 @@ var ListPlayer = function(songlist){
   function unmute(){
     self.player.unMute();
   }
-
+  
+  // returns
   return {
-    start: startPlayer,
+    start: start,
+    play: play,
+    stop: stop,
+    pause: pause,
     next: next,
     prev: prev,
-    play: play,
-    pause: pause,
-    stop: stop,
     mute: mute,
     unmute: unmute,
-    add: addVideo,
-    getlist: getPlaylist
+    getlength: getLength,
+    init: init,
   }
-};
+
+  };
+
+  // this control is for when a the playlist is empty
+  $('#btn_add').on('click', function(){
+    if(listplayer.getlength() == 0){
+      var code = $("[name=link]").val();
+      listplayer.init(code);
+    }
+  });
+
+  $('#btn_next').on('click',function(){
+    listplayer.next();
+  });
+
+  $('#btn_prev').on('click',function(){
+    listplayer.prev();
+  });
+
+  $('#btn_pause').on('click',function(){
+    listplayer.pause();
+  });
+
+  $('#btn_stop').on('click',function(){
+    listplayer.stop();
+  });
+
+  $('#btn_play').on('click',function(){
+    listplayer.play();
+  });
+
+  $('#btn_mute').on('click',function(){
+    listplayer.mute();
+  });
+
+  $('#btn_unmute').on('click',function(){
+    listplayer.unmute();
+  });
+
+  var listplayer = new ListPlayer(song_ids);
+  if(song_ids.length > 0){
+    listplayer.start();
+  }
+
+}

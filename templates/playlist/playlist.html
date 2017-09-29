@@ -5,9 +5,11 @@
 <div class="row">
   <div class="col-sm-8">
     <!-- VIDEO PLAYER -->
-    <div id="player"></div>
+    <div style="height:390;width:640;">
+      <div id="player"></div>
+    </div>
     <!-- VIDEO CONTROLS -->
-    <div id="videocontroller" style="display:none" class="btn-group" role="group">
+    <div id="videocontroller" style="" class="btn-group" role="group">
       <input type="button" id="btn_prev" value="Prev" class="btn btn-default">
       <input type="button" id="btn_play" value="Play" class="btn btn-default">
       <input type="button" id="btn_pause" value="Pause" class="btn btn-default">
@@ -56,71 +58,15 @@
       </div>
     {% endfor %}
     </ul>
-    <div id="main" style="display:block">
-      <input type="button" value="Play Playlist" id="btncontrol">
-    </div>
   </div>
 </div>
 {% endblock %}
 
 {% block js %}
-
+<script>
+var song_ids = {{ song_ids|safe }};
+</script>
 <script src="{% static 'js/videoplayer.js' %}"></script>
 <script src="{% static 'js/playlist.js' %}"></script>
-
-
-<script>
-  var listplayer = new ListPlayer( {{ song_ids|safe }} );
-
-  $('#btncontrol').click(function(){
-    var controller = document.getElementById('videocontroller');
-    var main = document.getElementById('main');
-    controller.style.display = 'block';
-    main.style.display = 'none';
-    listplayer.start();
-  });
-
-  $('#btn_add').click(function(){
-    var code = $("[name=link]").val();
-    listplayer.add(code);
-    console.log(listplayer.getlist());
-  });
-
-  $('#btn_testing').click(function(){
-    var test = $("[name=input_test]").val();
-    listplayer.add(test);
-    console.log(listplayer.getlist());
-  });
-
-  $('#btn_next').click(function(){
-    listplayer.next();
-  });
-
-  $('#btn_prev').click(function(){
-    listplayer.prev();
-  });
-
-  $('#btn_pause').click(function(){
-    listplayer.pause();
-  });
-
-  $('#btn_stop').click(function(){
-    listplayer.stop();
-  });
-
-  $('#btn_play').click(function(){
-    listplayer.play();
-  });
-
-  $('#btn_mute').click(function(){
-    listplayer.mute();
-  });
-
-  $('#btn_unmute').click(function(){
-    listplayer.unmute();
-  });
-
-</script>
-
 
 {% endblock %}
