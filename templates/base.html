@@ -28,10 +28,10 @@
           <ul class="nav navbar-nav navbar-right">
           {% if request.user.is_authenticated %}
             <li>
-              <form method = "post" action="{% url 'search_youtube' %}">
+              <form method = "post" action="{% url 'search_youtube' %}" id="search_form">
               {% csrf_token %}
-              <input type="text" name="youtube_keyword" placeholder="search on youtube">
-              <button type="submit">Search</button>
+              <input type="text" name="youtube_keyword" placeholder="search on youtube" id="search_field">
+              <button type="submit" id="search_submit" disabled>Search</button>
               </form>
             </li>
             <li><a href="{% url 'all_playlist' %}">Playlists</a></li>
@@ -61,6 +61,7 @@
     <!-- JAVASCRIPT FILES ARE LOADED HERE -->
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/search.js' %}"></script>
 
 <!-- INSERT YOUR JAVASCRIPTS HERE -->
     {% block js %}
