@@ -173,7 +173,11 @@ class SearchedPlaylist(LoginRequiredMixin, TemplateView):
     """ Searched playlist according to the keyword
     """
     template_name = 'playlist/search_playlist.html'
-    
+
+    def get(self, *args, **kwargs):
+        playlists = Playlist.objects.all()
+        return render(self.request, self.template_name, {'playlists':playlists})
+
     def post(self, *args, **kwargs):
         keyword = self.request.POST['keyword']
         playlists = Playlist.objects.filter(title__icontains=keyword)

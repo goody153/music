@@ -14,8 +14,9 @@
 
 <form method="POST" action-url="{% url 'search_playlist' %}" id="search_playlist" novalidate>
   {% csrf_token %}
-  <label>Search:</label>
   {{search_form.keyword}}
+  <button type='submit'>Search</button>
+  <button id="all_playlist" url="{% url 'search_playlist' %}">all</button>
 </form>
 
 <div id="playlists">
