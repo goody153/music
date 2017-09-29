@@ -51,3 +51,14 @@
       $('#playlists').html(response)
     });
   });
+
+    $(document).on('click', '#all_playlist', function(event){
+    event.preventDefault();
+    $.ajax({
+      type: 'Get',
+      url: $(this).attr('url-all'),
+      data: $(this).serialize()
+    }).done(function(response){
+      $('#playlists').html(response)
+    });
+  });

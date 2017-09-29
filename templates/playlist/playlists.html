@@ -12,9 +12,10 @@
   <button type = 'submit'>Add Playlist</button>
 </form>
 
-<form method="POST" action-url="{% url 'search_playlist' %}" id="search_playlist" novalidation>
+<form method="POST" action-url="{% url 'search_playlist' %}" id="search_playlist" novalidate>
   {% csrf_token %}
   {{search_form.keyword}}
+  <button id="all_playlist" url-all="{% url 'search_playlist' %}">all</button>
   <button type='submit'>Search</button>
 </form>
 
