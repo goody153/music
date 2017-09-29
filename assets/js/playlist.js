@@ -64,12 +64,13 @@
 
   // ajax for deleting songs
   $(document).on('click', '.deleteSong', function( event ){
-  $.ajax({
-    method: 'GET',
-    url: $(this).attr('href'),
-    data: $(this).serialize()
-  }).done(function(response){
+    $.ajax({
+      method: 'GET',
+      url: $(this).attr('href'),
+      data: $(this).serialize()
+    }).done(function(response){
+      //remove song from the template
       $("#"+response.song_id).remove();
-  });
-  event.preventDefault();
+    });
+    event.preventDefault();
   });
