@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect, reverse
 from django.shortcuts import get_object_or_404
 from django.http import Http404, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.middleware.csrf import get_token
 
 from playlist.models import Playlist, Song, SongHistory
 from users.models import User
