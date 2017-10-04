@@ -29,6 +29,7 @@
     {{ playlist.number_of_songs }} song{{ playlist.number_of_songs|pluralize }}
     <br>
     by {{ playlist.user }}
+    <a href="{% url 'playlist_delete' playlist.id %}">DELETE</a>
   </div>
 </div>
 {% endfor %}

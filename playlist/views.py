@@ -139,3 +139,15 @@ class SongDelete(LoginRequiredMixin, View):
         song.save(archive=True)
         return redirect('playlist', kwargs['playlist_id'])
 
+
+class PlaylistDelete(LoginRequiredMixin, View):
+    """ Delete playlist as owner
+    """
+    def get(self, *args, **kwargs):
+        playlist = get_object_or_404(
+            Playlist,
+            id=kwargs['playlist_id'],
+            user=self.request.user
+        )
+        playlist.delete()
+        return redirect('all_playlist')
