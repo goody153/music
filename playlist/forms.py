@@ -20,7 +20,7 @@ class PlaylistForm(forms.ModelForm):
     def save(self, commit=True):
         """ overridden save
         """
-        instance = super(PlaylistForm, self).save(commit=False)
+        instance = super(PlaylistForm, self).save(commit=False) 
         instance.user = self.user
         instance.save()
         return instance

@@ -19,7 +19,7 @@ class AllPlaylistView(LoginRequiredMixin, TemplateView):
         """
         form = PlaylistForm()
         return render(self.request, self.template_name, {
-            'playlists': Playlist.objects.all(),
+            'playlists': Playlist.objects.filter(archive=False),
             'form':form
         })
 
@@ -31,7 +31,7 @@ class AllPlaylistView(LoginRequiredMixin, TemplateView):
             form.save()
             return redirect('all_playlist')
         return render(self.request, self.template_name, {
-            'playlists': Playlist.objects.all(),
+            'playlists': Playlist.objects.filter(archive=False),
             'form': form
         })
 
@@ -149,5 +149,6 @@ class PlaylistDelete(LoginRequiredMixin, View):
             id=kwargs['playlist_id'],
             user=self.request.user
         )
-        playlist.delete()
+        playlist.archive = True
+        playlist.save()
         return redirect('all_playlist')
