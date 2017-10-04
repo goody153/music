@@ -11,6 +11,7 @@ class Playlist(models.Model):
     user = models.ForeignKey(User)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    archive = models.BooleanField(default=False)
 
     class Meta:
         """ title has to be unique as per user
