@@ -43,7 +43,7 @@
     <ul class="list-group" id="songlist" >
     {% for song in songs %}
       <li id="song-state-{{ forloop.counter }}" class="">
-        <div class="media">
+        <div class="media" id="{{song.id}}">
           <div class="media-left media-middle">
               <img class="media-object" src="{{song.thumb_url}}">
           </div>
@@ -60,7 +60,10 @@
             {% if request.user == song.user %}
             <br>
             <a href="{% url 'song_detail' playlist.id song.id %}">Edit</a>
-            <a href="{% url 'song_delete' playlist.id song.id %}">Delete</a>
+            <form method="post" action="{% url 'song_delete' playlist.id song.id %}" class="deleteSong">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+          </form>
             {% endif %}
           </div>
         </div>
@@ -75,14 +78,6 @@
 <script>
   
 var song_ids = {{ song_ids|safe }};
-  // when the button "Play Playlist" is clicked, it will show the controller
-  $('#btncontrol').click(function(){
-    var controller = document.getElementById('videocontroller');
-    var main = document.getElementById('main');
-    controller.style.display = 'block';
-    main.style.display = 'none';
-  });
-
 
 </script>
 

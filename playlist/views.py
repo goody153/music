@@ -65,6 +65,7 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
         """
         playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
         songs = Song.objects.filter(playlist=playlist, archive=False)
+        song_ids = songs.values_list('link', flat=True)
         form = SongForm(
             self.request.POST,
             user=self.request.user,
@@ -135,7 +136,7 @@ class SongDelete(LoginRequiredMixin, View):
     """Delete Song from Playlist
     """
 
-    def get(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
         song = get_object_or_404(
             Song,
             id=kwargs['song_id'],

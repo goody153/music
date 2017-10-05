@@ -10,6 +10,8 @@
       url: $(this).attr('action'),
       data: data
     }).done(function(response){
+      // create the necessary csrftoken for the delete song form
+      var csrftoken = getCookie('csrftoken');
       // songEntry will be used to append on the songlist
       songEntry = '<div class="media" id="'+ response.id +'">'
                     + '<div class="media-left media-middle">'
@@ -23,9 +25,11 @@
                     + '<br>'
                     + '<a href="' 
                     + response.edit_url + '">Edit</a>'
-                    + '<a href="' 
-                    + response.delete_url + '" class="deleteSong">Delete</a>'
-                    + '</div>'
+                    + '<form method="post" class="deleteSong" action="'
+                    + response.delete_url + '" class="deleteSong">'
+                    + '<input type="hidden" name="csrfmiddlewaretoken" value="' + csrftoken
+                    + '"><button type="submit">Delete</button>'
+                    + '</form></div>'
                     + '</div>';
       $('#songlist').append(songEntry);
 
@@ -63,14 +67,30 @@
   });
 
   // ajax for deleting songs
-  $(document).on('click', '.deleteSong', function( event ){
+  $(document).on('submit', '.deleteSong', function( event ){
+    event.preventDefault();
     $.ajax({
-      method: 'GET',
-      url: $(this).attr('href'),
+      method: 'POST',
+      url: $(this).attr('action'),
       data: $(this).serialize()
     }).done(function(response){
       //remove song from the template
       $("#"+response.song_id).remove();
     });
-    event.preventDefault();
   });
+
+  // function for creating csrf_token 
+  function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = jQuery.trim(cookies[i]);
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
