@@ -12,7 +12,7 @@
     <div class="media-body">
       <h4 class="media-heading">{{ search.snippet.title }}</h4>
       {{ search.id.videoId }}
-      <form method = "post" action="">
+      <form method = "post" action="{% url 'add_youtube_search' %}">
       {% csrf_token %}
       <label>Playlist:</label>
       <input type="hidden" name="link" value="{{ search.id.videoId }}">

@@ -167,6 +167,7 @@ class SearchSongYoutube(Youtube, LoginRequiredMixin, TemplateView):
             'keyword':qs
         })
 
+
 class SearchedPlaylist(LoginRequiredMixin, TemplateView):
     """ Searched playlist according to the keyword
     """
@@ -180,3 +181,32 @@ class SearchedPlaylist(LoginRequiredMixin, TemplateView):
         keyword = self.request.POST['keyword']
         playlists = Playlist.objects.filter(title__icontains=keyword)
         return render(self.request, self.template_name, {'playlists':playlists})
+
+class AddToPlaylistFromYoutube(LoginRequiredMixin, TemplateView):
+    """ Add to playlist from youtube search
+    """
+    template_name = 'playlist/playlist.html'
+
+    def post(self, *args, **kwargs):
+        playlist = get_object_or_404(
+            Playlist,
+            id=self.request.POST.get('playlist')
+        )
+        form = SongForm(
+            self.request.POST,
+            user=self.request.user,
+            playlist=playlist,
+        )
+        if form.is_valid():
+            form.save()
+            return redirect('playlist', self.request.POST.get('playlist'))
+        # return validation error on playlist
+        songs = Song.objects.filter(playlist=playlist, archive=False)
+        song_ids = songs.values_list('link', flat=True)
+        return render(self.request, self.template_name, {
+            'playlist': playlist,
+            'songs': songs,
+            'form': form,
+            'songs_ids': list(song_ids)
+        })
+
