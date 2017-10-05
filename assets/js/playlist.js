@@ -13,7 +13,8 @@
       // create the necessary csrftoken for the delete song form
       var csrftoken = getCookie('csrftoken');
       // songEntry will be used to append on the songlist
-      songEntry = '<div class="media" id="'+ response.id +'">'
+      songEntry = '<li id="song-state-'+ ( song_ids.length++ ) +'" class="">'
+                    + '<div class="media" id="'+ response.id +'">'
                     + '<div class="media-left media-middle">'
                     + '<img class="media-object" src="'+ response.thumb_url +'">'
                     + '</div>'
@@ -30,7 +31,7 @@
                     + '<input type="hidden" name="csrfmiddlewaretoken" value="' + csrftoken
                     + '"><button type="submit">Delete</button>'
                     + '</form></div>'
-                    + '</div>';
+                    + '</div></li>';
       $('#songlist').append(songEntry);
 
       song_ids.push(response.link);
@@ -75,7 +76,7 @@
       data: $(this).serialize()
     }).done(function(response){
       //remove song from the template
-      $("#"+response.song_id).remove();
+      $("#"+response.song_id).parent( "li" ).remove()
       song_ids.pop();
     });
   });

@@ -42,7 +42,7 @@
     <!-- LIST OF SONGS WITH CONTROLS -->
     <ul class="list-group" id="songlist" >
     {% for song in songs %}
-      <li id="song-state-{{ forloop.counter }}" class="">
+      <li id="song-state-{{ forloop.counter }}">
         <div class="media" id="{{song.id}}">
           <div class="media-left media-middle">
               <img class="media-object" src="{{song.thumb_url}}">
