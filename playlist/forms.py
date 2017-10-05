@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 
 from playlist.models import Song, Playlist
@@ -42,6 +44,7 @@ class PlaylistForm(forms.ModelForm):
 class SongForm(Youtube, forms.ModelForm):
     """Form for adding song on a playlist
     """
+    link = forms.CharField(max_length=60)
 
     class Meta:
         model = Song
@@ -58,16 +61,25 @@ class SongForm(Youtube, forms.ModelForm):
     def clean_link(self):
         """ check link validations
         """
+        yt_code = self.cleaned_data['link']
         #check youtube id length validation
-        if len(self.cleaned_data['link']) < 11:
+        if len(yt_code) < 11:
             raise forms.ValidationError("Youtube id length is invalid.")
+        elif len(yt_code) > 11:
+            #turns full url into proper youtube id needed
+            yt_id = re.search(
+                '((?<=/v/)\S+|(?<=v=)\S+|(?<=be/)\S+|(?<=/embed/)\S+)',
+                yt_code
+            )
+            #gets the youtube id after the delimter
+            yt_code = yt_id.group()[:11]
+        #check if song already exists
         song = Song.objects.filter(
-            link=self.cleaned_data['link'],
+            link=yt_code,
             user=self.user,
             playlist=self.playlist,
             archive=False
             )
-        #check if song already exists
         if song.exists():
             raise forms.ValidationError("Song already exists on this playlist.")
      
@@ -78,7 +90,7 @@ class SongForm(Youtube, forms.ModelForm):
             if self.user == get_last_user:
                 raise forms.ValidationError('You cannot add right now!')
 
-        return self.cleaned_data['link']
+        return yt_code
 
     def save(self, commit=True):
         """ Song creation needs user and playlist 
