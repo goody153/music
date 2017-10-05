@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from playlist.models import Playlist, Song, SongHistory
 from users.models import User
 from playlist.forms import SongForm, PlaylistForm
+from playlist.YoutubeApi import Youtube
 
 
 class AllPlaylistView(LoginRequiredMixin, TemplateView):
@@ -139,3 +140,23 @@ class SongDelete(LoginRequiredMixin, View):
         song.save(archive=True)
         return redirect('playlist', kwargs['playlist_id'])
 
+
+class SearchSongYoutube(Youtube, LoginRequiredMixin, TemplateView):
+    """ Search song on youtube from inside the app
+    """
+    template_name = 'playlist/search.html'
+
+    def post(self, *args, **kwargs):
+        # get the data from youtube api
+        qs = self.request.POST.get('youtube_keyword')
+        searches = self.search_list_by_keyword(
+            self.authenticate_yt(),
+            part='snippet',
+            maxResults=25,
+            q=qs,
+            type='video'
+        )
+        return render(self.request, self.template_name, {
+            'searches':searches,
+            'keyword':qs
+        })

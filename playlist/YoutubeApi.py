@@ -126,3 +126,12 @@ class Youtube(object):
             return time
         return None
 
+    def search_list_by_keyword(self, service, **kwargs):
+        #returns the search result from youtube with a keyword
+        kwargs = self.remove_empty_kwargs(**kwargs)
+        results = service.search().list(
+          **kwargs
+        ).execute()
+
+        self.data = results
+        return self.data
