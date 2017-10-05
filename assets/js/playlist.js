@@ -42,7 +42,7 @@
   });
 
     $(document).on('submit', '#search_playlist', function(event){
-    event.preventDefault();
+      event.preventDefault();
     $.ajax({
       type: 'POST',
       url: $(this).attr('action-url'),
@@ -53,7 +53,7 @@
   });
 
     $(document).on('click', '#all_playlist', function(event){
-    event.preventDefault();
+      event.preventDefault();
     $.ajax({
       type: 'Get',
       url: $(this).attr('url'),
