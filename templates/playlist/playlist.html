@@ -40,24 +40,30 @@
 
     <!-- LIST OF SONGS WITH CONTROLS -->
     <ul class="list-group" id="songlist" >
-  
     {% for song in songs %}
-      <div class="media">
-        <div class="media-left media-middle">
-            <img class="media-object" src="{{song.thumb_url}}">
+      <li id="song-state-{{ forloop.counter }}" class="">
+        <div class="media">
+          <div class="media-left media-middle">
+              <img class="media-object" src="{{song.thumb_url}}">
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">
+              {{ song.title }}
+              <div id="player_state_{{forloop.counter}}" class="nowplaying">
+                <small>(now playing)</small>
+              </div>
+            </h4>
+            Duration: {{ song.duration }}
+            <br>
+            By: {{ song.user }}
+            {% if request.user == song.user %}
+            <br>
+            <a href="{% url 'song_detail' playlist.id song.id %}">Edit</a>
+            <a href="{% url 'song_delete' playlist.id song.id %}">Delete</a>
+            {% endif %}
+          </div>
         </div>
-        <div class="media-body">
-          <h4 class="media-heading">{{ song.title }}</h4>
-          Duration: {{ song.duration }}
-          <br>
-          By: {{ song.user }}
-          {% if request.user == song.user %}
-          <br>
-          <a href="{% url 'song_detail' playlist.id song.id %}">Edit</a>
-          <a href="{% url 'song_delete' playlist.id song.id %}">Delete</a>
-          {% endif %}
-        </div>
-      </div>
+      </li>
     {% endfor %}
     </ul>
   </div>

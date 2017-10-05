@@ -2,3 +2,15 @@
     display: block;
     color: #ff0000;
 }
+
+.active {
+    background-color: #9FD1F7;
+}
+
+.nowplaying {
+    display: none;
+}
+
+.active .nowplaying {
+    display: block;
+}
