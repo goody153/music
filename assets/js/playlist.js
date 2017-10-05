@@ -76,6 +76,7 @@
     }).done(function(response){
       //remove song from the template
       $("#"+response.song_id).remove();
+      song_ids.pop();
     });
   });
 
