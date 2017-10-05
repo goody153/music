@@ -7,12 +7,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from playlist.models import Playlist, Song, SongHistory
 from users.models import User
-<<<<<<< 81e31d33241dd666433be9af7c65aabd8c377019
-from playlist.forms import SongForm, PlaylistForm
+
 from playlist.YoutubeApi import Youtube
-=======
 from playlist.forms import SongForm, PlaylistForm, SearchPlaylist
->>>>>>> search function of the playlist
 
 
 class AllPlaylistView(LoginRequiredMixin, TemplateView):
