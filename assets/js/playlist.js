@@ -29,6 +29,9 @@
                     + '</div>'
                     + '</div>';
       $('#songlist').append(songEntry);
+
+      song_ids.push(response.link);
+
     }).fail(function(error){
       if(error.status === 400){
         // clean the error containers
