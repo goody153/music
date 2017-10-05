@@ -10,6 +10,17 @@
     <div class="media-body">
       <h4 class="media-heading">{{ search.snippet.title }}</h4>
       {{ search.id.videoId }}
+      <form method = "post" action="">
+      {% csrf_token %}
+      <label>Playlist:</label>
+      <input type="hidden" name="link" value="{{ search.id.videoId }}">
+      <select name="playlist">
+      {% for pl in playlists %}
+        <option value="{{ pl.id }}" > {{ pl }} </option>
+      {% endfor %}
+      </select>
+      <button type="submit">Add to Playlist</button>
+      </form>
     </div>
   </div>
   {% endfor %}
