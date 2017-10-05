@@ -15,18 +15,14 @@ function onYouTubeIframeAPIReady() {
   // initialize the player, autoplay when ready
   function init(code){
     self.player = new YT.Player('player', {
-    height: '390',
-    width: '640',
-    videoId: code,
-    events: {
-      'onReady': play,
-      'onStateChange': function(event){
-                        if(event.data == 0){
-                          next();
-                        }
-                      }
-    },
-    playerVars: {
+      height: '390',
+      width: '640',
+      videoId: code,
+      events: {
+        'onReady': play,
+        'onStateChange': stateChange,
+      },
+      playerVars: {
         controls: 0,
         showinfo: 0,
       }
@@ -35,35 +31,33 @@ function onYouTubeIframeAPIReady() {
 
   // control functions
   function next(){
+    $('#song-state-'+(index+1)).removeClass("active");
     // destroy the current player
     self.player.destroy();
     // check if the index is greater than the list length
     if(getIndex() >= self.list.length-1){
-      init(self.list[0]);
       index = 0;
     }
     else{
-      // init the next player with the next index
-      init(self.list[getIndex()+1]);
       // set the index
       index = getIndex()+1;
     }
+    init(self.list[index]);
   }
 
   function prev(){
+    $('#song-state-'+(index+1)).removeClass("active");
     // destroy the current player
     self.player.destroy();
     // check if the index is greater than the list length
     if(getIndex() <= 0){
-      init(self.list[self.list.length-1]);
       index = self.list.length-1;
     }
     else{
-      // init the next player with the next index
-      init(self.list[getIndex()-1]);
       // set the index
       index = getIndex()-1;
     }
+    init(self.list[index]);
   }
 
   function start(){
@@ -76,6 +70,16 @@ function onYouTubeIframeAPIReady() {
 
   function getIndex(){
     return index;
+  }
+
+  function stateChange(event){
+    if(event.data == 1){
+      $('#song-state-'+(index+1)).addClass("active");
+    }
+    if(event.data == 0){
+      $('#song-state-'+(index+1)).removeClass("active");
+      next();
+    }
   }
 
   function play(){
