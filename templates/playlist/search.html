@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  {% if keyword %}
   <h2>Search results from {{ keyword }}</h2>
   {% for search in searches.items %}
   {% if search.id.videoId %}
@@ -26,5 +27,8 @@
   </div>
   {% endif %}
   {% endfor %}
+  {% else %}
+  <h2>You searched nothing.</h2>
+  {% endif %}
 
 {% endblock %}
