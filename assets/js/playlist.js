@@ -10,10 +10,12 @@
       url: $(this).attr('action'),
       data: data
     }).done(function(response){
+      // add videoID to player
+      song_ids.push(response.link);
       // create the necessary csrftoken for the delete song form
       var csrftoken = getCookie('csrftoken');
       // songEntry will be used to append on the songlist
-      songEntry = '<li id="song-state-'+ ( song_ids.length++ ) +'" class="">'
+      songEntry = '<li id="song-state-'+ ( song_ids.length ) +'" class="">'
                     + '<div class="media" id="'+ response.id +'">'
                     + '<div class="media-left media-middle">'
                     + '<img class="media-object" src="'+ response.thumb_url +'">'
@@ -33,9 +35,6 @@
                     + '</form></div>'
                     + '</div></li>';
       $('#songlist').append(songEntry);
-
-      song_ids.push(response.link);
-
     }).fail(function(error){
       if(error.status === 400){
         // clean the error containers
@@ -78,6 +77,7 @@
       //remove song from the template
       $("#"+response.song_id).parent( "li" ).remove()
       song_ids.pop();
+      console.log(song_ids);
     });
   });
 
