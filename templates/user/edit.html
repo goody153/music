@@ -1,15 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="post" novalidate>
-{% csrf_token %}
-	First Name : {{ form.first_name }}<br>
-	{{ form.first_name.errors }}
-	Last Name : {{ form.last_name }}<br>
-	{{ form.last_name.errors }}
-	Email : {{ form.email }}
-	{{ form.email.errors }}
+{% load widget_tweaks %}
 
-	<input type="submit" value="Submit">
-</form>
+<div class="col-md-4">
+</div>
+<div class="col-md-4 panel panel-default">
+    <div class="panel-body"></div>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.first_name|attr:"placeholder:First Name"|add_class:"form-control" }}
+                {{ form.first_name.errors }}
+            </div>
+            <div class="form-group">
+                {{ form.last_name|attr:"placeholder:Last Name"|add_class:"form-control" }}
+                {{ form.last_name.errors }}
+            </div>
+            <div class="form-group">
+                {{ form.email|attr:"placeholder:Email"|add_class:"form-control" }}
+                {{ form.email.errors }}
+            </div>
+            <div class="form-group pull-right">
+                <input type="submit" class="btn btn-default" value="Submit">
+            </div>
+        </form>
+    </div>
+</div>
+<div class="col-md-4">
+</div>
 {% endblock %}
