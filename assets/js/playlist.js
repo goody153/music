@@ -52,7 +52,7 @@
       url: $(this).attr('action-url'),
       data: $(this).serialize()
     }).done(function(response){
-      $('#playlists').html(response)
+      $('#playlists').html(response);
     });
   });
 
@@ -63,7 +63,7 @@
       url: $(this).attr('url'),
       data: $(this).serialize()
     }).done(function(response){
-      $('#playlists').html(response)
+      $('#playlists').html(response);
     });
   });
 
