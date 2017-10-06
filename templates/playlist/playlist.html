@@ -2,8 +2,10 @@
 {% load static %}
 
 {% block content %}
+{% load widget_tweaks %}
 <div class="row">
-  <div class="col-sm-8">
+  <div class="col-sm-1"></div>
+  <div class="col-sm-7">
     <!-- VIDEO PLAYER -->
     <div style="height:390;width:640;">
       <div id="player"></div>
@@ -28,12 +30,11 @@
         <h3 class="panel-title">Playlist: {{ playlist.title }}</h3>
       </div>
       <div class="panel-body">
-        <form method="post" action="{% url 'playlist' playlist.id %}" id="songForm" novalidate>
+        <form method="post"  class="form-inline" action="{% url 'playlist' playlist.id %}" id="songForm" novalidate>
           {% csrf_token %}
-          <label>URL:</label>
-            {{ form.link }}
-            <span class="error" id="validation_error"></span>
-          <button type="submit" id="btn_add">Add</button>
+          {{ form.link|attr:"placeholder:Link"|add_class:"form-control" }}
+          <span style="display: inline;" class="error" id="validation_error"></span>
+          <button type="submit" id="btn_add" class="btn btn-default">Add</button>
         </form>
       </div>
     </div>

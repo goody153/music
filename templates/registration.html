@@ -1,16 +1,31 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<form method="POST" novalidate>
-	{% csrf_token %}
-	{{form.email.label}}
-	{{form.email}}
-	{{form.email.errors}}
-	{{form.password.label}}
-	{{form.password}}
-	{{form.password.errors}}
-	{{form.confirm_password.label}}
-	{{form.confirm_password}}
-	{{form.confirm_password.errors}}
-	<button type="submit">Register</button>
-</form>
+{% load widget_tweaks %}
+<div class="col-md-4">
+</div>
+<div class="col-md-4 panel panel-default">
+    <div class="panel-body"></div>
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                {{form.email|attr:"placeholder:Email"|add_class:"form-control"}}
+                {{form.email.errors}}
+            </div>
+            <div class="form-group">
+                {{form.password|attr:"placeholder:Password"|add_class:"form-control"}}
+                {{form.password.errors}}
+            </div>
+            <div class="form-group">
+                {{form.confirm_password|attr:"placeholder:Confirm Password"|add_class:"form-control"}}
+                {{form.confirm_password.errors}}
+            </div>
+            <div class="form-group pull-right">
+                <button type="submit" class="btn btn-default">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="col-md-4">
+</div>
 {% endblock %}
