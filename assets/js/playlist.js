@@ -40,3 +40,25 @@
       }
     });
   });
+
+  $(document).on('submit', '#search_playlist', function(event){
+    event.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url: $(this).attr('action-url'),
+      data: $(this).serialize()
+    }).done(function(response){
+      $('#playlists').html(response)
+    });
+  });
+
+  $(document).on('click', '#all_playlist', function(event){
+    event.preventDefault();
+    $.ajax({
+      type: 'Get',
+      url: $(this).attr('url'),
+      data: $(this).serialize()
+    }).done(function(response){
+      $('#playlists').html(response)
+    });
+  });

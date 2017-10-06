@@ -1,25 +1,5 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block content %}
-<form method="post" novalidate>
-  {% csrf_token %}
-  <label>Title:</label>
-  {{ form.title }}
-  {{ form.title.errors }}
-  <br>
-  <label>Description:</label>
-  {{ form.description}}
-  <button type = 'submit'>Add Playlist</button>
-</form>
 
-<form method="POST" action-url="{% url 'search_playlist' %}" id="search_playlist" novalidate>
-  {% csrf_token %}
-  {{search_form.keyword}}
-  <button type='submit'>Search</button>
-  <button id="all_playlist" url="{% url 'search_playlist' %}">all</button>
-</form>
-
-<div id="playlists">
 {% if playlists %}
   {% for playlist in playlists %}
    <div class="media">
@@ -41,8 +21,5 @@
   </div>
   {% endfor %}
 {% else %}
-  Create a playlist now!
+  No results found!
 {% endif %}
-</div>
-
-{% endblock %}
