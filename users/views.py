@@ -87,7 +87,7 @@ class UserProfileView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         """ render a user's profile
         """
-        picture_form = ProfilePicForm(instance=self.request.user)
+        picture_form = ProfilePicForm()
         playlists = Playlist.objects.filter(user=self.request.user)
         return render(self.request, self.template_name, {'playlists':playlists,
                                                         'picture_form':picture_form
@@ -98,7 +98,6 @@ class UserProfileView(LoginRequiredMixin, View):
         """
         picture_form = ProfilePicForm(self.request.POST, self.request.FILES)
         playlists = Playlist.objects.filter(user=self.request.user)
-        # import pdb;pdb.set_trace()
         if picture_form.is_valid():
             photo = picture_form.save(commit=False)
             photo.user = self.request.user
