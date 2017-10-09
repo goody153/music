@@ -182,10 +182,11 @@ class SearchedPlaylist(LoginRequiredMixin, TemplateView):
         playlists = Playlist.objects.filter(title__icontains=keyword)
         return render(self.request, self.template_name, {'playlists':playlists})
 
+
 class AddToPlaylistFromYoutube(LoginRequiredMixin, TemplateView):
     """ Add to playlist from youtube search
     """
-    template_name = 'playlist/playlist.html'
+    template_name = 'playlist/search.html'
 
     def post(self, *args, **kwargs):
         playlist = get_object_or_404(
@@ -199,14 +200,5 @@ class AddToPlaylistFromYoutube(LoginRequiredMixin, TemplateView):
         )
         if form.is_valid():
             form.save()
-            return redirect('playlist', self.request.POST.get('playlist'))
-        # return validation error on playlist
-        songs = Song.objects.filter(playlist=playlist, archive=False)
-        song_ids = songs.values_list('link', flat=True)
-        return render(self.request, self.template_name, {
-            'playlist': playlist,
-            'songs': songs,
-            'form': form,
-            'songs_ids': list(song_ids)
-        })
-
+            return JsonResponse({'result':'Successfully added song to playlist.'}, safe=False)
+        return JsonResponse(form.errors, status=400)
