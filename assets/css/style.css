@@ -19,3 +19,7 @@
 .active .nowplaying {
     display: block;
 }
+
+.bold {
+    font-weight: bold;
+}

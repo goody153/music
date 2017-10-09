@@ -15,6 +15,7 @@
       <form method = "post" action="{% url 'add_youtube_search' %}" class="addYoutubeSong">
       {% csrf_token %}
       <label>Playlist:</label>
+      <input type="hidden" name="songtitle" value="{{ search.snippet.title }}">
       <input type="hidden" name="link" value="{{ search.id.videoId }}">
       <select name="playlist">
       {% for pl in playlists %}

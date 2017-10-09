@@ -200,5 +200,11 @@ class AddToPlaylistFromYoutube(LoginRequiredMixin, TemplateView):
         )
         if form.is_valid():
             form.save()
-            return JsonResponse({'result':'Successfully added song to playlist.'}, safe=False)
+            return JsonResponse(
+                {
+                'songtitle':self.request.POST.get('songtitle'),
+                'playlist':playlist.title
+                },
+                safe=False
+            )
         return JsonResponse(form.errors, status=400)
