@@ -1,23 +1,41 @@
 {% extends 'base.html' %}
+{% load profilepic %}
+{% load static %}
 
 {% block content %}
-Hello {{ user.first_name }}!<br>
+<div class="col-md-1"></div>
 
-<a href="{% url 'edit_profile' %}">Edit Profile</a>
-<a href="{% url 'edit_password' %}">Edit Password</a>
-<hr>
+<div class="col-md-10">
 
-{{ user.first_name }}<br>
-{{ user.last_name }}<br>
-{{ user.email }}<br>
+    <div class="media">
+      <div class="media-left">
+          <img src ="{% get_profile_pic request.user %}" width="80px" height="80px">
+      </div>
+      <div class="media-body">
+        Hello, {{ user.first_name }} {{ user.last_name }}!<br>
+                {{ user.email }}<br>
+        <a href="{% url 'edit_profile' %}">Edit Profile</a>
+        <a href="{% url 'edit_password' %}">Edit Password</a>
+        <small>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {{ picture_form.imagefile }}
+                <button type="submit" class="btn btn-default btn-xs">update</button>
+            </form>
+        </small>
+      </div>
+    </div>
+    <hr>
+    <label>My Playlists</label>
+    <ul>
+      {% for playlist in playlists %}
+        <li>
+          <a href="{% url 'playlist' playlist.id %}">{{playlist.title}}({{ playlist.number_of_songs }} song{{ playlist.number_of_songs|pluralize }})</a>
+          
+        </li>
+      {% endfor %}
+    </ul>
+</div>
 
-<label>My Playlists</label>
-<ul>
-  {% for playlist in playlists %}
-    <li>
-      <a href="{% url 'playlist' playlist.id %}">{{playlist.title}}({{ playlist.number_of_songs }} song{{ playlist.number_of_songs|pluralize }})</a>
-      
-    </li>
-  {% endfor %}
-</ul>
+<div class="col-md-1"></div>
 {% endblock %}

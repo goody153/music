@@ -72,3 +72,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+class ProfilePicture(models.Model):
+    """ handles the profile pictures for users
+    """
+    user = models.ForeignKey(User)
+    date_upload = models.DateTimeField(auto_now_add=True)
+    imagefile = models.ImageField(null=True, blank=True, upload_to='images/')
+
+    def get_image(self):
+        if self.imagefile:
+            return self.imagefile.url
+        else:
+            return 'assets/default_event.jpeg'

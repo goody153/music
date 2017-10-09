@@ -4,10 +4,10 @@ from django.views import View
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ProfilePicForm
 
 from .forms import LoginForm, UpdateProfileForm, UpdatePasswordForm
-from .models import User
+from .models import User, ProfilePicture
 from playlist.models import Playlist, Song
 
 class UserLoginView(TemplateView):
@@ -87,8 +87,26 @@ class UserProfileView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         """ render a user's profile
         """
+        picture_form = ProfilePicForm(instance=self.request.user)
         playlists = Playlist.objects.filter(user=self.request.user)
-        return render(self.request, self.template_name, {'playlists':playlists})
+        return render(self.request, self.template_name, {'playlists':playlists,
+                                                        'picture_form':picture_form
+                                                        })
+
+    def post(self, *args, **kwargs):
+        """ update the user's picture
+        """
+        picture_form = ProfilePicForm(self.request.POST, self.request.FILES)
+        playlists = Playlist.objects.filter(user=self.request.user)
+        # import pdb;pdb.set_trace()
+        if picture_form.is_valid():
+            photo = picture_form.save(commit=False)
+            photo.user = self.request.user
+            photo.save()
+            return redirect('user_profile')
+        return render(self.request, self.template_name, {'playlists':playlists,
+                                                        'picture_form':picture_form
+                                                        })
 
 
 class UpdateProfileView(LoginRequiredMixin, TemplateView):
@@ -99,6 +117,7 @@ class UpdateProfileView(LoginRequiredMixin, TemplateView):
     def get(self, *args, **kwargs):
         """ display
         """
+        
         form = UpdateProfileForm(instance=self.request.user)
         return render(self.request, self.template_name, {'form':form})
 

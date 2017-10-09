@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import check_password
 
-from .models import User
+from .models import User, ProfilePicture
 
 class LoginForm(forms.Form):
     """ The user login form
@@ -127,3 +127,12 @@ class UpdatePasswordForm(forms.Form):
         user.set_password(password)
         user.save()
         return user
+
+
+class ProfilePicForm(forms.ModelForm):
+    """ Form for uploading profile picture
+    """
+
+    class Meta:
+        model = ProfilePicture
+        fields = ('imagefile',)
