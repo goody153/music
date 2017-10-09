@@ -21,8 +21,9 @@
                   + response.playlist + '</span></div>');
   	}).fail(function(error){
   	  if(error.status == 400){
-        $('#afterAdd').html('<div class="error">' 
-                  + error.responseJSON.link + "</div>");
+        $('#afterAdd').html('<div class="error">Cannot add to <span class="bold">' 
+                  + error.responseJSON.playlist + '</span>: ' 
+                  + error.responseJSON.error.link + "</div>");
   	  }
   	});
   	event.preventDefault();

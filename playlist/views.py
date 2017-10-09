@@ -207,4 +207,9 @@ class AddToPlaylistFromYoutube(LoginRequiredMixin, TemplateView):
                 },
                 safe=False
             )
-        return JsonResponse(form.errors, status=400)
+        return JsonResponse({
+            'error':form.errors,
+            'playlist':playlist.title
+            },
+            status=400
+        )
