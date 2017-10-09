@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div id="afterAdd">ikaw ra ghpon</div>
+  <div id="afterAdd"></div>
   {% if keyword %}
   <h2>Search results from {{ keyword }}</h2>
   {% for search in searches.items %}
-  {% if search.id.videoId %}
   <div class="media">
     <div class="media-left media-middle">
       <img src="{{ search.snippet.thumbnails.default.url }}">
@@ -17,7 +16,6 @@
       {% csrf_token %}
       <label>Playlist:</label>
       <input type="hidden" name="link" value="{{ search.id.videoId }}">
-      <input type="hidden" name="keyword" value="{{ keyword }}">
       <select name="playlist">
       {% for pl in playlists %}
         <option value="{{ pl.id }}" > {{ pl }} </option>
