@@ -3,15 +3,15 @@
 {% block content %}
   <div id="afterAdd"></div>
   {% if keyword %}
-  <h2>Search results from {{ keyword }}</h2>
+  <h2>Search results from "{{ keyword }}"</h2>
   {% for search in searches.items %}
+  {% if search.id.videoId %}
   <div class="media">
     <div class="media-left media-middle">
       <img src="{{ search.snippet.thumbnails.default.url }}">
     </div>
     <div class="media-body">
       <h4 class="media-heading">{{ search.snippet.title }}</h4>
-      {{ search.id.videoId }}
       <form method = "post" action="{% url 'add_youtube_search' %}" class="addYoutubeSong">
       {% csrf_token %}
       <label>Playlist:</label>
