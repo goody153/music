@@ -78,3 +78,17 @@
       song_ids.pop();
     });
   });
+
+  $(document).on('submit', '#add_playlist', function(event){
+    event.preventDefault();
+    $.ajax({
+      type: 'post',
+      url: $(this).attr('action-url'),
+      data: $(this).serialize()
+    }).done(function(response){
+      console.log(response);
+    }).fail(function(response){
+      console.log(response.responseText);
+    });
+  });
+
