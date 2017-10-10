@@ -8,6 +8,7 @@ from .views import (
     SongDelete,
     SearchSongYoutube,
     SearchedPlaylist,
+    AddToPlaylistFromYoutube
     )
 
 urlpatterns = [
@@ -17,4 +18,5 @@ urlpatterns = [
     url(r'^playlist/(?P<playlist_id>\d+)/(?P<song_id>\d+)/delete/$', SongDelete.as_view(), name='song_delete'),
     url(r'^playlist/search/$', SearchSongYoutube.as_view(), name='search_youtube'),
     url(r'^playlist/playlistsearch/$', SearchedPlaylist.as_view(), name='search_playlist'),
+    url(r'^playlist/search/add/$', AddToPlaylistFromYoutube.as_view(), name='add_youtube_search'),
 ]

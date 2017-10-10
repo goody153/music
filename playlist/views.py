@@ -152,6 +152,7 @@ class SearchSongYoutube(Youtube, LoginRequiredMixin, TemplateView):
 
     def post(self, *args, **kwargs):
         # get the data from youtube api
+        playlists = Playlist.objects.all()
         qs = self.request.POST.get('youtube_keyword')
         searches = self.search_list_by_keyword(
             self.authenticate_yt(),
@@ -162,6 +163,7 @@ class SearchSongYoutube(Youtube, LoginRequiredMixin, TemplateView):
         )
         return render(self.request, self.template_name, {
             'searches':searches,
+            'playlists':playlists,
             'keyword':qs
         })
 
@@ -179,3 +181,35 @@ class SearchedPlaylist(LoginRequiredMixin, TemplateView):
         keyword = self.request.POST['keyword']
         playlists = Playlist.objects.filter(title__icontains=keyword)
         return render(self.request, self.template_name, {'playlists':playlists})
+
+
+class AddToPlaylistFromYoutube(LoginRequiredMixin, TemplateView):
+    """ Add to playlist from youtube search
+    """
+    template_name = 'playlist/search.html'
+
+    def post(self, *args, **kwargs):
+        playlist = get_object_or_404(
+            Playlist,
+            id=self.request.POST.get('playlist')
+        )
+        form = SongForm(
+            self.request.POST,
+            user=self.request.user,
+            playlist=playlist,
+        )
+        if form.is_valid():
+            form.save()
+            return JsonResponse(
+                {
+                'songtitle':self.request.POST.get('songtitle'),
+                'playlist':playlist.title
+                },
+                safe=False
+            )
+        return JsonResponse({
+            'error':form.errors,
+            'playlist':playlist.title
+            },
+            status=400
+        )
