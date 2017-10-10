@@ -91,7 +91,7 @@
                     +    '<img class="media-object" src="'+ response.get_thumb_url +'" width="120px" height="90px">'
                     + '</div>'
                     + '<div class="media-body">'
-                    + '<a href="">'
+                    + '<a href="/music/playlist/'+ response.id +'/">'
                     +  '<h4 class="media-heading">'+ response.title +'</h4>'
                     + '</a>'
                     + '0 songs'

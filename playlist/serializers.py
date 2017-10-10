@@ -8,7 +8,7 @@ class PlaylistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Playlist
-        fields = ('title','user_email','get_thumb_url',)
+        fields = ('id','title','user_email','get_thumb_url',)
 
     def get_user_email(self, obj):
         return obj.user.email
