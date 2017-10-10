@@ -11,28 +11,30 @@
  // ajax add song from youtubesearch
   $(document).on('submit', '.addYoutubeSong', function( event ){
     var target = $('#afterAdd');
-    var targetBody = $('#afterAddBody');
-
     target.addClass('hidden');
-
     $.ajax({
       method: 'POST',
       url: $(this).attr('action'),
       data: $(this).serialize()
     }).done(function(response){
-      targetBody.html('<div class="text-success"><span class="bold">'
+      target.html('<div><span class="bold">'
             + response.songtitle
             + '</span> was successfully added to <strong>'
-            + response.playlist + '</strong></div>');
+            + response.playlist + '</strong>'
+            + '<br><a href="'
+            + response.playlist_url
+            + '">Click Here to View Playlist!</a></div>');
       target.removeClass();
-      target.addClass('panel panel-success');
+      target.addClass('alert alert-success');
     }).fail(function(error){
       if(error.status == 400){
-        targetBody.html('<div class="text-danger">Cannot add to <strong>'
+        target.html('<div>Cannot add to <strong>'
           + error.responseJSON.playlist + '</strong>: '
-          + error.responseJSON.error.link + "</div>");
+          + error.responseJSON.error.link
+          + '<br><a href="' + error.responseJSON.playlist_url
+          + '">Click Here to View Playlist!</a></div>');
         target.removeClass();
-        target.addClass('panel panel-danger');
+        target.addClass('alert alert-danger');
       }
     }).always(function(){
       target.removeClass('hidden');

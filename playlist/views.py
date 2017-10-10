@@ -209,13 +209,15 @@ class AddToPlaylistFromYoutube(LoginRequiredMixin, TemplateView):
             return JsonResponse(
                 {
                 'songtitle':self.request.POST.get('songtitle'),
-                'playlist':playlist.title
+                'playlist':playlist.title,
+                'playlist_url':reverse('playlist', kwargs={'playlist_id':playlist.id})
                 },
                 safe=False
             )
         return JsonResponse({
             'error':form.errors,
-            'playlist':playlist.title
+            'playlist':playlist.title,
+            'playlist_url':reverse('playlist', kwargs={'playlist_id':playlist.id})
             },
             status=400
         )
