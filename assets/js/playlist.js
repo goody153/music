@@ -10,28 +10,30 @@
       url: $(this).attr('action'),
       data: data
     }).done(function(response){
+      // add videoID to player
+      song_ids.push(response.link);
+      // get id for song-state 
+      var id = song_ids.length;
       // songEntry will be used to append on the songlist
-      songEntry = '<div class="media">'
+      songEntry = '<li id="song-state-'+ id +'" class="">'
+                    + '<div class="media" id="'+ response.id +'">'
                     + '<div class="media-left media-middle">'
-                    +    '<img class="media-object" src="'+ response.thumb_url +'">'
+                    + '<img class="media-object" src="'+ response.thumb_url +'">'
                     + '</div>'
                     + '<div class="media-body">'
                     +  '<h4 class="media-heading">'+ response.title +'</h4>'
                     + 'Duration: '+ response.duration +''
                     + '<br>'
-                    + 'By: '+ response.user +''
+                    + 'By:'+ response.user +''
                     + '<br>'
                     + '<a href="' 
                     + response.edit_url + '">Edit</a>'
-                    + ' '
-                    + '<a href="'
-                    + response.delete_url + '">Delete</a>'
-                    + '</div>'
-                    + '</div>';
+                    + '<form method="post" class="deleteSong" action="'
+                    + response.delete_url + '" class="deleteSong">'
+                    + '<button type="submit">Delete</button>'
+                    + '</form></div>'
+                    + '</div></li>';
       $('#songlist').append(songEntry);
-
-      song_ids.push(response.link);
-
     }).fail(function(error){
       if(error.status === 400){
         // clean the error containers
@@ -48,7 +50,7 @@
       url: $(this).attr('action-url'),
       data: $(this).serialize()
     }).done(function(response){
-      $('#playlists').html(response)
+      $('#playlists').html(response);
     });
   });
 
@@ -59,6 +61,20 @@
       url: $(this).attr('url'),
       data: $(this).serialize()
     }).done(function(response){
-      $('#playlists').html(response)
+      $('#playlists').html(response);
+    });
+  });
+
+  // ajax for deleting songs
+  $(document).on('submit', '.deleteSong', function( event ){
+    event.preventDefault();
+    $.ajax({
+      method: 'POST',
+      url: $(this).attr('action'),
+      data: $(this).serialize()
+    }).done(function(response){
+      //remove song from the template
+      $("#"+response.song_id).parent( "li" ).remove()
+      song_ids.pop();
     });
   });

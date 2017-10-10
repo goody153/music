@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect, reverse
 from django.shortcuts import get_object_or_404
 from django.http import Http404, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt, requires_csrf_token
 
 from playlist.models import Playlist, Song, SongHistory
 from users.models import User
@@ -52,7 +54,8 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
         playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
         form = SongForm(user=self.request.user, playlist=playlist)
         songs = Song.objects.filter(playlist=playlist, archive=False)
-        song_ids = songs.values_list('link', flat=True)
+        raw_ids = songs.values_list('link', flat=True)
+        song_ids = [song.encode('utf8') for song in raw_ids]
         return render(self.request, self.template_name, {
             'playlist': playlist,
             'songs': songs,
@@ -65,6 +68,7 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
         """
         playlist = get_object_or_404(Playlist, id=kwargs['playlist_id'])
         songs = Song.objects.filter(playlist=playlist, archive=False)
+        song_ids = songs.values_list('link', flat=True)
         form = SongForm(
             self.request.POST,
             user=self.request.user,
@@ -74,6 +78,7 @@ class PlaylistView(LoginRequiredMixin, TemplateView):
             form.save()
             return JsonResponse(
                 {
+                'id':form.instance.id,
                 'title':form.instance.title,
                 'link':form.instance.link,
                 'edit_url':reverse('song_detail', kwargs={
@@ -130,19 +135,20 @@ class SongDetail(LoginRequiredMixin, TemplateView):
         })
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class SongDelete(LoginRequiredMixin, View):
     """Delete Song from Playlist
     """
 
-    def get(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
         song = get_object_or_404(
             Song,
             id=kwargs['song_id'],
             user=self.request.user
         )
-        # passes archive True to the overriden save method to represent as delete
+        #to archive a song
         song.save(archive=True)
-        return redirect('playlist', kwargs['playlist_id'])
+        return JsonResponse({'song_id':song.id}, safe=False)
 
 
 class SearchSongYoutube(Youtube, LoginRequiredMixin, TemplateView):
