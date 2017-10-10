@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect, reverse
 from django.shortcuts import get_object_or_404
 from django.http import Http404, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt, requires_csrf_token
 
 from playlist.models import Playlist, Song, SongHistory
 from users.models import User
@@ -133,6 +135,7 @@ class SongDetail(LoginRequiredMixin, TemplateView):
         })
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class SongDelete(LoginRequiredMixin, View):
     """Delete Song from Playlist
     """

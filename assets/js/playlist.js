@@ -12,10 +12,10 @@
     }).done(function(response){
       // add videoID to player
       song_ids.push(response.link);
-      // create the necessary csrftoken for the delete song form
-      var csrftoken = getCookie('csrftoken');
+      // get id for song-state 
+      var id = song_ids.length;
       // songEntry will be used to append on the songlist
-      songEntry = '<li id="song-state-'+ ( song_ids.length ) +'" class="">'
+      songEntry = '<li id="song-state-'+ id +'" class="">'
                     + '<div class="media" id="'+ response.id +'">'
                     + '<div class="media-left media-middle">'
                     + '<img class="media-object" src="'+ response.thumb_url +'">'
@@ -24,14 +24,13 @@
                     +  '<h4 class="media-heading">'+ response.title +'</h4>'
                     + 'Duration: '+ response.duration +''
                     + '<br>'
-                    + 'By: '+ response.user +''
+                    + 'By:'+ response.user +''
                     + '<br>'
                     + '<a href="' 
                     + response.edit_url + '">Edit</a>'
                     + '<form method="post" class="deleteSong" action="'
                     + response.delete_url + '" class="deleteSong">'
-                    + '<input type="hidden" name="csrfmiddlewaretoken" value="' + csrftoken
-                    + '"><button type="submit">Delete</button>'
+                    + '<button type="submit">Delete</button>'
                     + '</form></div>'
                     + '</div></li>';
       $('#songlist').append(songEntry);
@@ -77,22 +76,5 @@
       //remove song from the template
       $("#"+response.song_id).parent( "li" ).remove()
       song_ids.pop();
-      console.log(song_ids);
     });
   });
-
-  // function for creating csrf_token 
-  function getCookie(name) {
-      var cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-          var cookies = document.cookie.split(';');
-          for (var i = 0; i < cookies.length; i++) {
-              var cookie = jQuery.trim(cookies[i]);
-              if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-              }
-          }
-      }
-      return cookieValue;
-  }
