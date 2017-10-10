@@ -10,21 +10,32 @@
 
  // ajax add song from youtubesearch
   $(document).on('submit', '.addYoutubeSong', function( event ){
-  	$.ajax({
-  	  method: 'POST',
-  	  url: $(this).attr('action'),
-  	  data: $(this).serialize()
-  	}).done(function(response){
-  	  $('#afterAdd').html('<div class="success"><span class="bold">' 
-                  + response.songtitle
-  	  					  + '</span> was successfully added to <span class="bold">' 
-                  + response.playlist + '</span></div>');
-  	}).fail(function(error){
-  	  if(error.status == 400){
-        $('#afterAdd').html('<div class="error">Cannot add to <span class="bold">' 
-                  + error.responseJSON.playlist + '</span>: ' 
-                  + error.responseJSON.error.link + "</div>");
-  	  }
-  	});
-  	event.preventDefault();
+    var target = $('#afterAdd');
+    var targetBody = $('#afterAddBody');
+
+    target.addClass('hidden');
+
+    $.ajax({
+      method: 'POST',
+      url: $(this).attr('action'),
+      data: $(this).serialize()
+    }).done(function(response){
+      targetBody.html('<div class="text-success"><span class="bold">'
+            + response.songtitle
+            + '</span> was successfully added to <strong>'
+            + response.playlist + '</strong></div>');
+      target.removeClass();
+      target.addClass('panel panel-success');
+    }).fail(function(error){
+      if(error.status == 400){
+        targetBody.html('<div class="text-danger">Cannot add to <strong>'
+          + error.responseJSON.playlist + '</strong>: '
+          + error.responseJSON.error.link + "</div>");
+        target.removeClass();
+        target.addClass('panel panel-danger');
+      }
+    }).always(function(){
+      target.removeClass('hidden');
+    });
+    event.preventDefault();
   });
