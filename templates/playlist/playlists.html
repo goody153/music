@@ -12,7 +12,7 @@
 
       <form class="form-inline" id="add_playlist" novalidate>
         {% csrf_token %}
-        <input class="form-control" type="text" name="title">
+        <input class="form-control" type="text" name="title" placeholder="Add playlist">
         <button type='submit' class="btn btn-default" id="btn-add">Create Playlist</button>
       </form>
 
@@ -33,19 +33,15 @@
     {% for playlist in playlists %}
      <div class="media">
       <div class="media-left">
-        <a href="#">
-          {% if playlist.get_thumb_url %}
-            <img class="media-object" src="{{ playlist.get_thumb_url }}">
-          {% else %}
-            <img class="media-object" src="{% static 'picture/playlist_default.jpg' %}" width="120px" height="90px">
-          {% endif %}
+        <a href="{% url 'playlist' playlist.id %}">
+            <img class="media-object" src="{{ playlist.get_thumb_url }}" width="120px" height="90px">
         </a>
       </div>
       <div class="media-body">
         <h4 class="media-heading"><a href="{% url 'playlist' playlist.id %}">{{ playlist.title }}</a></h4>
         {{ playlist.number_of_songs }} song{{ playlist.number_of_songs|pluralize }}
         <br>
-        by {{ playlist.user }}
+        By: {{ playlist.user }}
       </div>
     </div>
     {% endfor %}
