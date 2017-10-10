@@ -79,16 +79,32 @@
     });
   });
 
-  $(document).on('submit', '#add_playlist', function(event){
+  $(document).on('click', '#btn-add', function(event){
     event.preventDefault();
-    $.ajax({
-      type: 'post',
-      url: $(this).attr('action-url'),
-      data: $(this).serialize()
+    var form = $('#add_playlist').serialize();
+    $.post({
+      url: 'api/add/playlist/',
+      data: form
     }).done(function(response){
-      console.log(response);
+      playlist_tpl = '<div class="media">'
+                    + '<div class="media-left media-middle">'
+                    +    '<img class="media-object" src="'+ response.get_thumb_url +'">'
+                    + '</div>'
+                    + '<div class="media-body">'
+                    +  '<h4 class="media-heading">'+ response.title +'</h4>'
+                    + '0 songs'
+                    + '<br>'
+                    + 'By: '+ response.user_email +''
+                    + '<br>'
+                    + '<a href="' 
+                    +  + '">Edit</a>'
+                    + ' '
+                    + '<a href="'
+                    +  + '">Delete</a>'
+                    + '</div>'
+                    + '</div>';
+      $('#playlists').append(playlist_tpl);
     }).fail(function(response){
       console.log(response.responseText);
     });
   });
-

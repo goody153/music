@@ -27,7 +27,7 @@ class Playlist(models.Model):
         song = self.song_set.filter(archive=False).first()
         if song:
             return song.thumb_url
-        return None
+        return 'picture/playlist_default.jpg'
 
 
 class Song(models.Model):

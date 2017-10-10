@@ -9,18 +9,20 @@
 <div class="col-md-4">
   <div class="panel panel-default">
     <div class="panel-body">
-      <form method="post" class="form-inline" novalidate>
+
+      <form class="form-inline" id="add_playlist" novalidate>
         {% csrf_token %}
-        {{ form.title|attr:"placeholder:Playlist Title"|add_class:"form-control" }}
-        {{ form.title.errors }}
-        <button type = 'submit' class="btn btn-default">Create Playlist</button>
+        <input class="form-control" type="text" name="title">
+        <button type='submit' class="btn btn-default" id="btn-add">Create Playlist</button>
       </form>
+
       <form method="POST" action-url="{% url 'search_playlist' %}" id="search_playlist" class="form-inline" novalidate>
         {% csrf_token %}
         {{ search_form.keyword|attr:"placeholder:Enter Keyword"|add_class:"form-control" }}
         <button type='submit' class="btn btn-default">Search</button>
         <button id="all_playlist" url="{% url 'search_playlist' %}" class="btn btn-default">All</button>
       </form>
+
     </div>
   </div>
 </div>
@@ -55,14 +57,5 @@
 
 <div class="col-md-2">
 </div>
-
-<br>
-<label>DRF</label>
-<form method="post" action-url="{% url 'add_playlist' %}" id="add_playlist">
-  {% csrf_token %}
-  <input type="text" name="title">
-  <button type="submit">Add</button>
-</form>
-
 
 {% endblock %}

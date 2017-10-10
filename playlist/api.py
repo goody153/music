@@ -13,5 +13,6 @@ class PlaylistViewSet(viewsets.ViewSet):
     def add_playlist(self, request):
         serializer = PlaylistSerializer(data=self.request.data)
         if serializer.is_valid():
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save(user=self.request.user)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
