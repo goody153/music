@@ -1,7 +1,8 @@
   //ajax for adding songs
   $(document).on('submit', '#songForm' , function( event ){
     event.preventDefault();
-    $('#validation_error').text('');
+    $('#songFormError').addClass('hidden');
+
     // submit new song on the playlist
     var data = $(this).serialize();
     $('#id_link').val('');
@@ -36,9 +37,7 @@
       $('#songlist').append(songEntry);
     }).fail(function(error){
       if(error.status === 400){
-        // clean the error containers
-        if(error.responseJSON.link !== undefined)
-          $('#validation_error').append(error.responseJSON.link);
+        $('#songFormError').removeClass('hidden');
       }
     });
   });

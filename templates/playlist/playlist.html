@@ -6,7 +6,7 @@
 <div class="container">
   <div class="col-sm-8">
     {% if not song_ids %}
-      <div class="alert alert-info">
+      <div id='noPlaylistAlert' class="alert alert-info">
         <i class="glyphicon glyphicon-exclamation-sign"></i>
         Oops! This playlist does not have a video yet!
       </div>
@@ -36,10 +36,14 @@
         <h3 class="panel-title">Playlist: {{ playlist.title }}</h3>
       </div>
       <div class="panel-body">
+        <div id="songFormError" class="alert alert-warning hidden">
+          <p><i class="glyphicon glyphicon-minus-sign"></i>&nbsp;Sorry, you are not allowed to add videos right after you added one.</p>
+          <p>Please wait for the others to add another video to the playlist before trying to add another video.</p>
+        </div>
+
         <form method="post"  class="form-inline" action="{% url 'playlist' playlist.id %}" id="songForm" novalidate>
           {% csrf_token %}
           {{ form.link|attr:"placeholder:Link"|add_class:"form-control" }}
-          <span style="display: inline;" class="error" id="validation_error"></span>
           <button type="submit" id="btn_add" class="btn btn-default">Add</button>
         </form>
       </div>
@@ -48,7 +52,7 @@
     <!-- LIST OF SONGS WITH CONTROLS -->
     <ul class="list-group" id="songlist" >
     {% for song in songs %}
-      <li id="song-state-{{ forloop.counter }}">
+      <li class="list-group-item" id="song-state-{{ forloop.counter }}">
         <div class="media" id="{{song.id}}">
           <div class="media-left media-middle">
               <img class="media-object" src="{{song.thumb_url}}">
