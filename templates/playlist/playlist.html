@@ -3,9 +3,15 @@
 
 {% block content %}
 {% load widget_tweaks %}
-<div class="row">
-  <div class="col-sm-1"></div>
-  <div class="col-sm-7">
+<div class="container">
+  <div class="col-sm-8">
+    {% if not song_ids %}
+      <div class="alert alert-info">
+        <i class="glyphicon glyphicon-exclamation-sign"></i>
+        Oops! This playlist does not have a video yet!
+      </div>
+    {% endif %}
+
     <!-- VIDEO PLAYER -->
     <div style="height:390;width:640;">
       <div id="player"></div>
