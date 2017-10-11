@@ -84,4 +84,4 @@ class ProfilePicture(models.Model):
     def get_image(self):
         if self.imagefile:
             return self.imagefile.url
-        return 'assets/default_event.jpeg'
+        return 'images/default_event.jpeg'
