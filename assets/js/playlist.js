@@ -110,6 +110,6 @@
       $('#playlists').append(playlist_tpl);
       $('#add_playlist')[0].reset();
     }).fail(function(response){
-      console.log(response.responseText);
+      alert("Something went wrong!")
     });
   });
