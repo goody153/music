@@ -78,3 +78,38 @@
       song_ids.pop();
     });
   });
+
+  $(document).on('click', '#btn-add', function(event){
+    event.preventDefault();
+    var form = $('#add_playlist').serialize();
+    $.post({
+      url: 'api/add/playlist/',
+      data: form
+    }).done(function(response){
+     var playlist_tpl = '<div class="media">'
+                    + '<div class="media-left media-middle">'
+                    +   '<a href="/music/playlist/'+ response.id +'/">'
+                    +    '<img class="media-object" src="'+ response.get_thumb_url +'" width="120px" height="90px">'
+                    +   '</a>'
+                    + '</div>'
+                    + '<div class="media-body">'
+                    + '<a href="/music/playlist/'+ response.id +'/">'
+                    +  '<h4 class="media-heading">'+ response.title +'</h4>'
+                    + '</a>'
+                    + '0 songs'
+                    + '<br>'
+                    + 'By: '+ response.user_email +''
+                    + '<br>'
+                    + '<a href="' 
+                    +  + '">Edit</a>'
+                    + ' '
+                    + '<a href="'
+                    +  + '">Delete</a>'
+                    + '</div>'
+                    + '</div>';
+      $('#playlists').append(playlist_tpl);
+      $('#add_playlist')[0].reset();
+    }).fail(function(response){
+      alert("Something went wrong!")
+    });
+  });

@@ -24,10 +24,10 @@ class Playlist(models.Model):
         return self.song_set.filter(archive=False).count()
 
     def get_thumb_url(self):
-        song = self.song_set.filter(archive=False).first()
-        if song:
-            return song.thumb_url
-        return None
+        song = self.song_set.filter(archive=False)
+        if song.exists():
+            return song.first().thumb_url
+        return '/static/picture/playlist_default.jpg'
 
 
 class Song(models.Model):

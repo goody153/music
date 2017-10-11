@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'users',
     'videoplayer',
     'playlist',
+
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
