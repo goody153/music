@@ -86,7 +86,7 @@
       url: 'api/add/playlist/',
       data: form
     }).done(function(response){
-      playlist_tpl = '<div class="media">'
+     var playlist_tpl = '<div class="media">'
                     + '<div class="media-left media-middle">'
                     +   '<a href="/music/playlist/'+ response.id +'/">'
                     +    '<img class="media-object" src="'+ response.get_thumb_url +'" width="120px" height="90px">'
