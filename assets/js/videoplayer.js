@@ -125,6 +125,9 @@ function onYouTubeIframeAPIReady() {
   // this control is for when a the playlist is empty
   $('#btn_add').on('click', function(){
     if(listplayer.getlength() == 0){
+      // Remove alert
+      $('#noPlaylistAlert').hide();
+
       var code = $("[name=link]").val();
       listplayer.init(code);
     }
