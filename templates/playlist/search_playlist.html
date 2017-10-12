@@ -1,22 +1,29 @@
 {% load static %}
 
+<h1>Search Results</h1>
 {% if playlists %}
   {% for playlist in playlists %}
-   <div class="media">
-    <div class="media-left">
-      <a href="#">
-        {% if playlist.get_thumb_url %}
-          <img class="media-object" src="{{ playlist.get_thumb_url }}">
-        {% else %}
-          <img class="media-object" src="{% static 'picture/playlist_default.jpg' %}" width="120px" height="90px">
-        {% endif %}
-      </a>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h1>{{ playlist.title }}</h2>
     </div>
-    <div class="media-body">
-      <h4 class="media-heading"><a href="{% url 'playlist' playlist.id %}">{{ playlist.title }}</a></h4>
-      {{ playlist.number_of_songs }} song{{ playlist.number_of_songs|pluralize }}
-      <br>
-      by {{ playlist.user }}
+    <div class="panel-body">
+      <div class="col-md-6">
+        <div class="row">
+          {% if playlist.get_thumb_url %}
+            <img class="img-responsive" src="{{ playlist.get_thumb_url }}">
+          {% else %}
+            <img class="img-responsive" src="{% static 'picture/playlist_default.jpg' %}">
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <hr class="visible-sm visible-xs">
+        <p>{{ playlist.number_of_songs }} song{{ playlist.number_of_songs|pluralize }}</p>
+        <p>by <strong>{{ playlist.user }}</strong></p>
+
+        <a class="btn btn-primary" href="{% url 'playlist' playlist.id %}">View Playlist</a>
+      </div>
     </div>
   </div>
   {% endfor %}
