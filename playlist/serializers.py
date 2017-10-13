@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from playlist.models import Playlist
+from playlist.models import Playlist, Song
 
 
 class PlaylistSerializer(serializers.ModelSerializer):
@@ -12,3 +12,10 @@ class PlaylistSerializer(serializers.ModelSerializer):
 
     def get_user_email(self, obj):
         return obj.user.email
+
+
+class SongSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Song
+        fields = ('link',)

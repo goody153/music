@@ -1,12 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="post" novalidate>
+<form method="post" action="{% url 'song_update' song.id %}" novalidate>
   {% csrf_token %}
-  <label>Title:</label>
-  {{ form.title }}
-  {{ form.title.errors}}
-  <br>
   <label>Link:</label>
   {{ form.link }}
   {{ form.link.errors}}
